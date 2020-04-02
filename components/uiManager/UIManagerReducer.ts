@@ -1,4 +1,5 @@
 import { UIReducerActions, Difficulty, Modal } from '../../enum'
+import * as v4 from 'uuid'
 
 const appReducer = (state = getInitialState(), action:any):RState => {
     switch (action.type) {
@@ -7,32 +8,26 @@ const appReducer = (state = getInitialState(), action:any):RState => {
         case UIReducerActions.SHOW_MODAL: 
             return { ...state, modal: action.modal, engineEvent:null }
         case UIReducerActions.SHOW_BUY:
-            return { ...state, modal: Modal.BUY, buyingPlotId: action.buyingPlotId, engineEvent: null}
+            return { ...state, modal: Modal.BUY, engineEvent: null}
         case UIReducerActions.SHOW_SELL:
-            return { ...state, modal: Modal.SELL, sellingPlotId: action.sellingPlotId, engineEvent: null}
+            return { ...state, modal: Modal.SELL, sellingBuilding: action.sellingBuilding, engineEvent: null}
         case UIReducerActions.BUY:
-            state.plots.forEach(p=>{
-                if(p.id === state.buyingPlotId){
-                    p.building = {...action.building, plotId: state.buyingPlotId }
-                    state.cash -= p.building.price
-                }
-            })
-            return { ...state, plots: Array.from(state.plots), modal: null, engineEvent: UIReducerActions.BUY}
+            state.buildings.push({...state.placingBuilding})
+            state.cash-=state.placingBuilding.price
+            return { ...state, buildings: Array.from(state.buildings), modal: null, engineEvent: UIReducerActions.BUY}
         case UIReducerActions.SELL:
-            state.plots.forEach(p=>{
-                if(p.id === state.sellingPlotId){
-                    p.building = null
-                }
-            })
-            return { ...state, plots: Array.from(state.plots), modal: null, engineEvent: UIReducerActions.SELL}
+            state.buildings.filter(p=>p.id !== state.sellingBuilding.id)
+            return { ...state, buildings: Array.from(state.buildings), modal: null, engineEvent: UIReducerActions.SELL}
         case UIReducerActions.UPDATE_PLOTS:
-            return { ...state, plots: action.plots, engineEvent: null }
+            return { ...state, buildings: action.plots, engineEvent: null }
         case UIReducerActions.TRANSACTION_COMPLETE:
-            return { ...state, engineEvent: null, buyingPlotId:'', sellingPlotId:'' }
+            return { ...state, engineEvent: null, placingBuilding: null, sellingBuilding: null }
         case UIReducerActions.HIDE_MODAL: 
             return { ...state, modal: null, engineEvent:null }
         case UIReducerActions.MUTE:
-            return {...state, engineEvent:UIReducerActions.MUTE }
+            return { ...state, engineEvent:UIReducerActions.MUTE }
+        case UIReducerActions.PLACE_BUILDING:
+            return { ...state, engineEvent:UIReducerActions.PLACE_BUILDING, placingBuilding: {...action.building, id:v4()}, modal:null }
         case UIReducerActions.RESET:
             return getInitialState()
         default:
@@ -47,7 +42,7 @@ const getInitialState = ():RState => {
         engineEvent: null,
         modal: null,
         difficulty: null,
-        plots: [],
+        buildings: [],
         employees: 0,
         maxEmployees: 0,
         jobs: [],
@@ -55,7 +50,7 @@ const getInitialState = ():RState => {
         meat: 0,
         day: 0,
         status: null,
-        buyingPlotId:'',
-        sellingPlotId:''
+        placingBuilding: null,
+        sellingBuilding: null
     }
 }

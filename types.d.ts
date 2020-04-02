@@ -20,7 +20,8 @@ declare enum UIReducerActions {
     SHOW_SELL='sld',
     BUY='buy',
     SELL='sell',
-    TRANSACTION_COMPLETE='tras'
+    TRANSACTION_COMPLETE='tras',
+    PLACE_BUILDING='plbl'
 }
 
 declare enum Modal {
@@ -81,17 +82,14 @@ interface Status {
 
 interface Plot {
     id:string
-    building: Building
     x: number
     y: number
     width: number
     height: number
-    size: number
 }
 
 interface Building {
     id:string
-    plotId:string
     x:number
     y:number
     type: BuildingType
@@ -100,11 +98,22 @@ interface Building {
     price: number
 }
 
+interface BuildingConfig {
+    asset: any,
+    type: BuildingType,
+    width: number,
+    height: number,
+    price: number,
+    description: string,
+    name: string,
+    size: number
+}
+
 interface RState {
     engineEvent: UIReducerActions
     modal: Modal
     difficulty: Difficulty
-    plots: Array<Plot>
+    buildings: Array<Building>
     employees: number
     maxEmployees: number
     jobs: Array<Job>
@@ -112,6 +121,6 @@ interface RState {
     meat: number
     day: number
     status: Status
-    buyingPlotId: string
-    sellingPlotId:string
+    placingBuilding: Building
+    sellingBuilding: Building
 }

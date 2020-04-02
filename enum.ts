@@ -14,7 +14,8 @@ export enum UIReducerActions {
     SHOW_SELL='sld',
     BUY='buy',
     SELL='sell',
-    TRANSACTION_COMPLETE='tras'
+    TRANSACTION_COMPLETE='tras',
+    PLACE_BUILDING='plbl'
 }
 
 export const StaticLayers = [

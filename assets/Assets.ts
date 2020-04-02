@@ -20,7 +20,7 @@ export const defaults = [
 ]
 
 export const SpriteIndexes = {
-    overlay: 11,
+    plot: 11,
     avatarwork: 3,
     avatarfood: 1,
     avatarentertainment:3,

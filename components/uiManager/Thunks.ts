@@ -28,10 +28,10 @@ export const onUpdatePlots = (plots:Array<Plot>) => {
     })
 }
 
-export const onShowSell = (plotId:string) => {
+export const onShowSell = (building:Building) => {
     dispatch({
         type: UIReducerActions.SHOW_SELL,
-        sellingPlotId: plotId
+        sellingBuilding:building
     })
 }
 
@@ -54,9 +54,15 @@ export const onTransactionComplete = () => {
     })
 }
 
-export const onPlaceBuilding = (building:Building) => {
+export const onPlaceBuilding = () => {
     dispatch({
-        type: UIReducerActions.BUY,
+        type: UIReducerActions.BUY
+    })
+}
+
+export const onStartPlaceBuilding = (building:BuildingConfig) => {
+    dispatch({
+        type: UIReducerActions.PLACE_BUILDING,
         building
     })
 }

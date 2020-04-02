@@ -1,9 +1,9 @@
-import { Scene, GameObjects, Tilemaps } from "phaser";
+import { Scene, GameObjects, Tilemaps, Geom } from "phaser";
 import { store } from "../../App";
 import { defaults, SpriteIndexes, Buildings } from '../../assets/Assets'
 import { Modal, UIReducerActions, StaticLayers, Activities, StationOffsets, RandomEvents, Chatter } from "../../enum";
 import * as v4 from 'uuid'
-import { onUpdatePlots, onShowBuy, onShowSell, onTransactionComplete } from "../uiManager/Thunks";
+import { onUpdatePlots, onShowBuy, onShowSell, onTransactionComplete, onShowModal, onPlaceBuilding } from "../uiManager/Thunks";
 import { findValue } from "../Util";
 import BuildingSprite from "./BuildingSprite";
 
@@ -16,7 +16,9 @@ export default class ParkScene extends Scene {
     sounds: any
     plotSprites: Array<GameObjects.TileSprite>
     buildingSprites: Array<BuildingSprite>
+    placingBuilding: BuildingSprite
     map:Tilemaps.Tilemap
+    baseLayer: Tilemaps.StaticTilemapLayer
     focusedItem: GameObjects.Sprite
     avatar:GameObjects.Sprite
 
@@ -47,7 +49,7 @@ export default class ParkScene extends Scene {
                 case UIReducerActions.SELL:
                     //Run selling animation
                     this.buildingSprites = this.buildingSprites.filter(bs=>{
-                        if(bs.plotId === uiState.sellingPlotId){
+                        if(bs.id === uiState.sellingBuilding.id){
                             bs.destroy()
                             return false
                         } 
@@ -57,10 +59,12 @@ export default class ParkScene extends Scene {
                     break
                 case UIReducerActions.BUY: 
                     //Run buy animation
-                    let plotSpr = this.plotSprites.find(s=>s.name === uiState.buyingPlotId)
-                    let plot = uiState.plots.find(p=>p.id === uiState.buyingPlotId)
-                    this.buildingSprites.push(new BuildingSprite(this, plotSpr.x, plotSpr.y, plot.building.type, plot.building))
+                    this.buildingSprites.push(this.placingBuilding)
+                    this.placingBuilding = null
                     onTransactionComplete()
+                    break
+                case UIReducerActions.PLACE_BUILDING:
+                    this.placingBuilding = new BuildingSprite(this, this.map.widthInPixels/2, this.map.heightInPixels/2, uiState.placingBuilding.type, uiState.placingBuilding).setAlpha(0.3)
                     break
             }
     }
@@ -77,12 +81,12 @@ export default class ParkScene extends Scene {
         this.map = this.make.tilemap({ key: 'map'})
         let tileset = this.map.addTilesetImage('tiles', 'tiles')
         let city_tiles = this.map.addTilesetImage('galletcity_tiles', 'gallet_city')
-        this.map.createStaticLayer('base', [tileset, city_tiles])
+        this.baseLayer = this.map.createStaticLayer('base', [tileset, city_tiles])
         let paths = this.map.createStaticLayer('paths', tileset)
         let zones = this.map.createFromObjects('buildable_zone', 'buildable', {})
         let plots = []
         this.plotSprites = zones.map(s=>{
-            let zone = this.add.tileSprite(s.x, s.y+s.displayHeight, s.displayWidth, s.displayHeight, 'tiles_sprites', SpriteIndexes.overlay).setInteractive()
+            let zone = this.add.tileSprite(s.x, s.y+s.displayHeight, s.displayWidth, s.displayHeight, 'tiles_sprites', SpriteIndexes.plot).setInteractive()
             let plot = {
                 id: v4(),
                 building: null,
@@ -97,9 +101,6 @@ export default class ParkScene extends Scene {
             s.destroy()
             return zone
         })
-        onUpdatePlots(plots)
-
-        this.selectedPlot = this.plotSprites[0]
 
         this.time.addEvent({
             delay: 1000,
@@ -115,14 +116,39 @@ export default class ParkScene extends Scene {
                 this.setSelectedPlot(gameObjects[0])
             }
         })
-        this.input.on('pointerdown', (event, gameObjects) => {
-            if(!store.getState().modal){
-                let plotId = gameObjects[0].name
-                let plot = store.getState().plots.find(p=>p.id === plotId)
-                if(plot.building) onShowSell(plot.id)
-                else onShowBuy(plot.id)
+        this.input.on('pointermove', (event, gameObjects) => {
+            if(this.placingBuilding){
+                this.placingBuilding.setPosition(this.input.activePointer.worldX, this.input.activePointer.worldY)
+                let valid = this.checkBuildingIntersection(this.placingBuilding)
+                if(valid) this.placingBuilding.setTint(0x00ff00)
+                else this.placingBuilding.setTint(0xff0000)
             }
         })
+        this.input.on('pointerdown', (event, gameObjects) => {
+            if(!store.getState().modal){
+                if(this.placingBuilding && this.placingBuilding.tintTopLeft === 0x00ff00){
+                    this.placingBuilding.clearTint()
+                    this.placingBuilding.clearAlpha()
+                    onPlaceBuilding()
+                    return
+                }
+                if(gameObjects[0].name){
+                    onShowModal(Modal.BUY)
+                    return
+                }
+                else if(gameObjects[0].id && !this.placingBuilding){
+                    let building = store.getState().buildings.find(b=>b.id === gameObjects[0].id)
+                    onShowSell(building)
+                    return
+                }
+            }
+        })
+        this.input.keyboard.on('keydown-SHIFT', (event) => {
+            if(this.placingBuilding){
+                this.placingBuilding.setAngle(this.placingBuilding.angle === 0 ? 90 : 0)
+            }
+        })
+        
         this.input.mouse.disableContextMenu()
     }
 
@@ -136,8 +162,15 @@ export default class ParkScene extends Scene {
         // } 
     }
 
-    tryUseSelectedStation = () => {
-        
+    checkBuildingIntersection = (building:BuildingSprite) => {
+        let brect = new Geom.Rectangle(building.getTopLeft().x, building.getTopLeft().y, building.displayWidth, building.displayHeight)
+        if(building.angle === 90) {
+            brect = new Geom.Rectangle(building.getBottomLeft().x, building.getBottomLeft().y, building.displayHeight, building.displayWidth)
+        }
+        return this.plotSprites.find(p=>
+            Phaser.Geom.Rectangle.ContainsRect(
+                new Geom.Rectangle(p.getTopLeft().x,p.getTopLeft().y,p.displayWidth, p.displayHeight), brect)
+        )
     }
 
     shakeIt = (station:GameObjects.Sprite) => {
@@ -213,5 +246,9 @@ export default class ParkScene extends Scene {
                 font.destroy()
             }
         })
+    }
+
+    update(time:number, delta:number){
+        
     }
 }

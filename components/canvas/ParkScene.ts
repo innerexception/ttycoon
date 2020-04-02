@@ -23,6 +23,7 @@ export default class ParkScene extends Scene {
     avatar:GameObjects.Sprite
     ticks:number
     meatTruck: GameObjects.Sprite
+    animalTruck: GameObjects.Sprite
 
     constructor(config){
         super(config)
@@ -104,7 +105,8 @@ export default class ParkScene extends Scene {
             s.destroy()
             return zone
         })
-        this.meatTruck = this.add.sprite(-100,300,'meat_truck')
+        this.meatTruck = this.add.sprite(-100,300,'meat_truck').setDepth(1)
+        this.animalTruck = this.add.sprite(-100,300,'animal_truck').setDisplaySize(48, 24).setFlipX(true).setDepth(1)
         this.time.addEvent({
             delay: 1000,
             callback: this.tick,
@@ -194,27 +196,14 @@ export default class ParkScene extends Scene {
         this.showText(this.avatar.getBottomCenter().x, this.avatar.getBottomCenter().y+30, 'hey')
     }
 
-    setSanity = (val:number) => {
-        // val = Math.min(MAX_SANITY_PIXELS, val)
-        // if(val > this.sanity){
-        //     this.tweens.add({
-        //         targets: this.bar,
-        //         tilePositionX: this.bar.tilePositionX-5,
-        //         duration: 500
-        //     })
-        // }
-        // let diff = this.sanity - val
-        // this.bar.width = Math.max(1,val)
-        // this.bar.setPosition(this.bar.x-(diff/2), this.bar.y)
-        // this.sanity = val
-    }
-
     tick = () => {
         this.ticks++
         if(this.ticks % 10 === 0){
             onDayOver()
             if(store.getState().day % 2 === 0) this.enterMeatTruck()
             else this.exitMeatTruck()
+            if(store.getState().day % 2 === 1) this.enterAnimalTruck()
+            else this.exitAnimalTruck()
         } 
     }
 
@@ -252,7 +241,7 @@ export default class ParkScene extends Scene {
                     this.tweens.add({
                         targets: this.meatTruck,
                         y: {
-                            to: this.meatTruck.y+3,
+                            to: this.meatTruck.y+2,
                             from: this.map.heightInPixels-25
                         },
                         duration: 100,
@@ -275,8 +264,57 @@ export default class ParkScene extends Scene {
                     this.tweens.add({
                         targets: this.meatTruck,
                         y: {
-                            to: this.meatTruck.y+3,
+                            to: this.meatTruck.y+2,
                             from: this.map.heightInPixels-25
+                        },
+                        duration: 100,
+                        yoyo:true
+                    })
+                }
+            }
+        })
+    }
+
+    enterAnimalTruck = () => {
+        this.animalTruck.setPosition(-100,this.map.heightInPixels-20)
+        this.tweens.add({
+            targets: this.animalTruck,
+            x: this.map.widthInPixels/3,
+            duration: 4000,
+            ease: Phaser.Math.Easing.Cubic.Out,
+            onComplete: () => {
+                //onEnableAnimals()
+            },
+            onUpdate: () => {
+                if(Phaser.Math.Between(0,50)===50){
+                    this.tweens.add({
+                        targets: this.animalTruck,
+                        y: {
+                            to: this.animalTruck.y+2,
+                            from: this.map.heightInPixels-20
+                        },
+                        duration: 100,
+                        yoyo:true
+                    })
+                }
+            }
+        })
+    }
+
+    exitAnimalTruck = () => {
+        //onDisableMeat()
+        this.tweens.add({
+            targets: this.animalTruck,
+            x: this.map.widthInPixels+100,
+            duration: 5000,
+            ease: Phaser.Math.Easing.Cubic.In,
+            onUpdate: () => {
+                if(Phaser.Math.Between(0,50)===50){
+                    this.tweens.add({
+                        targets: this.animalTruck,
+                        y: {
+                            to: this.animalTruck.y+2,
+                            from: this.map.heightInPixels-20
                         },
                         duration: 100,
                         yoyo:true

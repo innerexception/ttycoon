@@ -4,6 +4,7 @@ export const defaults = [
     { key: 'tiles', resource: require('./tiles.png'), type: 'image' },
     { key: 'gallet_city', resource: require('./galletcity_tiles.png'), type: 'image' },
     { key: 'meat_truck', resource: require('./meat_truck.png'), type: 'image' },
+    { key: 'animal_truck', resource: require('./animal_truck.png'), type: 'image' },
     { key: 'meat1', resource: require('./food/meat1.png'), type: 'image' },
     { key: 'meat2', resource: require('./food/meat2.png'), type: 'image' },
     { key: 'meat3', resource: require('./food/meat3.png'), type: 'image' },

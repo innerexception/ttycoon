@@ -10,6 +10,7 @@ export const defaults = [
     { key: 'meat3', resource: require('./food/meat3.png'), type: 'image' },
     { key: 'meat4', resource: require('./food/meat4.png'), type: 'image' },
     { key: 'meat5', resource: require('./food/meat5.png'), type: 'image' },
+    { key: 'animal_dealer', resource: require('./people/animal_dealer.png'), type: 'image' },
     { key: BuildingType.L_PEN, resource: require('./buildings/l_pen.png'), type: 'image'},
     { key: BuildingType.M_PEN, resource: require('./buildings/m_pen.png'), type: 'image'},
     { key: BuildingType.S_PEN, resource: require('./buildings/s_pen.png'), type: 'image'},
@@ -35,7 +36,7 @@ export const SpriteIndexes = {
 }
 
 export const Icons = {
-
+    animal_dealer: require('./people/animal_dealer.png')
 }
 
 export const Buildings = [

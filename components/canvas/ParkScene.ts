@@ -70,6 +70,9 @@ export default class ParkScene extends Scene {
                 case UIReducerActions.PLACE_BUILDING:
                     this.placingBuilding = new BuildingSprite(this, this.map.widthInPixels/2, this.map.heightInPixels/2, uiState.placingBuilding.type, uiState.placingBuilding).setAlpha(0.3)
                     break
+                case UIReducerActions.PLACE_ANIMAL:
+                    this.placingAnimal = new AnimalSprite()
+                    break
             }
     }
 
@@ -202,8 +205,11 @@ export default class ParkScene extends Scene {
             onDayOver()
             if(store.getState().day % 2 === 0) this.enterMeatTruck()
             else this.exitMeatTruck()
-            if(store.getState().day % 2 === 1) this.enterAnimalTruck()
-            else this.exitAnimalTruck()
+            //run animal AI tick, eat, kill, or breed
+            //run PETA check, if failed send in the cops
+            //get the day's take
+            //run employee mishap check
+            
         } 
     }
 

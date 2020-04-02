@@ -5,9 +5,10 @@ import { TopBar, Button, LightButton, RangeInput, Icon, ProgressBar } from '../S
 import { Modal } from '../../enum';
 import Lose from '../views/Lose';
 import Win from '../views/Win';
-import {onMuteAudio } from '../uiManager/Thunks'
+import {onMuteAudio, onShowModal } from '../uiManager/Thunks'
 import Buy from '../views/Buy';
 import Sell from '../views/Sell';
+import { Icons } from '../../assets/Assets';
 
 interface Props {
     modal:Modal
@@ -24,9 +25,11 @@ export default class ViewscreenFrame extends React.Component<Props> {
                     {this.props.modal === Modal.WIN && <Win/>}
                     {this.props.modal === Modal.BUY && <Buy/>}
                     {this.props.modal === Modal.SELL && <Sell/>}
-                    <div style={{position:'absolute', bottom:10,right:'10%'}}>
+                    {this.props.modal === Modal.ANIMALS && <Animals/>}
+                    <div style={{position:'absolute', bottom:10,left:10}}>
                         <h6>Day {this.props.day}</h6>
                         <h6 style={{cursor:'pointer'}} onClick={onMuteAudio}>Mute</h6>
+                        <div style={{backgroundImage: 'url('+Icons.animal_dealer+')', width:'24px', height:'24px'}} onClick={()=>onShowModal(Modal.ANIMALS)}/>
                     </div>
                 </div>
         )

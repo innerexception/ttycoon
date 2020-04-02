@@ -6,6 +6,7 @@ export const defaults = [
     { key: BuildingType.L_PEN, resource: require('./buildings/l_pen.png'), type: 'image'},
     { key: BuildingType.M_PEN, resource: require('./buildings/m_pen.png'), type: 'image'},
     { key: BuildingType.S_PEN, resource: require('./buildings/s_pen.png'), type: 'image'},
+    { key: BuildingType.GIFT_SHOP, resource: require('./buildings/giftshop.png'), type: 'image'},
     { key: 'step', resource: require('./audio/step.mp3'), type: 'audio' },
     { key: 'rock', resource: require('./audio/rock.mp3'), type: 'audio' },
     { key: 'error', resource: require('./audio/error.mp3'), type: 'audio' },
@@ -60,5 +61,15 @@ export const Buildings = [
         description: 'The Large Cage',
         name: 'Large Cage',
         size: 3
+    },
+    {
+        asset: require('./buildings/giftshop.png'),
+        type: BuildingType.GIFT_SHOP,
+        width: 32,
+        height: 32,
+        price: 0,
+        description: 'Gift Shopping',
+        name: 'Gift Shop',
+        size: 1
     }
 ]

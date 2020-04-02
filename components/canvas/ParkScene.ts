@@ -1,8 +1,7 @@
-import { Scene, GameObjects, Tilemaps, Geom, Game, Display } from "phaser";
+import { Scene, GameObjects, Tilemaps } from "phaser";
 import { store } from "../../App";
 import { defaults, SpriteIndexes, Buildings } from '../../assets/Assets'
 import { Modal, UIReducerActions, StaticLayers, Activities, StationOffsets, RandomEvents, Chatter } from "../../enum";
-import TimerSprite from "./BuildingSprite";
 import * as v4 from 'uuid'
 import { onUpdatePlots, onShowBuy, onShowSell, onTransactionComplete } from "../uiManager/Thunks";
 import { findValue } from "../Util";
@@ -13,7 +12,7 @@ export default class ParkScene extends Scene {
 
     unsubscribeRedux: Function
     selectIcon: GameObjects.Image
-    selectedPlot: number
+    selectedPlot: GameObjects.TileSprite
     sounds: any
     plotSprites: Array<GameObjects.TileSprite>
     buildingSprites: Array<BuildingSprite>
@@ -83,7 +82,7 @@ export default class ParkScene extends Scene {
         let zones = this.map.createFromObjects('buildable_zone', 'buildable', {})
         let plots = []
         this.plotSprites = zones.map(s=>{
-            let zone = this.add.tileSprite(s.x, s.y+s.displayHeight, s.displayWidth, s.displayHeight, 'tiles_sprites', SpriteIndexes.overlay)
+            let zone = this.add.tileSprite(s.x, s.y+s.displayHeight, s.displayWidth, s.displayHeight, 'tiles_sprites', SpriteIndexes.overlay).setInteractive()
             let plot = {
                 id: v4(),
                 building: null,
@@ -100,8 +99,7 @@ export default class ParkScene extends Scene {
         })
         onUpdatePlots(plots)
 
-        this.selectedPlot = 0
-        this.setSelectedPlot(0)
+        this.selectedPlot = this.plotSprites[0]
 
         this.time.addEvent({
             delay: 1000,
@@ -112,15 +110,14 @@ export default class ParkScene extends Scene {
         this.cameras.main.setZoom(2)
         this.cameras.main.centerOn(this.map.widthInPixels/2, this.map.heightInPixels/2)
         
-        this.input.keyboard.on('keydown-LEFT', (event) => {
-            if(!store.getState().modal) this.setSelectedPlot(-1)
-        })
-        this.input.keyboard.on('keydown-RIGHT', (event) => {
-            if(!store.getState().modal) this.setSelectedPlot(1)
-        })
-        this.input.keyboard.on('keydown-SPACE', (event) => {
+        this.input.on('pointerover', (event, gameObjects) => {
             if(!store.getState().modal){
-                let plotId = this.plotSprites[this.selectedPlot].name
+                this.setSelectedPlot(gameObjects[0])
+            }
+        })
+        this.input.on('pointerdown', (event, gameObjects) => {
+            if(!store.getState().modal){
+                let plotId = gameObjects[0].name
                 let plot = store.getState().plots.find(p=>p.id === plotId)
                 if(plot.building) onShowSell(plot.id)
                 else onShowBuy(plot.id)
@@ -129,16 +126,8 @@ export default class ParkScene extends Scene {
         this.input.mouse.disableContextMenu()
     }
 
-    setSelectedPlot = (index:number) => {
-        if(index > 0){
-            this.selectedPlot = (this.selectedPlot+index)%this.plotSprites.length
-        }
-        else {
-            this.selectedPlot = this.selectedPlot - 1
-            if(this.selectedPlot < 0) this.selectedPlot = this.plotSprites.length-1
-        }
-        let station = this.plotSprites[this.selectedPlot]
-        this.setSelectIconPosition(station.getCenter())
+    setSelectedPlot = (sprite:GameObjects.TileSprite) => {
+        this.setSelectIconPosition(sprite.getCenter())
         // let stationOffset = StationOffsets[station.name]
         // if(!this.avatar) this.avatar = this.add.sprite(station.getCenter().x+stationOffset.x, station.getCenter().y+stationOffset.y, 'avatar', Sprites['avatar'+station.name])
         // else{

@@ -5,7 +5,7 @@ import { TopBar, Button, LightButton, RangeInput, Icon, ProgressBar } from '../S
 import { Modal } from '../../enum';
 import Lose from '../views/Lose';
 import Win from '../views/Win';
-import {onMuteAudio, onShowModal } from '../uiManager/Thunks'
+import {onMuteAudio, onSummonAnimalTruck } from '../uiManager/Thunks'
 import Buy from '../views/Buy';
 import Sell from '../views/Sell';
 import { Icons } from '../../assets/Assets';
@@ -29,7 +29,7 @@ export default class ViewscreenFrame extends React.Component<Props> {
                     <div style={{position:'absolute', bottom:10,left:10}}>
                         <h6>Day {this.props.day}</h6>
                         <h6 style={{cursor:'pointer'}} onClick={onMuteAudio}>Mute</h6>
-                        <div style={{backgroundImage: 'url('+Icons.animal_dealer+')', width:'24px', height:'24px'}} onClick={()=>onShowModal(Modal.ANIMALS)}/>
+                        <div style={{backgroundImage: 'url('+Icons.animal_dealer+')', width:'24px', height:'24px'}} onClick={onSummonAnimalTruck}/>
                     </div>
                 </div>
         )

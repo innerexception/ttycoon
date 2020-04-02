@@ -21,17 +21,16 @@ export const onShowModal = (modal:Modal) => {
     })
 }
 
-export const onUpdatePlots = (plots:Array<Plot>) => {
-    dispatch({
-        type: UIReducerActions.UPDATE_PLOTS,
-        plots
-    })
-}
-
 export const onShowSell = (building:Building) => {
     dispatch({
         type: UIReducerActions.SHOW_SELL,
         sellingBuilding:building
+    })
+}
+
+export const onDayOver = () => {
+    dispatch({
+        type: UIReducerActions.DAY_OVER
     })
 }
 

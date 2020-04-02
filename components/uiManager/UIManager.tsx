@@ -5,6 +5,7 @@ import Splash from '../Splash';
 
 interface Props {
     modal:Modal
+    day:number
     difficulty: Difficulty
 }
 

@@ -21,7 +21,8 @@ declare enum UIReducerActions {
     BUY='buy',
     SELL='sell',
     TRANSACTION_COMPLETE='tras',
-    PLACE_BUILDING='plbl'
+    PLACE_BUILDING='plbl',
+    DAY_OVER='dov'
 }
 
 declare enum Modal {

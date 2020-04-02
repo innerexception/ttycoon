@@ -28,6 +28,8 @@ const appReducer = (state = getInitialState(), action:any):RState => {
             return { ...state, engineEvent:UIReducerActions.MUTE }
         case UIReducerActions.PLACE_BUILDING:
             return { ...state, engineEvent:UIReducerActions.PLACE_BUILDING, placingBuilding: {...action.building, id:v4()}, modal:null }
+        case UIReducerActions.DAY_OVER:
+            return { ...state, day: state.day+1}
         case UIReducerActions.RESET:
             return getInitialState()
         default:
@@ -48,7 +50,7 @@ const getInitialState = ():RState => {
         jobs: [],
         cash: 0,
         meat: 0,
-        day: 0,
+        day: 1,
         status: null,
         placingBuilding: null,
         sellingBuilding: null

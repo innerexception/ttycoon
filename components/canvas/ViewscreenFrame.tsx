@@ -11,6 +11,7 @@ import Sell from '../views/Sell';
 
 interface Props {
     modal:Modal
+    day:number
 }
 
 export default class ViewscreenFrame extends React.Component<Props> {
@@ -24,8 +25,7 @@ export default class ViewscreenFrame extends React.Component<Props> {
                     {this.props.modal === Modal.BUY && <Buy/>}
                     {this.props.modal === Modal.SELL && <Sell/>}
                     <div style={{position:'absolute', bottom:10,right:'10%'}}>
-                        <h6>{"<- -> Space"}</h6>
-                        <h6>Select Use</h6>
+                        <h6>Day {this.props.day}</h6>
                         <h6 style={{cursor:'pointer'}} onClick={onMuteAudio}>Mute</h6>
                     </div>
                 </div>

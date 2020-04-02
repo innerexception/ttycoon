@@ -13,7 +13,6 @@ module.exports = {
         contentBase: path.join(__dirname, './build'),
         compress: true,
         port: 9000,
-        open:true,
         index:'index.html'
     },
     devtool: 'eval-source-map',

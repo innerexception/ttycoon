@@ -3,6 +3,12 @@ import { BuildingType } from "../enum"
 export const defaults = [
     { key: 'tiles', resource: require('./tiles.png'), type: 'image' },
     { key: 'gallet_city', resource: require('./galletcity_tiles.png'), type: 'image' },
+    { key: 'meat_truck', resource: require('./meat_truck.png'), type: 'image' },
+    { key: 'meat1', resource: require('./food/meat1.png'), type: 'image' },
+    { key: 'meat2', resource: require('./food/meat2.png'), type: 'image' },
+    { key: 'meat3', resource: require('./food/meat3.png'), type: 'image' },
+    { key: 'meat4', resource: require('./food/meat4.png'), type: 'image' },
+    { key: 'meat5', resource: require('./food/meat5.png'), type: 'image' },
     { key: BuildingType.L_PEN, resource: require('./buildings/l_pen.png'), type: 'image'},
     { key: BuildingType.M_PEN, resource: require('./buildings/m_pen.png'), type: 'image'},
     { key: BuildingType.S_PEN, resource: require('./buildings/s_pen.png'), type: 'image'},

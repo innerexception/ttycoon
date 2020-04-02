@@ -25,6 +25,7 @@ export default class ParkScene extends Scene {
         super(config)
         this.unsubscribeRedux = store.subscribe(this.onReduxUpdate)
         this.plotSprites = []
+        this.buildingSprites = []
     }
 
     preload = () =>
@@ -77,8 +78,8 @@ export default class ParkScene extends Scene {
         this.map = this.make.tilemap({ key: 'map'})
         let tileset = this.map.addTilesetImage('tiles', 'tiles')
         let city_tiles = this.map.addTilesetImage('galletcity_tiles', 'gallet_city')
-        this.map.createStaticLayer('base', tileset)
-        let paths = this.map.createStaticLayer('paths', [tileset, city_tiles])
+        this.map.createStaticLayer('base', [tileset, city_tiles])
+        let paths = this.map.createStaticLayer('paths', tileset)
         let zones = this.map.createFromObjects('buildable_zone', 'buildable', {})
         let plots = []
         this.plotSprites = zones.map(s=>{

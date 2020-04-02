@@ -31,7 +31,7 @@ export const onUpdatePlots = (plots:Array<Plot>) => {
 export const onShowSell = (plotId:string) => {
     dispatch({
         type: UIReducerActions.SHOW_SELL,
-        sellPlotId: plotId
+        sellingPlotId: plotId
     })
 }
 

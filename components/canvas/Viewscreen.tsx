@@ -1,6 +1,7 @@
 import * as React from 'react'
 import * as Phaser from 'phaser'
-import MapScene from './ParkScene';
+import ParkScene from './ParkScene';
+import { onInitGame } from '../uiManager/Thunks';
 
 interface Props {
     
@@ -30,22 +31,22 @@ export default class Viewscreen extends React.Component<Props, State> {
             physics: {
                 default: 'arcade',
                 arcade: {
-                    debug: false,
-                    tileBias: 8,
+                    debug: false
                 }
             },
             render: {
                 pixelArt: true
             },
             scene: [
-                new MapScene({key: 'map'})
+                new ParkScene({key: 'map'})
             ]
         })
+        onInitGame(this.state.phaserInstance)
         window.addEventListener("resize", ()=>{
             let game = (this.state.phaserInstance as Phaser.Game)
             game.canvas.width = this.state.containerRef.current.clientWidth
             game.canvas.height = this.state.containerRef.current.clientHeight
-        });
+        })
     }
 
     render() {

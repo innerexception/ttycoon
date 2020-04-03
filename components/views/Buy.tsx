@@ -1,7 +1,7 @@
 import * as React from 'react'
 import AppStyles from '../../AppStyles';
 import { TopBar, Button, Icon, NumericInput, LightButton } from '../Shared'
-import { onPlaceBuilding, onHideModal, onStartPlaceBuilding } from '../uiManager/Thunks';
+import { onPlacedBuilding, onHideModal, onStartPlaceBuilding } from '../uiManager/Thunks';
 import { store } from '../../App';
 import { Buildings } from '../../assets/Assets';
 

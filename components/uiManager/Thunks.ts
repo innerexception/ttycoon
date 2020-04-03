@@ -41,15 +41,17 @@ export const onShowBuy = (plotId:string) => {
     })
 }
 
-export const onStartPlaceAnimal = () => {
-    // dispatch({
-    //     type: UIReducerActions.SELL
-    // })
+export const onStartPlaceAnimal = (animalType:AnimalType) => {
+    dispatch({
+        type: UIReducerActions.PLACE_ANIMAL,
+        animalType
+    })
 }
 
-export const onSellBuilding = () => {
+export const onSellBuilding = (buildingId:string) => {
     dispatch({
-        type: UIReducerActions.SELL
+        type: UIReducerActions.SELL,
+        buildingId
     })
 }
 
@@ -65,9 +67,25 @@ export const onTransactionComplete = () => {
     })
 }
 
-export const onPlaceBuilding = () => {
+export const onPlacedBuilding = (building:Building) => {
     dispatch({
-        type: UIReducerActions.BUY
+        type: UIReducerActions.BUY,
+        building
+    })
+}
+
+export const onInitGame = (game:Phaser.Game) => {
+    dispatch({
+        type: UIReducerActions.INIT_GAME,
+        game
+    })
+}
+
+export const onPlacedAnimal = (animalType:AnimalType, buildingId:string) => {
+    dispatch({
+        type: UIReducerActions.PLACED_ANIMAL,
+        animalType,
+        buildingId
     })
 }
 

@@ -16,9 +16,12 @@ export enum UIReducerActions {
     SELL='sell',
     TRANSACTION_COMPLETE='tras',
     PLACE_BUILDING='plbl',
+    PLACE_ANIMAL='placanim',
+    PLACED_ANIMAL='planim',
     DAY_OVER='dov',
     SUMMON_ANIMAL_TRUCK='sat',
-    DISMISS_ANIMAL_TRUCK='disanim'
+    DISMISS_ANIMAL_TRUCK='disanim',
+    INIT_GAME='init'
 }
 
 export const StaticLayers = [

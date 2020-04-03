@@ -1,10 +1,10 @@
 import { Scene, GameObjects, Tilemaps, Geom } from "phaser";
 import { store } from "../../App";
 import { defaults, SpriteIndexes, Buildings } from '../../assets/Assets'
-import { Modal, UIReducerActions } from "../../enum";
+import { Modal, UIReducerActions, BuildingType } from "../../enum";
 import * as v4 from 'uuid'
-import { onDayOver, onShowSell, onTransactionComplete, onShowModal, onPlaceBuilding } from "../uiManager/Thunks";
-import { findValue } from "../Util";
+import { onDayOver, onShowSell, onTransactionComplete, onShowModal, onPlacedBuilding, onPlacedAnimal } from "../uiManager/Thunks";
+import { findValue, hasCapacity } from "../Util";
 import BuildingSprite from "./BuildingSprite";
 import MeatTruck from "./MeatTruck";
 import AnimalTruck from "./AnimalTruck";
@@ -19,6 +19,10 @@ export default class ParkScene extends Scene {
     plotSprites: Array<GameObjects.TileSprite>
     buildingSprites: Array<BuildingSprite>
     placingBuilding: BuildingSprite
+    placingAnimal: GameObjects.Sprite
+    placingAnimalType: AnimalType
+    targetBuilding: BuildingSprite
+    tempBuilding: Building
     map:Tilemaps.Tilemap
     baseLayer: Tilemaps.StaticTilemapLayer
     focusedItem: GameObjects.Sprite
@@ -52,25 +56,15 @@ export default class ParkScene extends Scene {
                     if(this.sound.volume > 0) this.sound.volume = 0
                     else this.sound.volume = 0.1
                     break
-                case UIReducerActions.SELL:
-                    //Run selling animation
-                    this.buildingSprites = this.buildingSprites.filter(bs=>{
-                        if(bs.id === uiState.sellingBuilding.id){
-                            bs.destroy()
-                            return false
-                        } 
-                        return true
-                    })
-                    onTransactionComplete()
-                    break
                 case UIReducerActions.BUY: 
                     //Run buy animation
                     this.buildingSprites.push(this.placingBuilding)
                     this.placingBuilding = null
-                    onTransactionComplete()
                     break
-                case UIReducerActions.PLACE_BUILDING:
-                    this.placingBuilding = new BuildingSprite(this, this.map.widthInPixels/2, this.map.heightInPixels/2, uiState.placingBuilding.type, uiState.placingBuilding).setAlpha(0.3)
+                case UIReducerActions.PLACED_ANIMAL:
+                    this.targetBuilding.addAnimal(this.placingAnimalType)
+                    this.placingAnimal.destroy()
+                    this.placingAnimal = null
                     break
                 case UIReducerActions.SUMMON_ANIMAL_TRUCK:
                     this.animalTruck.enter()
@@ -139,13 +133,28 @@ export default class ParkScene extends Scene {
                 if(valid) this.placingBuilding.setTint(0x00ff00)
                 else this.placingBuilding.setTint(0xff0000)
             }
+            if(this.placingAnimal){
+                this.placingAnimal.setPosition(this.input.activePointer.worldX, this.input.activePointer.worldY)
+                let valid = this.checkAnimalIntersection(this.placingAnimal)
+                if(valid){
+                    this.targetBuilding = valid
+                    this.placingAnimal.setTint(0x00ff00)
+                } 
+                else this.placingAnimal.setTint(0xff0000)
+            }
         })
         this.input.on('pointerdown', (event, gameObjects) => {
             if(!store.getState().modal && gameObjects[0]){
                 if(this.placingBuilding && this.placingBuilding.tintTopLeft === 0x00ff00){
                     this.placingBuilding.clearTint()
                     this.placingBuilding.clearAlpha()
-                    onPlaceBuilding()
+                    onPlacedBuilding(this.tempBuilding)
+                    return
+                }
+                if(this.placingAnimal && this.placingAnimal.tintTopLeft === 0x00ff00){
+                    this.placingAnimal.clearTint()
+                    this.placingAnimal.clearAlpha()
+                    onPlacedAnimal(this.placingAnimalType, this.targetBuilding.id)
                     return
                 }
                 if(gameObjects[0].name){
@@ -168,6 +177,27 @@ export default class ParkScene extends Scene {
         this.input.mouse.disableContextMenu()
     }
 
+    startPlacingBuilding = (building:Building) => {
+        this.placingBuilding = new BuildingSprite(this, this.map.widthInPixels/2, this.map.heightInPixels/2, building.type, building).setAlpha(0.3)
+        this.tempBuilding = building
+    }
+
+    startPlacingAnimal = (type:AnimalType) => {
+        this.placingAnimal = this.add.sprite(this.map.widthInPixels/2, this.map.heightInPixels/2, type).setAlpha(0.3)
+        this.placingAnimalType = type
+    }
+
+    sellBuilding = (buildingId:string) => {
+        //Run selling animation
+        this.buildingSprites = this.buildingSprites.filter(bs=>{
+            if(bs.id === buildingId){
+                bs.destroy()
+                return false
+            } 
+            return true
+        })
+    }
+
     setSelectedPlot = (sprite:GameObjects.TileSprite) => {
         this.setSelectIconPosition(sprite.getCenter())
         // let stationOffset = StationOffsets[station.name]
@@ -186,6 +216,17 @@ export default class ParkScene extends Scene {
         return this.plotSprites.find(p=>
             Phaser.Geom.Rectangle.ContainsRect(
                 new Geom.Rectangle(p.getTopLeft().x,p.getTopLeft().y,p.displayWidth, p.displayHeight), brect)
+        )
+    }
+
+    checkAnimalIntersection = (animal:GameObjects.Sprite) => {
+        let brect = new Geom.Rectangle(animal.getTopLeft().x, animal.getTopLeft().y, animal.displayWidth, animal.displayHeight)
+        return this.buildingSprites.filter(bs=>{
+            let b = store.getState().buildings.find(b=>b.id === bs.id)
+            return hasCapacity(b)
+        }).find(p=>
+            Phaser.Geom.Rectangle.ContainsRect(
+                new Geom.Rectangle(p.getTopLeft().x+10,p.getTopLeft().y+10,p.displayWidth-10, p.displayHeight-10), brect)
         )
     }
 

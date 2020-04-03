@@ -22,9 +22,12 @@ declare enum UIReducerActions {
     SELL='sell',
     TRANSACTION_COMPLETE='tras',
     PLACE_BUILDING='plbl',
+    PLACED_ANIMAL='planim',
+    PLACE_ANIMAL='placanim',
     DAY_OVER='dov',
     SUMMON_ANIMAL_TRUCK='sat',
-    DISMISS_ANIMAL_TRUCK='disanim'
+    DISMISS_ANIMAL_TRUCK='disanim',
+    INIT_GAME='init'
 }
 
 declare enum Modal {
@@ -114,6 +117,7 @@ interface BuildingConfig {
 }
 
 interface RState {
+    game: Phaser.Game
     engineEvent: UIReducerActions
     modal: Modal
     difficulty: Difficulty
@@ -125,6 +129,5 @@ interface RState {
     meat: number
     day: number
     status: Status
-    placingBuilding: Building
     sellingBuilding: Building
 }

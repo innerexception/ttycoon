@@ -1,4 +1,4 @@
-import { BuildingType } from "../enum"
+import { BuildingType, AnimalType } from "../enum"
 
 export const defaults = [
     { key: 'tiles', resource: require('./tiles.png'), type: 'image' },
@@ -11,6 +11,11 @@ export const defaults = [
     { key: 'meat3', resource: require('./food/meat3.png'), type: 'image' },
     { key: 'meat4', resource: require('./food/meat4.png'), type: 'image' },
     { key: 'meat5', resource: require('./food/meat5.png'), type: 'image' },
+    { key: AnimalType.BEAR, resource: require('./animals/bear.png'), type: 'image' },
+    { key: AnimalType.LION, resource: require('./animals/lion.png'), type: 'image' },
+    { key: AnimalType.MONKEY, resource: require('./animals/monkey.png'), type: 'image' },
+    { key: AnimalType.TIGER, resource: require('./animals/tiger.png'), type: 'image' },
+    { key: AnimalType.LEMUR, resource: require('./animals/lemur.png'), type: 'image' },
     { key: 'animal_dealer', resource: require('./people/animal_dealer.png'), type: 'image' },
     { key: BuildingType.L_PEN, resource: require('./buildings/l_pen.png'), type: 'image'},
     { key: BuildingType.M_PEN, resource: require('./buildings/m_pen.png'), type: 'image'},

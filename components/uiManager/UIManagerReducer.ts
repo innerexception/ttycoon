@@ -29,9 +29,13 @@ const appReducer = (state = getInitialState(), action:any):RState => {
         case UIReducerActions.PLACE_BUILDING:
             return { ...state, engineEvent:UIReducerActions.PLACE_BUILDING, placingBuilding: {...action.building, id:v4()}, modal:null }
         case UIReducerActions.DAY_OVER:
-            return { ...state, day: state.day+1}
+            return { ...state, day: state.day+1, engineEvent: null}
         case UIReducerActions.RESET:
             return getInitialState()
+        case UIReducerActions.SUMMON_ANIMAL_TRUCK:
+            return { ...state, engineEvent: UIReducerActions.SUMMON_ANIMAL_TRUCK }
+        case UIReducerActions.DISMISS_ANIMAL_TRUCK:
+            return { ...state, engineEvent: UIReducerActions.DISMISS_ANIMAL_TRUCK, modal:null }
         default:
             return state
     }

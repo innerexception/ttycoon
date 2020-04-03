@@ -8,6 +8,7 @@ import Win from '../views/Win';
 import {onMuteAudio, onSummonAnimalTruck } from '../uiManager/Thunks'
 import Buy from '../views/Buy';
 import Sell from '../views/Sell';
+import Animals from '../views/Animals'
 import { Icons } from '../../assets/Assets';
 
 interface Props {
@@ -29,7 +30,7 @@ export default class ViewscreenFrame extends React.Component<Props> {
                     <div style={{position:'absolute', bottom:10,left:10}}>
                         <h6>Day {this.props.day}</h6>
                         <h6 style={{cursor:'pointer'}} onClick={onMuteAudio}>Mute</h6>
-                        <div style={{backgroundImage: 'url('+Icons.animal_dealer+')', width:'24px', height:'24px'}} onClick={onSummonAnimalTruck}/>
+                        <div style={{backgroundImage: 'url('+Icons.animal_dealer+')', width:'24px', height:'24px', cursor:'pointer'}} onClick={onSummonAnimalTruck}/>
                     </div>
                 </div>
         )

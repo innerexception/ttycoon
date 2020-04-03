@@ -1,7 +1,8 @@
 import * as React from 'react'
 import AppStyles from '../../AppStyles';
 import { TopBar, Button, Icon, NumericInput, LightButton } from '../Shared'
-import { onSellBuilding, onHideModal } from '../uiManager/Thunks';
+import { onStartPlaceAnimal, onDismissAnimalTruck } from '../uiManager/Thunks';
+import { Animals } from '../../enum';
 
 export default class Sell extends React.Component {
 
@@ -11,12 +12,12 @@ export default class Sell extends React.Component {
                 <h2>I GOT IT ALL</h2>
                 {Animals.map(a=>
                     <div style={{display:'flex'}}>
-                        <div/>
+                        <div style={{width:'24px', height:'24px', backgroundImage:'url('+require('../../assets/animals/'+a.assetName+'.png')}}/>
                         <h4>{a.name}</h4>
                     </div>
                 )}
                 <div>{Button(true, ()=>onStartPlaceAnimal(), 'Buy')}</div>
-                <div>{Button(true, onHideModal, 'Cancel')}</div>
+                <div>{Button(true, onDismissAnimalTruck, 'Cancel')}</div>
             </div>
         )
     }

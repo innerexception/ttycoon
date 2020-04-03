@@ -1,11 +1,13 @@
 import { Scene, GameObjects, Tilemaps, Geom } from "phaser";
 import { store } from "../../App";
 import { defaults, SpriteIndexes, Buildings } from '../../assets/Assets'
-import { Modal, UIReducerActions, StaticLayers, Activities, StationOffsets, RandomEvents, Chatter } from "../../enum";
+import { Modal, UIReducerActions } from "../../enum";
 import * as v4 from 'uuid'
 import { onDayOver, onShowSell, onTransactionComplete, onShowModal, onPlaceBuilding } from "../uiManager/Thunks";
 import { findValue } from "../Util";
 import BuildingSprite from "./BuildingSprite";
+import MeatTruck from "./MeatTruck";
+import AnimalTruck from "./AnimalTruck";
 
 
 export default class ParkScene extends Scene {
@@ -22,8 +24,8 @@ export default class ParkScene extends Scene {
     focusedItem: GameObjects.Sprite
     avatar:GameObjects.Sprite
     ticks:number
-    meatTruck: GameObjects.Sprite
-    animalTruck: GameObjects.Sprite
+    meatTruck: MeatTruck
+    animalTruck: AnimalTruck
 
     constructor(config){
         super(config)
@@ -70,9 +72,15 @@ export default class ParkScene extends Scene {
                 case UIReducerActions.PLACE_BUILDING:
                     this.placingBuilding = new BuildingSprite(this, this.map.widthInPixels/2, this.map.heightInPixels/2, uiState.placingBuilding.type, uiState.placingBuilding).setAlpha(0.3)
                     break
-                case UIReducerActions.PLACE_ANIMAL:
-                    this.placingAnimal = new AnimalSprite()
+                case UIReducerActions.SUMMON_ANIMAL_TRUCK:
+                    this.animalTruck.enter()
                     break
+                case UIReducerActions.DISMISS_ANIMAL_TRUCK:
+                    this.animalTruck.exit()
+                    break
+                // case UIReducerActions.PLACE_ANIMAL:
+                //     this.placingAnimal = new AnimalSprite()
+                //     break
             }
     }
 
@@ -108,8 +116,8 @@ export default class ParkScene extends Scene {
             s.destroy()
             return zone
         })
-        this.meatTruck = this.add.sprite(-100,300,'meat_truck').setDepth(1)
-        this.animalTruck = this.add.sprite(-100,300,'animal_truck').setDisplaySize(48, 24).setFlipX(true).setDepth(1)
+        this.meatTruck = new MeatTruck(this, -100,300,'meat_truck', this.map.heightInPixels-25, this.map.widthInPixels/2)
+        this.animalTruck = new AnimalTruck(this, -100,300,'animal_truck', this.map.heightInPixels-20, this.map.widthInPixels/3)
         this.time.addEvent({
             delay: 1000,
             callback: this.tick,
@@ -203,131 +211,14 @@ export default class ParkScene extends Scene {
         this.ticks++
         if(this.ticks % 10 === 0){
             onDayOver()
-            if(store.getState().day % 2 === 0) this.enterMeatTruck()
-            else this.exitMeatTruck()
+            if(store.getState().day % 4 === 0) this.meatTruck.enter()
+            else this.meatTruck.exit()
             //run animal AI tick, eat, kill, or breed
             //run PETA check, if failed send in the cops
             //get the day's take
             //run employee mishap check
             
         } 
-    }
-
-    enterMeatTruck = () => {
-        this.meatTruck.setPosition(-100,this.map.heightInPixels-25)
-        this.tweens.add({
-            targets: this.meatTruck,
-            x: this.map.widthInPixels/2,
-            duration: 4000,
-            ease: Phaser.Math.Easing.Cubic.Out,
-            onComplete: () => {
-                //onEnableMeat()
-            },
-            onUpdate: () => {
-                if(Phaser.Math.Between(0,30)===30){
-                    let meat = this.add.sprite(this.meatTruck.x, this.meatTruck.y, 'meat'+Phaser.Math.Between(1,5)).setScale(0.5)
-                    this.tweens.add({
-                        targets: meat,
-                        angle: Phaser.Math.Between(0,180),
-                        x: meat.x-Phaser.Math.Between(10,20),
-                        y: meat.y+Phaser.Math.Between(5,10),
-                        duration: 500,
-                        onComplete: ()=>{
-                            this.tweens.add({
-                                targets: meat,
-                                alpha:0,
-                                duration: 1000,
-                                delay: 5000,
-                                onComplete: ()=>{
-                                    meat.destroy()
-                                }
-                            })
-                        }
-                    })
-                    this.tweens.add({
-                        targets: this.meatTruck,
-                        y: {
-                            to: this.meatTruck.y+2,
-                            from: this.map.heightInPixels-25
-                        },
-                        duration: 100,
-                        yoyo:true
-                    })
-                }
-            }
-        })
-    }
-
-    exitMeatTruck = () => {
-        //onDisableMeat()
-        this.tweens.add({
-            targets: this.meatTruck,
-            x: this.map.widthInPixels+100,
-            duration: 5000,
-            ease: Phaser.Math.Easing.Cubic.In,
-            onUpdate: () => {
-                if(Phaser.Math.Between(0,30)===30){
-                    this.tweens.add({
-                        targets: this.meatTruck,
-                        y: {
-                            to: this.meatTruck.y+2,
-                            from: this.map.heightInPixels-25
-                        },
-                        duration: 100,
-                        yoyo:true
-                    })
-                }
-            }
-        })
-    }
-
-    enterAnimalTruck = () => {
-        this.animalTruck.setPosition(-100,this.map.heightInPixels-20)
-        this.tweens.add({
-            targets: this.animalTruck,
-            x: this.map.widthInPixels/3,
-            duration: 4000,
-            ease: Phaser.Math.Easing.Cubic.Out,
-            onComplete: () => {
-                //onEnableAnimals()
-            },
-            onUpdate: () => {
-                if(Phaser.Math.Between(0,50)===50){
-                    this.tweens.add({
-                        targets: this.animalTruck,
-                        y: {
-                            to: this.animalTruck.y+2,
-                            from: this.map.heightInPixels-20
-                        },
-                        duration: 100,
-                        yoyo:true
-                    })
-                }
-            }
-        })
-    }
-
-    exitAnimalTruck = () => {
-        //onDisableMeat()
-        this.tweens.add({
-            targets: this.animalTruck,
-            x: this.map.widthInPixels+100,
-            duration: 5000,
-            ease: Phaser.Math.Easing.Cubic.In,
-            onUpdate: () => {
-                if(Phaser.Math.Between(0,50)===50){
-                    this.tweens.add({
-                        targets: this.animalTruck,
-                        y: {
-                            to: this.animalTruck.y+2,
-                            from: this.map.heightInPixels-20
-                        },
-                        duration: 100,
-                        yoyo:true
-                    })
-                }
-            }
-        })
     }
 
     setSelectIconPosition(tuple:Tuple){

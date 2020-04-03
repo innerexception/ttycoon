@@ -22,7 +22,9 @@ declare enum UIReducerActions {
     SELL='sell',
     TRANSACTION_COMPLETE='tras',
     PLACE_BUILDING='plbl',
-    DAY_OVER='dov'
+    DAY_OVER='dov',
+    SUMMON_ANIMAL_TRUCK='sat',
+    DISMISS_ANIMAL_TRUCK='disanim'
 }
 
 declare enum Modal {

@@ -41,9 +41,21 @@ export const onShowBuy = (plotId:string) => {
     })
 }
 
+export const onStartPlaceAnimal = () => {
+    // dispatch({
+    //     type: UIReducerActions.SELL
+    // })
+}
+
 export const onSellBuilding = () => {
     dispatch({
         type: UIReducerActions.SELL
+    })
+}
+
+export const onDismissAnimalTruck = () => {
+    dispatch({
+        type: UIReducerActions.DISMISS_ANIMAL_TRUCK
     })
 }
 
@@ -77,6 +89,12 @@ export const onLose = (text:string) => {
 export const onMuteAudio = ()=> {
     dispatch({
         type: UIReducerActions.MUTE,
+    })
+}
+
+export const onSummonAnimalTruck = ()=> {
+    dispatch({
+        type: UIReducerActions.SUMMON_ANIMAL_TRUCK,
     })
 }
 

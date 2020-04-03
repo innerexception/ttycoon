@@ -16,12 +16,24 @@ export enum UIReducerActions {
     SELL='sell',
     TRANSACTION_COMPLETE='tras',
     PLACE_BUILDING='plbl',
-    DAY_OVER='dov'
+    DAY_OVER='dov',
+    SUMMON_ANIMAL_TRUCK='sat',
+    DISMISS_ANIMAL_TRUCK='disanim'
 }
 
 export const StaticLayers = [
     'base', 'tiles'
 ]
+
+export enum AnimalType {
+    LION='lion',
+    TIGER='tiger',
+    BEAR='bear',
+    ELEPHANT='elep',
+    HIPPO='hippo',
+    LEMUR='lemur',
+    MONKEY='monkey'
+}
 
 export enum BuildingType {
     S_PEN='small',
@@ -54,66 +66,35 @@ export enum Modal {
     ANIMALS='anima'
 }
 
-export const StationOffsets = {
-    [Activities.FOOD]: {x:-16, y:0},
-    [Activities.ENTER]: {x:0, y:30},
-    [Activities.SLEEP]: {x:+16, y:16},
-    [Activities.WORK]: {x:0,y:32}
-}
-
-export const Items = {
-
-}
-
-export const RandomEvents = [
+export const Animals = [
     {
-        title: 'Your company has fired you.',
-        id:'fired',
-        duration: 6
+        assetName: AnimalType.LION,
+        name: 'Lion',
+        meat: 5,
+        price: 2000
     },
     {
-        title: 'You got sick and had to go to the doctor.',
-        id:'doctor',
-        duration: 6
+        assetName: AnimalType.TIGER,
+        name: 'Tiger',
+        meat: 4,
+        price: 2000
     },
     {
-        title: 'Your internet is out...',
-        id:'internet',
-        duration: 8
+        assetName: AnimalType.BEAR,
+        name: 'Bear',
+        meat: 4,
+        price: 500
+    },
+    {
+        assetName: AnimalType.MONKEY,
+        name: 'Monkey',
+        meat: 1,
+        price: 400
+    },
+    {
+        assetName: AnimalType.LEMUR,
+        name: 'Lemur',
+        meat: 1,
+        price: 200
     }
-]
-
-export const Chatter = [
-    {
-        title: 'I hope mom is ok',
-        duration: 3
-    },
-    {
-        title: 'I wonder when they will let us out?',
-        duration: 3
-    },
-    {
-        title: 'I wonder when they will let us out?',
-        duration: 3
-    },
-    {
-        title: "At least I don't have to shower",
-        duration: 3
-    },
-    {
-        title: 'This is pretty montonous...',
-        duration: 3
-    },
-    {
-        title: "Hope I don't have to go out",
-        duration: 3
-    },
-    {
-        title: "I wonder why there isn't any toilet paper",
-        duration: 3
-    },
-    {
-        title: "I wish I had a cat!",
-        duration: 3
-    },
 ]

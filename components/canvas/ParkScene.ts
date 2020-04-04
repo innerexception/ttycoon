@@ -1,13 +1,13 @@
 import { Scene, GameObjects, Tilemaps, Geom } from "phaser";
 import { store } from "../../App";
-import { defaults, SpriteIndexes, Buildings } from '../../assets/Assets'
-import { Modal, UIReducerActions, BuildingType } from "../../enum";
+import { defaults, SpriteIndexes, Buildings, Sprites } from '../../assets/Assets'
+import { Modal, UIReducerActions, BuildingType, Animals } from "../../enum";
 import * as v4 from 'uuid'
 import { onDayOver, onShowSell, onTransactionComplete, onShowModal, onPlacedBuilding, onPlacedAnimal } from "../uiManager/Thunks";
 import { findValue, hasCapacity } from "../Util";
 import BuildingSprite from "./BuildingSprite";
 import MeatTruck from "./MeatTruck";
-import AnimalTruck from "./AnimalTruck";
+import Truck from "./Truck";
 
 
 export default class ParkScene extends Scene {
@@ -29,7 +29,11 @@ export default class ParkScene extends Scene {
     avatar:GameObjects.Sprite
     ticks:number
     meatTruck: MeatTruck
-    animalTruck: AnimalTruck
+    animalTruck: Truck
+    swatVan: Truck
+    talkingHead: GameObjects.Sprite
+    emitter: GameObjects.Particles.ParticleEmitterManager
+    meatEmitters: Array<GameObjects.Particles.ParticleEmitter>
 
     constructor(config){
         super(config)
@@ -67,9 +71,11 @@ export default class ParkScene extends Scene {
                     this.placingAnimal = null
                     break
                 case UIReducerActions.SUMMON_ANIMAL_TRUCK:
-                    this.animalTruck.enter()
+                    this.showTalkingHead(Sprites.ANIMAL_DEALER, 'Sure thing boss, on my way.')
+                    this.animalTruck.enter(Modal.ANIMALS)
                     break
                 case UIReducerActions.DISMISS_ANIMAL_TRUCK:
+                    this.showTalkingHead(Sprites.ANIMAL_DEALER, 'Later chief!')
                     this.animalTruck.exit()
                     break
                 // case UIReducerActions.PLACE_ANIMAL:
@@ -86,7 +92,17 @@ export default class ParkScene extends Scene {
             dead: this.sound.add('dead'),
             error: this.sound.add('error')
         }
-
+        this.emitter = this.add.particles('meat').setDepth(3)
+        this.meatEmitters = []
+        for(var i=1; i<=5;i++){
+            this.meatEmitters.push(this.emitter.createEmitter({
+                frame: i,
+                x: { min: -100, max: 100 },
+                y: { min: -100, max: 100 },
+                lifespan: 750,
+                speed:200
+            }).stop())
+        }
         this.map = this.make.tilemap({ key: 'map'})
         let tileset = this.map.addTilesetImage('tiles', 'tiles')
         let city_tiles = this.map.addTilesetImage('galletcity_tiles', 'gallet_city')
@@ -111,7 +127,8 @@ export default class ParkScene extends Scene {
             return zone
         })
         this.meatTruck = new MeatTruck(this, -100,300,'meat_truck', this.map.heightInPixels-25, this.map.widthInPixels/2)
-        this.animalTruck = new AnimalTruck(this, -100,300,'animal_truck', this.map.heightInPixels-20, this.map.widthInPixels/3)
+        this.animalTruck = new Truck(this, -100,300,'animal_truck', this.map.heightInPixels-20, this.map.widthInPixels/3)
+        this.swatVan = new Truck(this, -100,300,'swat_van', this.map.heightInPixels-20, (this.map.widthInPixels/2)+50)
         this.time.addEvent({
             delay: 1000,
             callback: this.tick,
@@ -259,20 +276,59 @@ export default class ParkScene extends Scene {
             repeat:2,
             duration: 40
         })
-        this.showText(this.avatar.getBottomCenter().x, this.avatar.getBottomCenter().y+30, 'hey')
+        this.showText(this.avatar.getBottomCenter().x, this.avatar.getBottomCenter().y+30, 'hey', 'white')
     }
 
     tick = () => {
         this.ticks++
         if(this.ticks % 10 === 0){
             onDayOver()
-            if(store.getState().day % 4 === 0) this.meatTruck.enter()
+            let state = store.getState()
+            if(state.day % 4 === 0){
+                this.showTalkingHead(Sprites.MEAT_MAN, 'Get yer meat here! Just slightly expired.')
+                this.meatTruck.enter(Modal.MEAT)
+            } 
             else this.meatTruck.exit()
-            //run animal AI tick, eat, kill, or breed
+            state.buildings.forEach(b=>{
+                if(b.animalCount){
+                    let anim=Animals.find(a=>a.assetName === b.animal)
+                    if(state.meat >= anim.meat){
+                        state.meat-=anim.meat
+                        if(b.animalCount >= 2 && Phaser.Math.Between(0,2)===2) b.animalCount++
+                    }
+                    else {
+                        let event = Phaser.Math.Between(0,3)
+                        let spr = this.buildingSprites.find(spr=>spr.id===b.id)
+                        switch(event){
+                            //dies
+                            case 0: b.animalCount--
+                                    if(b.animalCount <= 0) spr.removeAnimal()
+                                    state.peta++
+                                    state.meat++
+                                    this.showText(spr.x, spr.y, 'A '+b.animal+' starved.', 'red')
+                                    break
+                            //eats employee
+                            case 1: let dead = state.employees.splice(Phaser.Math.Between(0,state.employees.length-1), 1)[0]
+                                    if(dead) this.showText(spr.x, spr.y, dead.name + ' was eaten.', 'red')
+                                    break
+                        }           
+                    }
+                }
+            })
             //run PETA check, if failed send in the cops
+            if(Phaser.Math.Between(state.peta, 50)===50){
+                this.swatVan.enter()
+                this.showTalkingHead(Sprites.COPS, "We've recieved a tip about animal abuse at this location. You've been fined $10,000.")
+            }
             //get the day's take
+            state.cash += state.peopleToday * state.admission
+            state.peopleToday = 0
+
             //run employee mishap check
-            
+            //rampage
+            //arrest
+            //marriage
+            //divorce
         } 
     }
 
@@ -293,14 +349,34 @@ export default class ParkScene extends Scene {
         this.sounds.step.play()
     }
 
-    showText = (x:number, y:number, text:string, duration?:number) => {
+    showTalkingHead = (texture:string, text:string) => {
+        if(this.talkingHead) this.time.addEvent({
+            delay: 2000,
+            callback: ()=>{
+                this.showTalkingHead(texture, text)
+            }
+        })
+        else {
+            this.talkingHead = this.add.sprite(25, this.map.heightInPixels-25, texture).setScale(0.5)
+            this.showText(this.talkingHead.getTopRight().x+40, this.talkingHead.y, text, 'white', 4)
+            this.time.addEvent({
+                delay:5000,
+                callback: ()=>{
+                    this.talkingHead.destroy()
+                    this.talkingHead = null
+                }
+            })
+        }
+    }
+
+    showText = (x:number, y:number, text:string, color:string, duration?:number) => {
         let font = this.add.text(x-30, y, text, {
             fontFamily: 'Arcology', 
             fontSize: '8px',
-            color: 'white'
+            color
         })
         font.setStroke('#000000', 2);
-        font.setWordWrapWidth(120)
+        font.setWordWrapWidth(200)
         font.setDepth(4)
         this.add.tween({
             targets: font,
@@ -312,6 +388,12 @@ export default class ParkScene extends Scene {
                 font.destroy()
             }
         })
+    }
+
+    boughtMeat = (amount:number) => {
+        for(var i=0; i<amount;i++){
+            this.meatEmitters[i%this.meatEmitters.length].explode(1, this.meatTruck.x, this.meatTruck.y)
+        }
     }
 
     update(time:number, delta:number){

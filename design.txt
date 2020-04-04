@@ -1,4 +1,11 @@
-Virotron - sanity survival game
+tiger tycoon - exotic park management
 
-
-
+meat drain - animal dies (peta bar) or is released (cumulative chance of swat van) or employee eaten
+meat gain - meat truck buying menu (+ click on meat that falls off the truck)
+cashflow - ticks <player's set price> * person that shows up per day
+person flow - shows up based on active advertising, lack of incidents, admission price
+employee hiring - open menu, choose 1 per day, prison van will drop them off 
+    -% chance of conviction (cop car coming to take an employee away)
+    -ability for positions
+    -price
+    -addictions

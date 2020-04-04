@@ -27,7 +27,8 @@ declare enum UIReducerActions {
     DAY_OVER='dov',
     SUMMON_ANIMAL_TRUCK='sat',
     DISMISS_ANIMAL_TRUCK='disanim',
-    INIT_GAME='init'
+    INIT_GAME='init',
+    BUY_MEAT='bmeat'
 }
 
 declare enum Modal {
@@ -36,7 +37,8 @@ declare enum Modal {
     WIN='win',
     BUY='bby',
     SELL='sell',
-    ANIMALS='anima'
+    ANIMALS='anima',
+    MEAT='meat'
 }
 
 declare enum AnimalType {
@@ -56,6 +58,12 @@ declare enum BuildingType {
     RESTROOMS='rr',
     GIFT_SHOP='gs',
     HOUSING='eh'
+}
+
+declare enum AddictionType {
+    METH='meth',
+    COKE='coke',
+    WEED='weed'
 }
 
 declare enum Job {
@@ -95,6 +103,15 @@ interface Plot {
     height: number
 }
 
+interface Employee {
+    id:string
+    name: string
+    addiction: AddictionType
+    arrestChance: number
+    price: number
+    ability: number
+}
+
 interface Building {
     id:string
     type: BuildingType
@@ -114,12 +131,15 @@ interface RState {
     modal: Modal
     difficulty: Difficulty
     buildings: Array<Building>
-    employees: number
+    employees: Array<Employee>
     maxEmployees: number
     jobs: Array<Job>
     cash: number
     meat: number
+    peta: number
     day: number
     status: Status
     sellingBuilding: Building
+    peopleToday:number
+    admission:number
 }

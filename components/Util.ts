@@ -17,6 +17,7 @@ export const findValue = (data:Phaser.Data.DataManager, searchKey:string) => {
 }
 
 export const hasCapacity = (building:Building, animal?:AnimalType) => {
+    if(building.animal && building.animal !== animal) return false
     switch(building.type){
         case BuildingType.S_PEN: return building.animalCount < 1
         case BuildingType.M_PEN: return building.animalCount < 3

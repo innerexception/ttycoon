@@ -20,6 +20,7 @@ const appReducer = (state = getInitialState(), action:any):RState => {
             state.buildings.forEach(b=>{
                 if(b.id === action.buildingId){
                     b.animalCount++
+                    b.animal = action.animalType
                 }
             })
             state.cash -= Animals.find(a=>a.assetName===action.animalType).price
@@ -44,6 +45,9 @@ const appReducer = (state = getInitialState(), action:any):RState => {
             return { ...state, day: state.day+1, engineEvent: null}
         case UIReducerActions.RESET:
             return getInitialState()
+        case UIReducerActions.BUY_MEAT:
+            (state.game.scene.getScene('map') as ParkScene).boughtMeat(action.amount)
+            return { ...state, meat: state.meat + action.amount, cash: state.cash - (action.amount*5)}
         case UIReducerActions.SUMMON_ANIMAL_TRUCK:
             return { ...state, engineEvent: UIReducerActions.SUMMON_ANIMAL_TRUCK }
         case UIReducerActions.DISMISS_ANIMAL_TRUCK:
@@ -64,13 +68,16 @@ const getInitialState = ():RState => {
         modal: null,
         difficulty: null,
         buildings: [],
-        employees: 0,
+        employees: [],
         maxEmployees: 0,
         jobs: [],
-        cash: 0,
+        cash: 2000,
         meat: 0,
+        peta: 0,
         day: 1,
         status: null,
-        sellingBuilding: null
+        sellingBuilding: null,
+        admission: 0,
+        peopleToday: 0
     }
 }

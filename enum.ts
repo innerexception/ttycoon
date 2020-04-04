@@ -21,7 +21,8 @@ export enum UIReducerActions {
     DAY_OVER='dov',
     SUMMON_ANIMAL_TRUCK='sat',
     DISMISS_ANIMAL_TRUCK='disanim',
-    INIT_GAME='init'
+    INIT_GAME='init',
+    BUY_MEAT='bmeat'
 }
 
 export const StaticLayers = [
@@ -66,7 +67,8 @@ export enum Modal {
     WIN='win',
     BUY='bby',
     SELL='sell',
-    ANIMALS='anima'
+    ANIMALS='anima',
+    MEAT='meat'
 }
 
 export const Animals = [

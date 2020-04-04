@@ -128,6 +128,13 @@ export const onHideModal = () => {
     })
 }
 
+export const onBuyMeat = (amount:number) => {
+    dispatch({
+        type: UIReducerActions.BUY_MEAT,
+        amount
+    })
+}
+
 export const onInitSession = (difficulty:Difficulty) => {
     dispatch({ type: UIReducerActions.NEW_SESSION, difficulty })
 }

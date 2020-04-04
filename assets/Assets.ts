@@ -1,10 +1,17 @@
 import { BuildingType, AnimalType } from "../enum"
 
+export const Sprites = {
+    MEAT_MAN: 'meat_guy',
+    ANIMAL_DEALER: 'animal_dealer',
+    COPS: 'cop'
+}
+
 export const defaults = [
     { key: 'tiles', resource: require('./tiles.png'), type: 'image' },
     { key: 'gallet_city', resource: require('./galletcity_tiles.png'), type: 'image' },
     { key: 'meat_truck', resource: require('./meat_truck.png'), type: 'image' },
     { key: 'animal_truck', resource: require('./animal_truck.png'), type: 'image' },
+    { key: 'swat_van', resource: require('./swat_van.png'), type: 'image' },
     { key: 'marker', resource: require('./marker.png'), type: 'image' },
     { key: 'meat1', resource: require('./food/meat1.png'), type: 'image' },
     { key: 'meat2', resource: require('./food/meat2.png'), type: 'image' },
@@ -16,7 +23,9 @@ export const defaults = [
     { key: AnimalType.MONKEY, resource: require('./animals/monkey.png'), type: 'image' },
     { key: AnimalType.TIGER, resource: require('./animals/tiger.png'), type: 'image' },
     { key: AnimalType.LEMUR, resource: require('./animals/lemur.png'), type: 'image' },
-    { key: 'animal_dealer', resource: require('./people/animal_dealer.png'), type: 'image' },
+    { key: Sprites.ANIMAL_DEALER, resource: require('./people/animal_dealer.png'), type: 'image' },
+    { key: Sprites.COPS, resource: require('./people/cop.png'), type: 'image' },
+    { key: Sprites.MEAT_MAN, resource: require('./people/meat_man.png'), type: 'image' },
     { key: BuildingType.L_PEN, resource: require('./buildings/l_pen.png'), type: 'image'},
     { key: BuildingType.M_PEN, resource: require('./buildings/m_pen.png'), type: 'image'},
     { key: BuildingType.S_PEN, resource: require('./buildings/s_pen.png'), type: 'image'},
@@ -31,6 +40,7 @@ export const defaults = [
     { key: 'tiles_sprites', resource: require('./tiles.png'), type: 'spritesheet', data: { frameWidth: 8, frameHeight: 8 }},
     { key: 'time', resource: require('./time.png'), type: 'image' },
     { key: 'avatar', resource: require('./avatar.png'),  type: 'spritesheet', data: { frameWidth: 16, frameHeight: 20 }},
+    { key: 'meat', resource: require('./food/meats.png'),  type: 'spritesheet', data: { frameWidth: 24, frameHeight: 24 }},
 ]
 
 export const SpriteIndexes = {

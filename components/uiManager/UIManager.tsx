@@ -7,6 +7,9 @@ interface Props {
     modal:Modal
     day:number
     difficulty: Difficulty
+    cash: number
+    meat: number
+    admission: number
 }
 
 export default class UIManager extends React.Component<Props> {

@@ -18,9 +18,9 @@ export const findValue = (data:Phaser.Data.DataManager, searchKey:string) => {
 
 export const hasCapacity = (building:Building, animal?:AnimalType) => {
     switch(building.type){
-        case BuildingType.S_PEN: return building.animalCount < 3
-        case BuildingType.M_PEN: return building.animalCount < 6
-        case BuildingType.L_PEN: return building.animalCount < 9
+        case BuildingType.S_PEN: return building.animalCount < 1
+        case BuildingType.M_PEN: return building.animalCount < 3
+        case BuildingType.L_PEN: return building.animalCount < 6
         default: return false
     }
 }

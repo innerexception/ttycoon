@@ -122,7 +122,7 @@ export default class ParkScene extends Scene {
         this.cameras.main.centerOn(this.map.widthInPixels/2, this.map.heightInPixels/2)
         
         this.input.on('pointerover', (event, gameObjects) => {
-            if(!store.getState().modal){
+            if(!store.getState().modal && !this.placingAnimal && !this.placingBuilding){
                 this.setSelectedPlot(gameObjects[0])
             }
         })
@@ -173,17 +173,27 @@ export default class ParkScene extends Scene {
                 this.placingBuilding.setAngle(this.placingBuilding.angle === 0 ? 90 : 0)
             }
         })
+        this.input.keyboard.on('keydown-ESC', (event) => {
+            if(this.placingBuilding){
+                this.placingBuilding.destroy()
+                this.placingBuilding = null    
+            }
+            if(this.placingAnimal){
+                this.placingAnimal.destroy()
+                this.placingAnimal = null
+            }
+        })
         
         this.input.mouse.disableContextMenu()
     }
 
     startPlacingBuilding = (building:Building) => {
-        this.placingBuilding = new BuildingSprite(this, this.map.widthInPixels/2, this.map.heightInPixels/2, building.type, building).setAlpha(0.3)
+        this.placingBuilding = new BuildingSprite(this, this.map.widthInPixels/2, this.map.heightInPixels/2, building.type, building).setAlpha(0.5)
         this.tempBuilding = building
     }
 
     startPlacingAnimal = (type:AnimalType) => {
-        this.placingAnimal = this.add.sprite(this.map.widthInPixels/2, this.map.heightInPixels/2, type).setAlpha(0.3)
+        this.placingAnimal = this.add.sprite(this.map.widthInPixels/2, this.map.heightInPixels/2, type).setAlpha(0.5).setScale(0.6)
         this.placingAnimalType = type
     }
 
@@ -224,10 +234,14 @@ export default class ParkScene extends Scene {
         return this.buildingSprites.filter(bs=>{
             let b = store.getState().buildings.find(b=>b.id === bs.id)
             return hasCapacity(b)
-        }).find(p=>
-            Phaser.Geom.Rectangle.ContainsRect(
-                new Geom.Rectangle(p.getTopLeft().x+10,p.getTopLeft().y+10,p.displayWidth-10, p.displayHeight-10), brect)
-        )
+        }).find(p=>{
+            let prect = new Geom.Rectangle(p.getTopLeft().x+3,p.getTopLeft().y+3,p.displayWidth-3, p.displayHeight-3)
+            if(p.angle === 90) {
+                prect = new Geom.Rectangle(p.getBottomLeft().x+3, p.getBottomLeft().y+3, p.displayHeight-3, p.displayWidth-3)
+            }
+            return Phaser.Geom.Rectangle.ContainsRect(
+                prect, brect)
+        })
     }
 
     shakeIt = (station:GameObjects.Sprite) => {

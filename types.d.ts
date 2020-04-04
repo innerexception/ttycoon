@@ -97,23 +97,15 @@ interface Plot {
 
 interface Building {
     id:string
-    x:number
-    y:number
     type: BuildingType
     animal: AnimalType
     animalCount: number
     price: number
-}
-
-interface BuildingConfig {
     asset: any,
-    type: BuildingType,
     width: number,
     height: number,
-    price: number,
     description: string,
-    name: string,
-    size: number
+    name: string
 }
 
 interface RState {

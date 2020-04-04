@@ -13,13 +13,12 @@ export default class Sell extends React.Component {
             <div style={{...AppStyles.modal, height:'100px', width:'550px', justifyContent:'space-between', backgroundSize:'cover'}}>
                 <h2>I GOT IT ALL</h2>
                 {Animals.map(a=>
-                    <div style={{display:'flex'}} onClick={()=>this.setState({animalType: a.assetName})}>
+                    <div style={{display:'flex', cursor:'pointer'}} onClick={()=>onStartPlaceAnimal(a.assetName)}>
                         <div style={{width:'24px', height:'24px', backgroundImage:'url('+require('../../assets/animals/'+a.assetName+'.png')}}/>
                         <h4>{a.name}</h4>
                     </div>
                 )}
-                <div>{Button(true, ()=>onStartPlaceAnimal(this.state.animalType), 'Buy')}</div>
-                <div>{Button(true, onDismissAnimalTruck, 'Cancel')}</div>
+                <div>{Button(true, onDismissAnimalTruck, 'Bye')}</div>
             </div>
         )
     }

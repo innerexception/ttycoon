@@ -13,10 +13,11 @@ export default class BuildingSprite extends GameObjects.Sprite {
         this.id = building.id
         this.setDepth(1)
         this.setInteractive()
+        this.animalSprites = []
     }
 
     addAnimal = (animal:AnimalType) => {
-
+        this.animalSprites.push(this.scene.add.sprite(this.getCenter().x, this.getCenter().y, animal).setScale(0.5))
     }
 
     removeAnimal = (animal:AnimalType) => {

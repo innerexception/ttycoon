@@ -35,7 +35,7 @@ const appReducer = (state = getInitialState(), action:any):RState => {
         case UIReducerActions.MUTE:
             return { ...state, engineEvent:UIReducerActions.MUTE }
         case UIReducerActions.PLACE_BUILDING:
-            (state.game.scene.getScene('map') as ParkScene).startPlacingBuilding({...action.building, id:v4()})
+            (state.game.scene.getScene('map') as ParkScene).startPlacingBuilding({...action.building})
             return { ...state, modal:null }
         case UIReducerActions.PLACE_ANIMAL:
             (state.game.scene.getScene('map') as ParkScene).startPlacingAnimal(action.animalType)

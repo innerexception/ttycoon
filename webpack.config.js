@@ -22,7 +22,7 @@ module.exports = {
           /\.d\.ts$/
         ]),
         new HtmlWebpackPlugin({
-            template: "./build/index.html",
+            template: "./index.html",
             filename: "index.html"
         }),
       ],

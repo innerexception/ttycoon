@@ -89,7 +89,7 @@ export const onPlacedAnimal = (animalType:AnimalType, buildingId:string) => {
     })
 }
 
-export const onStartPlaceBuilding = (building:BuildingConfig) => {
+export const onStartPlaceBuilding = (building:Building) => {
     dispatch({
         type: UIReducerActions.PLACE_BUILDING,
         building

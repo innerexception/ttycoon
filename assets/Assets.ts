@@ -53,8 +53,7 @@ export const Buildings = [
         height: 32,
         price: 0,
         description: 'The Smallest Cage',
-        name: 'Small Cage',
-        size: 1
+        name: 'Small Cage'
     },
     {
         asset: require('./buildings/m_pen.png'),
@@ -63,8 +62,7 @@ export const Buildings = [
         height: 32,
         price: 0,
         description: 'The Medium Cage',
-        name: 'Med Cage',
-        size: 2
+        name: 'Med Cage'
     },
     {
         asset: require('./buildings/l_pen.png'),
@@ -73,8 +71,7 @@ export const Buildings = [
         height: 64,
         price: 0,
         description: 'The Large Cage',
-        name: 'Large Cage',
-        size: 3
+        name: 'Large Cage'
     },
     {
         asset: require('./buildings/giftshop.png'),
@@ -83,7 +80,6 @@ export const Buildings = [
         height: 32,
         price: 0,
         description: 'Gift Shopping',
-        name: 'Gift Shop',
-        size: 1
+        name: 'Gift Shop'
     }
 ]

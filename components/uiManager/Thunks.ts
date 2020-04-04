@@ -28,6 +28,13 @@ export const onShowSell = (building:Building) => {
     })
 }
 
+export const onReplaceState = (state:RState) => {
+    dispatch({
+        type: UIReducerActions.REPLACE_STATE,
+        state
+    })
+}
+
 export const onDayOver = () => {
     dispatch({
         type: UIReducerActions.DAY_OVER
@@ -113,6 +120,13 @@ export const onMuteAudio = ()=> {
 export const onSummonAnimalTruck = ()=> {
     dispatch({
         type: UIReducerActions.SUMMON_ANIMAL_TRUCK,
+    })
+}
+
+export const onSetAdmission = (amount:number)=> {
+    dispatch({
+        type: UIReducerActions.SET_ADMISSION,
+        amount
     })
 }
 

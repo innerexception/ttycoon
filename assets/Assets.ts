@@ -3,7 +3,9 @@ import { BuildingType, AnimalType } from "../enum"
 export const Sprites = {
     MEAT_MAN: 'meat_guy',
     ANIMAL_DEALER: 'animal_dealer',
-    COPS: 'cop'
+    COPS: 'cop',
+    CASH: 'cash',
+    MEAT: 'meat'
 }
 
 export const defaults = [
@@ -52,7 +54,9 @@ export const SpriteIndexes = {
 }
 
 export const Icons = {
-    animal_dealer: require('./people/animal_dealer.png')
+    animal_dealer: require('./people/animal_dealer.png'),
+    CASH: require('./icon/CreditsT.png'),
+    MEAT: require('./food/meat2.png')
 }
 
 export const Buildings = [

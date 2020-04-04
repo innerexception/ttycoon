@@ -3,7 +3,7 @@ import { store } from "../../App";
 import { defaults, SpriteIndexes, Buildings, Sprites } from '../../assets/Assets'
 import { Modal, UIReducerActions, BuildingType, Animals } from "../../enum";
 import * as v4 from 'uuid'
-import { onDayOver, onShowSell, onTransactionComplete, onShowModal, onPlacedBuilding, onPlacedAnimal } from "../uiManager/Thunks";
+import { onDayOver, onShowSell, onReplaceState, onShowModal, onPlacedBuilding, onPlacedAnimal } from "../uiManager/Thunks";
 import { findValue, hasCapacity } from "../Util";
 import BuildingSprite from "./BuildingSprite";
 import MeatTruck from "./MeatTruck";
@@ -319,11 +319,13 @@ export default class ParkScene extends Scene {
             if(Phaser.Math.Between(state.peta, 50)===50){
                 this.swatVan.enter()
                 this.showTalkingHead(Sprites.COPS, "We've recieved a tip about animal abuse at this location. You've been fined $10,000.")
+                state.cash-=10000
             }
             //get the day's take
             state.cash += state.peopleToday * state.admission
             state.peopleToday = 0
 
+            onReplaceState(state)
             //run employee mishap check
             //rampage
             //arrest

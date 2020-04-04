@@ -54,6 +54,10 @@ const appReducer = (state = getInitialState(), action:any):RState => {
             return { ...state, engineEvent: UIReducerActions.DISMISS_ANIMAL_TRUCK, modal:null }
         case UIReducerActions.INIT_GAME:
             return { ...state, game: action.game }
+        case UIReducerActions.SET_ADMISSION:
+            return { ...state, admission: action.amount, engineEvent: null}
+        case UIReducerActions.REPLACE_STATE:
+            return { ...action.state }
         default:
             return state
     }

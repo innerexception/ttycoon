@@ -10,6 +10,7 @@ interface Props {
     cash: number
     meat: number
     admission: number
+    peta: number
 }
 
 export default class UIManager extends React.Component<Props> {

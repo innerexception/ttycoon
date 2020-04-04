@@ -22,7 +22,9 @@ export enum UIReducerActions {
     SUMMON_ANIMAL_TRUCK='sat',
     DISMISS_ANIMAL_TRUCK='disanim',
     INIT_GAME='init',
-    BUY_MEAT='bmeat'
+    BUY_MEAT='bmeat',
+    SET_ADMISSION='setad',
+    REPLACE_STATE='repls'
 }
 
 export const StaticLayers = [

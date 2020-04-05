@@ -93,7 +93,6 @@ interface Status {
     tvAd: boolean
     publicAccident: boolean
     employeeAccident: boolean
-    PETA: boolean
     celebrityEndorsement: boolean
 }
 

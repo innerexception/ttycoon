@@ -1,4 +1,4 @@
-import { Scene, GameObjects, Tilemaps, Geom } from "phaser";
+import { Scene, GameObjects, Tilemaps, Geom, Physics } from "phaser";
 import { store } from "../../App";
 import { defaults, SpriteIndexes, Buildings, Sprites } from '../../assets/Assets'
 import { Modal, UIReducerActions, BuildingType, Animals } from "../../enum";
@@ -8,6 +8,7 @@ import { findValue, hasCapacity } from "../Util";
 import BuildingSprite from "./BuildingSprite";
 import MeatTruck from "./MeatTruck";
 import Truck from "./Truck";
+import PersonSprite from "./PersonSprite";
 
 
 export default class ParkScene extends Scene {
@@ -25,6 +26,7 @@ export default class ParkScene extends Scene {
     tempBuilding: Building
     map:Tilemaps.Tilemap
     baseLayer: Tilemaps.StaticTilemapLayer
+    pathsLayer: Tilemaps.StaticTilemapLayer
     focusedItem: GameObjects.Sprite
     avatar:GameObjects.Sprite
     ticks:number
@@ -107,8 +109,12 @@ export default class ParkScene extends Scene {
         let tileset = this.map.addTilesetImage('tiles', 'tiles')
         let city_tiles = this.map.addTilesetImage('galletcity_tiles', 'gallet_city')
         this.baseLayer = this.map.createStaticLayer('base', [tileset, city_tiles])
-        let paths = this.map.createStaticLayer('paths', tileset)
+        this.pathsLayer = this.map.createStaticLayer('paths', tileset)
         let zones = this.map.createFromObjects('buildable_zone', 'buildable', {})
+        this.physics.world.setBounds(0,0,this.map.widthInPixels,this.map.heightInPixels)
+        this.physics.world.setBoundsCollision()
+        this.baseLayer.setCollisionBetween(0,20000)
+        this.physics.world.on('worldbounds', this.personHitBounds);
         let plots = []
         this.plotSprites = zones.map(s=>{
             let zone = this.add.tileSprite(s.x, s.y+s.displayHeight, s.displayWidth, s.displayHeight, 'tiles_sprites', SpriteIndexes.plot).setInteractive()
@@ -235,6 +241,10 @@ export default class ParkScene extends Scene {
         // } 
     }
 
+    personHitBounds = (body:Physics.Arcade.Body) => {
+        (body.gameObject as PersonSprite).pickNewDirection()
+    }
+
     checkBuildingIntersection = (building:BuildingSprite) => {
         let brect = new Geom.Rectangle(building.getTopLeft().x, building.getTopLeft().y, building.displayWidth, building.displayHeight)
         if(building.angle === 90) {
@@ -281,9 +291,21 @@ export default class ParkScene extends Scene {
 
     tick = () => {
         this.ticks++
+        let state = store.getState()
+        let personChance = 25
+        if(state.status.celebrityEndorsement) personChance -= 10
+        if(state.status.employeeAccident) personChance += 10
+        if(state.status.paperAd) personChance -= 5
+        if(state.status.radioAd) personChance -= 10
+        if(state.status.tvAd) personChance -= 20
+        personChance = Math.max(0,personChance)
+        if(Phaser.Math.Between(0, personChance) === personChance){
+            this.spawnPerson()
+            state.peopleToday++
+        }
+        this.spawnPerson()
         if(this.ticks % 10 === 0){
             onDayOver()
-            let state = store.getState()
             if(state.day % 4 === 0){
                 this.showTalkingHead(Sprites.MEAT_MAN, 'Get yer meat here! Just slightly expired.')
                 this.meatTruck.enter(Modal.MEAT)
@@ -311,7 +333,7 @@ export default class ParkScene extends Scene {
                             case 1: let dead = state.employees.splice(Phaser.Math.Between(0,state.employees.length-1), 1)[0]
                                     if(dead) this.showText(spr.x, spr.y, dead.name + ' was eaten.', 'red')
                                     break
-                        }           
+                        }
                     }
                 }
             })
@@ -332,6 +354,18 @@ export default class ParkScene extends Scene {
             //marriage
             //divorce
         } 
+    }
+
+    spawnPerson = () => {
+        //let vehicle = this.personVehicles[Phaser.Math.Between(0,this.personVehicles.length-1)]
+        let activeTiles = []
+        this.pathsLayer.forEachTile(t=>{
+            if(t.index !== -1){
+                activeTiles.push(t)
+            }
+        })
+        let spawn = activeTiles[Phaser.Math.Between(0,activeTiles.length-1)]
+        new PersonSprite(this, spawn.pixelX, spawn.pixelY, Sprites.Persons[Phaser.Math.Between(0,Sprites.Persons.length-1)], this.baseLayer)
     }
 
     setSelectIconPosition(tuple:Tuple){

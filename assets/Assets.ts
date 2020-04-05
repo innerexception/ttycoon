@@ -5,7 +5,16 @@ export const Sprites = {
     ANIMAL_DEALER: 'animal_dealer',
     COPS: 'cop',
     CASH: 'cash',
-    MEAT: 'meat'
+    MEAT: 'meat',
+    Persons: [
+        'person1',
+        'person2',
+        'person3',
+        'person4',
+        'person5',
+        'person6',
+        'person7'
+    ]
 }
 
 export const defaults = [
@@ -40,6 +49,13 @@ export const defaults = [
     { key: 'selected', resource: require('./selected.png'), type: 'image'},
     { key: 'map', resource: require('./map.json'), type: 'tilemapTiledJSON', data: {}},
     { key: 'tiles_sprites', resource: require('./tiles.png'), type: 'spritesheet', data: { frameWidth: 8, frameHeight: 8 }},
+    { key: 'person1', resource: require('./people/person1.png'), type: 'spritesheet', data: { frameWidth: 32, frameHeight: 32 }},
+    { key: 'person2', resource: require('./people/person2.png'), type: 'spritesheet', data: { frameWidth: 32, frameHeight: 32 }},
+    { key: 'person3', resource: require('./people/person3.png'), type: 'spritesheet', data: { frameWidth: 32, frameHeight: 32 }},
+    { key: 'person4', resource: require('./people/person4.png'), type: 'spritesheet', data: { frameWidth: 32, frameHeight: 32 }},
+    { key: 'person5', resource: require('./people/person5.png'), type: 'spritesheet', data: { frameWidth: 32, frameHeight: 32 }},
+    { key: 'person6', resource: require('./people/person6.png'), type: 'spritesheet', data: { frameWidth: 32, frameHeight: 32 }},
+    { key: 'person7', resource: require('./people/person7.png'), type: 'spritesheet', data: { frameWidth: 32, frameHeight: 32 }},
     { key: 'time', resource: require('./time.png'), type: 'image' },
     { key: 'avatar', resource: require('./avatar.png'),  type: 'spritesheet', data: { frameWidth: 16, frameHeight: 20 }},
     { key: 'meat', resource: require('./food/meats.png'),  type: 'spritesheet', data: { frameWidth: 24, frameHeight: 24 }},

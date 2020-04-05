@@ -79,7 +79,14 @@ const getInitialState = ():RState => {
         meat: 0,
         peta: 0,
         day: 1,
-        status: null,
+        status: {
+            paperAd: false,
+            radioAd: false,
+            tvAd: false,
+            publicAccident: false,
+            employeeAccident: false,
+            celebrityEndorsement: false
+        },
         sellingBuilding: null,
         admission: 0,
         peopleToday: 0

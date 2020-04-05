@@ -38,11 +38,20 @@ export default class ViewscreenFrame extends React.Component<Props> {
                         <h6>Admission {Icon('CASH', '')}{NumericInput(this.props.admission, (val)=>onSetAdmission(val), 1000000, 0)}</h6>
                         <h6>Cash {Icon('CASH', '')}{this.props.cash}</h6>
                         <h6>Meat {Icon('MEAT', '')}{this.props.meat}</h6>
-                        <h6>PETA {ProgressBar(this.props.peta, 50)}</h6>
+                        <h6>PETA Threats: {getPetaText(this.props.peta)}</h6>
                         <h6 style={{cursor:'pointer'}} onClick={onMuteAudio}>Mute</h6>
                         <div style={{backgroundImage: 'url('+Icons.animal_dealer+')', width:'24px', height:'24px', cursor:'pointer'}} onClick={onSummonAnimalTruck}/>
                     </div>
                 </div>
         )
     }
+}
+
+const getPetaText = (val:number) => {
+    if(val > 40) return 'Extreme'
+    if(val > 30) return 'Very High'
+    if(val > 20) return 'High'
+    if(val > 10) return 'Moderate'
+    return 'Low'
+
 }

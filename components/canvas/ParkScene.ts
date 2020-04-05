@@ -7,8 +7,9 @@ import { onDayOver, onShowSell, onReplaceState, onShowModal, onPlacedBuilding, o
 import { findValue, hasCapacity } from "../Util";
 import BuildingSprite from "./BuildingSprite";
 import MeatTruck from "./MeatTruck";
-import Truck from "./Truck";
-import PersonSprite from "./PersonSprite";
+import GuestSprite from "./GuestSprite";
+import Vehicle from "./Vehicle";
+import GuestVehicle from "./GuestVehicle";
 
 
 export default class ParkScene extends Scene {
@@ -31,8 +32,8 @@ export default class ParkScene extends Scene {
     avatar:GameObjects.Sprite
     ticks:number
     meatTruck: MeatTruck
-    animalTruck: Truck
-    swatVan: Truck
+    animalTruck: Vehicle
+    swatVan: Vehicle
     talkingHead: GameObjects.Sprite
     emitter: GameObjects.Particles.ParticleEmitterManager
     meatEmitters: Array<GameObjects.Particles.ParticleEmitter>
@@ -133,8 +134,8 @@ export default class ParkScene extends Scene {
             return zone
         })
         this.meatTruck = new MeatTruck(this, -100,300,'meat_truck', this.map.heightInPixels-25, this.map.widthInPixels/2)
-        this.animalTruck = new Truck(this, -100,300,'animal_truck', this.map.heightInPixels-20, this.map.widthInPixels/3)
-        this.swatVan = new Truck(this, -100,300,'swat_van', this.map.heightInPixels-20, (this.map.widthInPixels/2)+50)
+        this.animalTruck = new Vehicle(this, -100,300,'animal_truck', this.map.heightInPixels-20, this.map.widthInPixels/3)
+        this.swatVan = new Vehicle(this, -100,300,'swat_van', this.map.heightInPixels-20, (this.map.widthInPixels/2)+50)
         this.time.addEvent({
             delay: 1000,
             callback: this.tick,
@@ -242,7 +243,7 @@ export default class ParkScene extends Scene {
     }
 
     personHitBounds = (body:Physics.Arcade.Body) => {
-        (body.gameObject as PersonSprite).pickNewDirection()
+        (body.gameObject as GuestSprite).pickNewDirection()
     }
 
     checkBuildingIntersection = (building:BuildingSprite) => {
@@ -298,14 +299,14 @@ export default class ParkScene extends Scene {
         if(state.status.paperAd) personChance -= 5
         if(state.status.radioAd) personChance -= 10
         if(state.status.tvAd) personChance -= 20
+        personChance += state.admission/5
         personChance = Math.max(0,personChance)
         if(Phaser.Math.Between(0, personChance) === personChance){
             this.spawnPerson()
             state.peopleToday++
         }
-        this.spawnPerson()
         if(this.ticks % 10 === 0){
-            onDayOver()
+            state.day++
             if(state.day % 4 === 0){
                 this.showTalkingHead(Sprites.MEAT_MAN, 'Get yer meat here! Just slightly expired.')
                 this.meatTruck.enter(Modal.MEAT)
@@ -357,15 +358,7 @@ export default class ParkScene extends Scene {
     }
 
     spawnPerson = () => {
-        //let vehicle = this.personVehicles[Phaser.Math.Between(0,this.personVehicles.length-1)]
-        let activeTiles = []
-        this.pathsLayer.forEachTile(t=>{
-            if(t.index !== -1){
-                activeTiles.push(t)
-            }
-        })
-        let spawn = activeTiles[Phaser.Math.Between(0,activeTiles.length-1)]
-        new PersonSprite(this, spawn.pixelX, spawn.pixelY, Sprites.Persons[Phaser.Math.Between(0,Sprites.Persons.length-1)], this.baseLayer)
+        new GuestVehicle(this,-100, 300, Sprites.PersonVehicles[Phaser.Math.Between(0,Sprites.PersonVehicles.length-1)], this.map.heightInPixels-(Phaser.Math.Between(20, 25)), Phaser.Math.Between(50, this.map.widthInPixels-50))
     }
 
     setSelectIconPosition(tuple:Tuple){

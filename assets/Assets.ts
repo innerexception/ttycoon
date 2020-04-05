@@ -14,6 +14,13 @@ export const Sprites = {
         'person5',
         'person6',
         'person7'
+    ],
+    PersonVehicles: [
+        'fast',
+        'jalopy',
+        'vintage',
+        'tuck',
+        'bus'
     ]
 }
 
@@ -24,6 +31,11 @@ export const defaults = [
     { key: 'animal_truck', resource: require('./animal_truck.png'), type: 'image' },
     { key: 'swat_van', resource: require('./swat_van.png'), type: 'image' },
     { key: 'marker', resource: require('./marker.png'), type: 'image' },
+    { key: 'fast', resource: require('./fast_car.png'), type: 'image' },
+    { key: 'bus', resource: require('./tour_bus.png'), type: 'image' },
+    { key: 'tuck', resource: require('./tuck.png'), type: 'image' },
+    { key: 'vintage', resource: require('./vintage_car.png'), type: 'image' },
+    { key: 'jalopy', resource: require('./jalopy_car.png'), type: 'image' },
     { key: 'meat1', resource: require('./food/meat1.png'), type: 'image' },
     { key: 'meat2', resource: require('./food/meat2.png'), type: 'image' },
     { key: 'meat3', resource: require('./food/meat3.png'), type: 'image' },

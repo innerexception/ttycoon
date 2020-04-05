@@ -2,7 +2,7 @@ import { GameObjects, Physics, Scene, Geom, Game, Tilemaps } from "phaser"
 import { Activities } from "../../enum";
 
 
-export default class PersonSprite extends Physics.Arcade.Sprite {
+export default class GuestSprite extends Physics.Arcade.Sprite {
     
     constructor(scene:Scene, x:number, y:number, texture:string, baseLayer:Tilemaps.StaticTilemapLayer){
         super(scene, x, y, texture)

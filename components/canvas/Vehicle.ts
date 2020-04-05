@@ -4,7 +4,7 @@ import ParkScene from "./ParkScene";
 import { onShowModal } from "../uiManager/Thunks";
 
 
-export default class Truck extends GameObjects.Sprite {
+export default class Vehicle extends GameObjects.Sprite {
     
     yPos:number
     xPos:number

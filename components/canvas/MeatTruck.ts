@@ -2,7 +2,7 @@ import { GameObjects, Physics, Scene, Geom, Game } from "phaser"
 import { Activities, Modal } from "../../enum";
 import { onShowModal } from "../uiManager/Thunks";
 import ParkScene from "./ParkScene";
-import Truck from "./Truck";
+import Truck from "./Vehicle";
 
 
 export default class MeatTruck extends Truck {

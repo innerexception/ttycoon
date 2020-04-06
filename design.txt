@@ -1,13 +1,11 @@
 tiger tycoon - exotic park management
 
--add chance of PETA bar
--meat meter
--admission adjuster <-->
--contacts / phone tray
+-contacts / phone tray (adbuy, animal seller, prison warden, exotic buyer* (random appearance))
 -contacts cooldown
--employee hire menu
--employees walking around
--visitors walking around
+-employee hire menu (vet, tour guide, cage cleaner)
+-employees walking around?
+-adbuy menu
+
 
 meat drain - animal dies (peta bar) or is released (cumulative chance of swat van) or employee eaten
 meat gain - meat truck buying menu (+ click on meat that falls off the truck)

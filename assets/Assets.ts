@@ -83,6 +83,9 @@ export const SpriteIndexes = {
 
 export const Icons = {
     animal_dealer: require('./people/animal_dealer.png'),
+    warden: require('./people/warden.png'),
+    buyer: require('./people/buyer.png'),
+    ad_man: require('./people/ad_man.png'),
     CASH: require('./icon/CreditsT.png'),
     MEAT: require('./food/meat2.png')
 }

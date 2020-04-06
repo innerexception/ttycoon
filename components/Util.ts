@@ -25,3 +25,7 @@ export const hasCapacity = (building:Building, animal?:AnimalType) => {
         default: return false
     }
 }
+
+export const getRandomInmates = () => {
+    return []
+}

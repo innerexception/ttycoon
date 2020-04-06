@@ -5,12 +5,15 @@ import { TopBar, Button, LightButton, RangeInput, Icon, ProgressBar, NumericInpu
 import { Modal } from '../../enum';
 import Lose from '../views/Lose';
 import Win from '../views/Win';
-import {onMuteAudio, onSummonAnimalTruck, onSetAdmission } from '../uiManager/Thunks'
+import {onMuteAudio, onSummonAnimalTruck, onSetAdmission, onShowModal } from '../uiManager/Thunks'
 import Buy from '../views/Buy';
 import Sell from '../views/Sell';
 import Animals from '../views/Animals'
 import { Icons, Sprites } from '../../assets/Assets';
 import Meat from '../views/Meat';
+import SellAnimal from '../views/SellAnimal';
+import Advertising from '../views/Advertising';
+import Hiring from '../views/Hiring';
 
 interface Props {
     modal:Modal
@@ -33,6 +36,9 @@ export default class ViewscreenFrame extends React.Component<Props> {
                     {this.props.modal === Modal.SELL && <Sell/>}
                     {this.props.modal === Modal.ANIMALS && <Animals/>}
                     {this.props.modal === Modal.MEAT && <Meat/>}
+                    {this.props.modal === Modal.ADS && <Advertising/>}
+                    {this.props.modal === Modal.BUYER && <SellAnimal/>}
+                    {this.props.modal === Modal.PRISON && <Hiring/>}
                     <div style={{position:'absolute', bottom:10,left:10}}>
                         <h6>Day {this.props.day}</h6>
                         <h6>Admission {Icon('CASH', '')}{NumericInput(this.props.admission, (val)=>onSetAdmission(val), 1000000, 0)}</h6>
@@ -40,7 +46,10 @@ export default class ViewscreenFrame extends React.Component<Props> {
                         <h6>Meat {Icon('MEAT', '')}{this.props.meat}</h6>
                         <h6>PETA Threats: {getPetaText(this.props.peta)}</h6>
                         <h6 style={{cursor:'pointer'}} onClick={onMuteAudio}>Mute</h6>
-                        <div style={{backgroundImage: 'url('+Icons.animal_dealer+')', width:'24px', height:'24px', cursor:'pointer'}} onClick={onSummonAnimalTruck}/>
+                        <div onClick={onSummonAnimalTruck}>{Icon(Icons.animal_dealer, "Bob's Exotics (Animals)", true)}</div>
+                        <div onClick={()=>onShowModal(Modal.PRISON)}>{Icon(Icons.warden, "Warden James (Hiring)", true)}</div>
+                        <div onClick={()=>onShowModal(Modal.ADS)}>{Icon(Icons.ad_man, "Jimmy Goodman (Advertising)", true)}</div>
+                        <div onClick={()=>onShowModal(Modal.BUYER)}>{Icon(Icons.buyer, "Smiley Joe (Buyer)", true)}</div>
                     </div>
                 </div>
         )

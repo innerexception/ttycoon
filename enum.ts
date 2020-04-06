@@ -70,7 +70,10 @@ export enum Modal {
     BUY='bby',
     SELL='sell',
     ANIMALS='anima',
-    MEAT='meat'
+    MEAT='meat',
+    BUYER='buyer',
+    ADS='adz',
+    PRISON='priz'
 }
 
 export const Animals = [
@@ -104,4 +107,8 @@ export const Animals = [
         meat: 1,
         price: 200
     }
+]
+
+export const Ads = [
+    
 ]

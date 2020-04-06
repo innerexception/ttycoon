@@ -40,7 +40,10 @@ declare enum Modal {
     BUY='bby',
     SELL='sell',
     ANIMALS='anima',
-    MEAT='meat'
+    MEAT='meat',
+    BUYER='buyer',
+    ADS='adz',
+    PRISON='priz'
 }
 
 declare enum AnimalType {

@@ -142,6 +142,13 @@ export const onHideModal = () => {
     })
 }
 
+export const onBuyAd = (ad:AdType) => {
+    dispatch({
+        type: UIReducerActions.ADBUY,
+        ad
+    })
+}
+
 export const onBuyMeat = (amount:number) => {
     dispatch({
         type: UIReducerActions.BUY_MEAT,

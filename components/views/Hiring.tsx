@@ -2,7 +2,6 @@ import * as React from 'react'
 import AppStyles from '../../AppStyles';
 import { TopBar, Button, Icon, NumericInput, LightButton } from '../Shared'
 import { onHire, onHideModal } from '../uiManager/Thunks';
-import * as v4 from 'uuid'
 import { getRandomInmates } from '../Util';
 
 export default class Hiring extends React.Component {

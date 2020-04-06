@@ -12,11 +12,11 @@ export default class Advertising extends React.Component {
                 <h2>BUY</h2>
                 <div style={{height:'80%', overflow:'auto'}}>
                     {Ads.map(b=>
-                        <div style={{display:'flex'}} onClick={()=>onBuyAd(b)}>
-                            <div style={{backgroundImage: 'url('+b.asset+')', width:b.width, height:b.height, backgroundSize:'contain', backgroundRepeat:'no-repeat'}}/>
+                        <div style={{display:'flex', cursor:'pointer'}} onClick={()=>onBuyAd(b.type)}>
+                            <div style={{backgroundImage: 'url('+b.asset+')', width:'50px', height:'50px', backgroundSize:'contain', backgroundRepeat:'no-repeat'}}/>
                             <div>
-                                <h4>{b.name} ${b.price}</h4>
                                 <h5>{b.description}</h5>
+                                <h4>${b.price}</h4>
                             </div>
                         </div>
                     )}

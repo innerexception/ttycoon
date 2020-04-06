@@ -24,12 +24,20 @@ export enum UIReducerActions {
     INIT_GAME='init',
     BUY_MEAT='bmeat',
     SET_ADMISSION='setad',
-    REPLACE_STATE='repls'
+    REPLACE_STATE='repls',
+    ADBUY='adbuy'
 }
 
 export const StaticLayers = [
     'base', 'tiles'
 ]
+
+export enum AdType {
+    RADIO='radio',
+    TV='tv',
+    INTERNET='internet',
+    BILLBOARD='billboard'
+}
 
 export enum AnimalType {
     LION='lion',
@@ -47,7 +55,10 @@ export enum BuildingType {
     L_PEN='large',
     RESTROOMS='rr',
     GIFT_SHOP='gs',
-    HOUSING='eh'
+    HOUSING='eh',
+    STUDIO='stud',
+    SNACK_HUT='snax',
+    PETTING_ARENA='pet'
 }
 
 export enum Difficulty {
@@ -110,5 +121,28 @@ export const Animals = [
 ]
 
 export const Ads = [
-    
+    {
+        asset: require('./assets/billboard.png'),
+        description: 'Your name in lights!',
+        price: 500,
+        type: AdType.BILLBOARD
+    },
+    {
+        asset: require('./assets/internet.png'),
+        description: "Clickity clack! That's the sound of money my friend!",
+        price: 1000,
+        type: AdType.INTERNET
+    },
+    {
+        asset: require('./assets/radio.png'),
+        description: 'People are listening!',
+        price: 1000,
+        type: AdType.RADIO
+    },
+    {
+        asset: require('./assets/tv.png'),
+        description: 'The big time!',
+        price: 5000,
+        type: AdType.TV
+    }
 ]

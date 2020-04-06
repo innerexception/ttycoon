@@ -30,7 +30,8 @@ declare enum UIReducerActions {
     INIT_GAME='init',
     BUY_MEAT='bmeat',
     SET_ADMISSION='setad',
-    REPLACE_STATE='repls'
+    REPLACE_STATE='repls',
+    ADBUY='adbuy'
 }
 
 declare enum Modal {
@@ -44,6 +45,13 @@ declare enum Modal {
     BUYER='buyer',
     ADS='adz',
     PRISON='priz'
+}
+
+declare enum AdType {
+    RADIO='radio',
+    TV='tv',
+    INTERNET='internet',
+    BILLBOARD='billboard'
 }
 
 declare enum AnimalType {
@@ -62,7 +70,10 @@ declare enum BuildingType {
     L_PEN='large',
     RESTROOMS='rr',
     GIFT_SHOP='gs',
-    HOUSING='eh'
+    HOUSING='eh',
+    STUDIO='stud',
+    SNACK_HUT='snax',
+    PETTING_ARENA='pet'
 }
 
 declare enum AddictionType {
@@ -91,9 +102,10 @@ interface Tuple {
 }
 
 interface Status {
-    paperAd: boolean
-    radioAd: boolean
-    tvAd: boolean
+    [AdType.BILLBOARD]: boolean
+    [AdType.INTERNET]: boolean
+    [AdType.RADIO]: boolean
+    [AdType.TV]: boolean
     publicAccident: boolean
     employeeAccident: boolean
     celebrityEndorsement: boolean

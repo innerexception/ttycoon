@@ -1,4 +1,4 @@
-import { UIReducerActions, Difficulty, Modal, Animals } from '../../enum'
+import { UIReducerActions, Difficulty, Modal, Animals, AdType } from '../../enum'
 import * as v4 from 'uuid'
 import ParkScene from '../canvas/ParkScene';
 
@@ -58,6 +58,8 @@ const appReducer = (state = getInitialState(), action:any):RState => {
             return { ...state, admission: action.amount, engineEvent: null}
         case UIReducerActions.REPLACE_STATE:
             return { ...action.state }
+        case UIReducerActions.ADBUY:
+            return { ...state, status: {...state.status, [action.ad]: true}}
         default:
             return state
     }
@@ -75,14 +77,15 @@ const getInitialState = ():RState => {
         employees: [],
         maxEmployees: 0,
         jobs: [],
-        cash: 2000,
+        cash: 20000,
         meat: 0,
         peta: 0,
         day: 1,
         status: {
-            paperAd: false,
-            radioAd: false,
-            tvAd: false,
+            [AdType.TV]:false,
+            [AdType.RADIO]:false,
+            [AdType.INTERNET]:false,
+            [AdType.BILLBOARD]:false,
             publicAccident: false,
             employeeAccident: false,
             celebrityEndorsement: false

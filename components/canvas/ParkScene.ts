@@ -296,9 +296,10 @@ export default class ParkScene extends Scene {
         let personChance = 25
         if(state.status.celebrityEndorsement) personChance -= 10
         if(state.status.employeeAccident) personChance += 10
-        if(state.status.paperAd) personChance -= 5
-        if(state.status.radioAd) personChance -= 10
-        if(state.status.tvAd) personChance -= 20
+        if(state.status.internet) personChance -= 5
+        if(state.status.billboard) personChance -= 5
+        if(state.status.radio) personChance -= 10
+        if(state.status.tv) personChance -= 20
         personChance += state.admission/5
         personChance = Math.max(0,personChance)
         if(Phaser.Math.Between(0, personChance) === personChance){

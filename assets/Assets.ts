@@ -155,15 +155,6 @@ export const Buildings = [
         name: 'Trailer'
     },
     {
-        asset: require('./buildings/restrooms.png'),
-        type: BuildingType.RESTROOMS,
-        width: 32,
-        height: 32,
-        price: 0,
-        description: 'Restrooms. They increase the chance of guests.',
-        name: 'Restrooms'
-    },
-    {
         asset: require('./buildings/studio.png'),
         type: BuildingType.STUDIO,
         width: 32,

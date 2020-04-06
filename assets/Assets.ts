@@ -124,7 +124,52 @@ export const Buildings = [
         width: 32,
         height: 32,
         price: 0,
-        description: 'Gift Shopping',
+        description: 'Gift Shop increases cash if manned.',
         name: 'Gift Shop'
+    },
+    {
+        asset: require('./buildings/petting_arena.png'),
+        type: BuildingType.PETTING_ARENA,
+        width: 32,
+        height: 32,
+        price: 0,
+        description: 'Supply the Cuddle Pit with young animals to generate cash',
+        name: 'Cuddle Pit'
+    },
+    {
+        asset: require('./buildings/snack_hut.png'),
+        type: BuildingType.SNACK_HUT,
+        width: 32,
+        height: 32,
+        price: 0,
+        description: 'Sells snax if manned and you have meat',
+        name: 'Snack Hut'
+    },
+    {
+        asset: require('./buildings/housing.png'),
+        type: BuildingType.HOUSING,
+        width: 32,
+        height: 32,
+        price: 0,
+        description: 'Housing Trailer',
+        name: 'Trailer'
+    },
+    {
+        asset: require('./buildings/restrooms.png'),
+        type: BuildingType.RESTROOMS,
+        width: 32,
+        height: 32,
+        price: 0,
+        description: 'Restrooms. They increase the chance of guests.',
+        name: 'Restrooms'
+    },
+    {
+        asset: require('./buildings/studio.png'),
+        type: BuildingType.STUDIO,
+        width: 32,
+        height: 32,
+        price: 0,
+        description: 'Youtube channel gives advertising boost if manned',
+        name: 'Studio'
     }
 ]

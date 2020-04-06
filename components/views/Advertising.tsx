@@ -1,7 +1,7 @@
 import * as React from 'react'
 import AppStyles from '../../AppStyles';
 import { TopBar, Button, Icon, NumericInput, LightButton } from '../Shared'
-import { onPlacedBuilding, onHideModal, onStartPlaceBuilding } from '../uiManager/Thunks';
+import { onBuyAd, onHideModal } from '../uiManager/Thunks';
 import { Ads } from '../../enum';
 
 export default class Advertising extends React.Component {

@@ -130,9 +130,22 @@ export const onSummonAnimalTruck = ()=> {
     })
 }
 
+export const onSummonLender = ()=> {
+    dispatch({
+        type: UIReducerActions.SUMMON_LENDER,
+    })
+}
+
 export const onSetAdmission = (amount:number)=> {
     dispatch({
         type: UIReducerActions.SET_ADMISSION,
+        amount
+    })
+}
+
+export const onPay = (amount:number)=> {
+    dispatch({
+        type: UIReducerActions.PAY,
         amount
     })
 }
@@ -143,9 +156,10 @@ export const onWin = () => {
     })
 }
 
-export const onHideModal = () => {
+export const onHideModal = (modal?:Modal) => {
     dispatch({
         type: UIReducerActions.HIDE_MODAL,
+        modal
     })
 }
 

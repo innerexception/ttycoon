@@ -14,7 +14,7 @@ export default class Meat extends React.PureComponent {
                 {Button(canAffordMeat(1), ()=>onBuyMeat(1), 'Buy 1')}
                 {Button(canAffordMeat(10), ()=>onBuyMeat(10), 'Buy 10')}
                 {Button(canAffordMeat(100), ()=>onBuyMeat(100), 'Buy 100')}
-                <div>{Button(true, onHideModal, 'DONE')}</div>
+                <div>{Button(true, ()=>onHideModal(), 'DONE')}</div>
             </div>
         )
     }

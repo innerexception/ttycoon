@@ -26,7 +26,9 @@ export enum UIReducerActions {
     SET_ADMISSION='setad',
     REPLACE_STATE='repls',
     ADBUY='adbuy',
-    HIRE='hir'
+    HIRE='hir',
+    PAY='pay',
+    SUMMON_LENDER='smnL'
 }
 
 export const StaticLayers = [
@@ -85,7 +87,8 @@ export enum Modal {
     MEAT='meat',
     BUYER='buyer',
     ADS='adz',
-    PRISON='priz'
+    PRISON='priz',
+    PAY='pay'
 }
 
 export const Animals = [

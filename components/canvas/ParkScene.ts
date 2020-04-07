@@ -3,7 +3,7 @@ import { store } from "../../App";
 import { defaults, SpriteIndexes, Buildings, Sprites } from '../../assets/Assets'
 import { Modal, UIReducerActions, BuildingType, Animals } from "../../enum";
 import * as v4 from 'uuid'
-import { onDayOver, onShowSell, onReplaceState, onShowModal, onPlacedBuilding, onPlacedAnimal } from "../uiManager/Thunks";
+import { onDayOver, onShowSell, onReplaceState, onShowModal, onPlacedBuilding, onPlacedAnimal, onHideModal } from "../uiManager/Thunks";
 import { findValue, hasCapacity } from "../Util";
 import BuildingSprite from "./BuildingSprite";
 import MeatTruck from "./MeatTruck";
@@ -33,6 +33,7 @@ export default class ParkScene extends Scene {
     ticks:number
     meatTruck: MeatTruck
     animalTruck: Vehicle
+    lenderCar: Vehicle
     swatVan: Vehicle
     talkingHead: GameObjects.Sprite
     emitter: GameObjects.Particles.ParticleEmitterManager
@@ -81,9 +82,18 @@ export default class ParkScene extends Scene {
                     this.showTalkingHead(Sprites.ANIMAL_DEALER, 'Later chief!')
                     this.animalTruck.exit()
                     break
-                // case UIReducerActions.PLACE_ANIMAL:
-                //     this.placingAnimal = new AnimalSprite()
-                //     break
+                case UIReducerActions.SUMMON_LENDER:
+                    this.showTalkingHead(Sprites.LOAN_SHARK, 'You got my money?')
+                    this.lenderCar.enter(Modal.PAY)
+                    this.time.addEvent({
+                        delay: 10000,
+                        callback: ()=>{
+                            this.showTalkingHead(Sprites.LOAN_SHARK, "Don't waste my time.")
+                            this.lenderCar.exit()
+                            onHideModal(Modal.PAY)
+                        }
+                    })
+                    break
             }
     }
 
@@ -136,6 +146,7 @@ export default class ParkScene extends Scene {
         this.meatTruck = new MeatTruck(this, -100,300,'meat_truck', this.map.heightInPixels-25, this.map.widthInPixels/2)
         this.animalTruck = new Vehicle(this, -100,300,'animal_truck', this.map.heightInPixels-20, this.map.widthInPixels/3)
         this.swatVan = new Vehicle(this, -100,300,'swat_van', this.map.heightInPixels-20, (this.map.widthInPixels/2)+50)
+        this.lenderCar = new Vehicle(this, -100, 300, 'fast', this.map.heightInPixels-20,this.map.widthInPixels-100)
         this.time.addEvent({
             delay: 1000,
             callback: this.tick,
@@ -293,6 +304,7 @@ export default class ParkScene extends Scene {
     tick = () => {
         this.ticks++
         let state = store.getState()
+
         let personChance = 25
         if(state.status.celebrityEndorsement) personChance -= 10
         if(state.status.employeeAccident) personChance += 10
@@ -307,6 +319,9 @@ export default class ParkScene extends Scene {
             this.spawnPerson()
             state.peopleToday++
         }
+
+        state.loan += Math.round(state.loan*0.001)
+
         if(this.ticks % 10 === 0){
             state.day++
             if(state.day % 4 === 0){
@@ -379,14 +394,17 @@ export default class ParkScene extends Scene {
             }
             //get the day's take
             state.cash += state.peopleToday * state.admission
+            if(state.employees.length > 0){
+                let payroll = state.employees.map(e=>e.price).reduce((sum, next)=>sum+next)
+                state.cash -= payroll
+            }
             state.peopleToday = 0
-
-            onReplaceState(state)
             //rampage
             //arrest
             //marriage
             //divorce
         } 
+        onReplaceState(state)
     }
 
     setBuildingActive = (id:string) => {

@@ -12,7 +12,7 @@ export default class Sell extends React.Component {
                 <h2>SELL</h2>
                 <h4>Really sell {store.getState().sellingBuilding.type}?</h4>
                 <div>{Button(true, ()=>onSellBuilding(store.getState().sellingBuilding.id), 'Sell')}</div>
-                <div>{Button(true, onHideModal, 'Cancel')}</div>
+                <div>{Button(true, ()=>onHideModal(), 'Cancel')}</div>
             </div>
         )
     }

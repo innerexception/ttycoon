@@ -32,7 +32,9 @@ declare enum UIReducerActions {
     SET_ADMISSION='setad',
     REPLACE_STATE='repls',
     ADBUY='adbuy',
-    HIRE='hir'
+    HIRE='hir',
+    PAY='pay',
+    SUMMON_LENDER='smnL'
 }
 
 declare enum Modal {
@@ -45,7 +47,8 @@ declare enum Modal {
     MEAT='meat',
     BUYER='buyer',
     ADS='adz',
-    PRISON='priz'
+    PRISON='priz',
+    PAY='pay'
 }
 
 declare enum AdType {
@@ -147,6 +150,7 @@ interface RState {
     maxEmployees: number
     jobs: Array<Job>
     cash: number
+    loan: number
     meat: number
     peta: number
     day: number

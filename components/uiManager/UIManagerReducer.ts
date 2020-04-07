@@ -32,7 +32,10 @@ const appReducer = (state = getInitialState(), action:any):RState => {
         case UIReducerActions.UPDATE_PLOTS:
             return { ...state, buildings: action.plots, engineEvent: null }
         case UIReducerActions.HIDE_MODAL: 
-            return { ...state, modal: null, engineEvent:null }
+            let modal = state.modal
+            if(action.modal && state.modal === action.modal) modal = null
+            else if(!action.modal) modal = null
+            return { ...state, modal, engineEvent:null }
         case UIReducerActions.MUTE:
             return { ...state, engineEvent:UIReducerActions.MUTE }
         case UIReducerActions.PLACE_BUILDING:
@@ -41,18 +44,18 @@ const appReducer = (state = getInitialState(), action:any):RState => {
         case UIReducerActions.PLACE_ANIMAL:
             (state.game.scene.getScene('map') as ParkScene).startPlacingAnimal(action.animalType)
             return { ...state, modal:null }
-        case UIReducerActions.DAY_OVER:
-            return { ...state, day: state.day+1, engineEvent: null}
         case UIReducerActions.HIRE:
             state.employees.push(action.employee)
-            return { ...state, employees: Array.from(state.employees)}
+            return { ...state, employees: Array.from(state.employees), engineEvent:null, modal:null }
         case UIReducerActions.RESET:
             return getInitialState()
         case UIReducerActions.BUY_MEAT:
             (state.game.scene.getScene('map') as ParkScene).boughtMeat(action.amount)
-            return { ...state, meat: state.meat + action.amount, cash: state.cash - (action.amount*5)}
+            return { ...state, meat: state.meat + action.amount, cash: state.cash - (action.amount*5), engineEvent:null}
         case UIReducerActions.SUMMON_ANIMAL_TRUCK:
             return { ...state, engineEvent: UIReducerActions.SUMMON_ANIMAL_TRUCK }
+        case UIReducerActions.SUMMON_LENDER:
+            return { ...state, engineEvent: UIReducerActions.SUMMON_LENDER }
         case UIReducerActions.DISMISS_ANIMAL_TRUCK:
             return { ...state, engineEvent: UIReducerActions.DISMISS_ANIMAL_TRUCK, modal:null }
         case UIReducerActions.INIT_GAME:
@@ -60,9 +63,11 @@ const appReducer = (state = getInitialState(), action:any):RState => {
         case UIReducerActions.SET_ADMISSION:
             return { ...state, admission: action.amount, engineEvent: null}
         case UIReducerActions.REPLACE_STATE:
-            return { ...action.state }
+            return { ...action.state, engineEvent:null }
         case UIReducerActions.ADBUY:
-            return { ...state, status: {...state.status, [action.ad]: true}}
+            return { ...state, status: {...state.status, [action.ad]: true}, engineEvent:null, modal:null}
+        case UIReducerActions.PAY:
+            return { ...state, loan: state.loan -= action.amount, cash: state.cash -= action.amount, engineEvent:null }
         default:
             return state
     }
@@ -81,6 +86,7 @@ const getInitialState = ():RState => {
         maxEmployees: 0,
         jobs: [],
         cash: 20000,
+        loan: 20000,
         meat: 0,
         peta: 0,
         day: 1,

@@ -5,6 +5,7 @@ tiger tycoon - exotic park management
 -employee hire menu (vet, tour guide, cage cleaner)
 -employees walking around?
 -adbuy menu
+-shady investor, may call your loan in 
 
 
 meat drain - animal dies (peta bar) or is released (cumulative chance of swat van) or employee eaten

@@ -11,7 +11,7 @@ interface State {
     phaserInstance: Phaser.Game | null
 }
 
-export default class Viewscreen extends React.Component<Props, State> {
+export default class Canvas extends React.Component<Props, State> {
 
     state = {
         phaserInstance: null,

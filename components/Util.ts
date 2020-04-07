@@ -27,10 +27,12 @@ export const hasCapacity = (building:Building, animal?:AnimalType) => {
 }
 
 export const getRandomInmates = () => {
-    return new Array(3).fill({
-        id:v4(),
-        name: EmployeeNames[Phaser.Math.Between(0,EmployeeNames.length-1)],
-        arrestChance: Phaser.Math.Between(0,10),
-        price: Phaser.Math.Between(5, 25)
+    return new Array(3).fill({}).map(e=>{
+        return {
+            id:v4(),
+            name: EmployeeNames[Phaser.Math.Between(0,EmployeeNames.length-1)],
+            arrestChance: Phaser.Math.Between(0,10),
+            price: Phaser.Math.Between(5, 25)
+        }
     }) as Array<Employee>
 }

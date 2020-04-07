@@ -22,7 +22,7 @@ export default class Advertising extends React.Component {
                     )}
                 </div>
                 <div style={{display:'flex'}}>
-                    <div>{Button(true, onHideModal, 'Cancel')}</div>
+                    <div>{Button(true, ()=>onHideModal(), 'Cancel')}</div>
                 </div>
             </div>
         )

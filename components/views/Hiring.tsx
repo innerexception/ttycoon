@@ -6,14 +6,14 @@ import { getRandomInmates } from '../Util';
 
 export default class Hiring extends React.Component {
 
-    state = { selectedBuilding: null }
+    state = { inmates: getRandomInmates() }
 
     render(){
         return (
             <div style={{...AppStyles.modal, height:'350px', width:'550px', justifyContent:'space-between', backgroundSize:'cover'}}>
                 <h2>BARNEY COUNTY JAIL</h2>
                 <div style={{height:'80%', overflow:'auto'}}>
-                    {getRandomInmates().map(b=>
+                    {this.state.inmates.map(b=>
                         <div style={{display:'flex'}} onClick={()=>onHire(b)}>
                             <div>
                                 <h4>{b.name}</h4>
@@ -24,7 +24,7 @@ export default class Hiring extends React.Component {
                     )}
                 </div>
                 <div style={{display:'flex'}}>
-                    <div>{Button(true, onHideModal, 'Cancel')}</div>
+                    <div>{Button(true, ()=>onHideModal(), 'Cancel')}</div>
                 </div>
             </div>
         )

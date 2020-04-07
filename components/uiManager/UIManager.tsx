@@ -1,6 +1,6 @@
 import * as React from 'react';
 import AppStyles, { colors } from '../../AppStyles'
-import ViewscreenFrame from '../canvas/ViewscreenFrame';
+import CanvasFrame from '../canvas/CanvasFrame';
 import Splash from '../Splash';
 
 interface Props {
@@ -19,7 +19,7 @@ export default class UIManager extends React.Component<Props> {
         return (
             <div style={styles.frame}>
                 {/* {!this.props.difficulty && <Splash/>} */}
-                <ViewscreenFrame {...this.props}/>
+                <CanvasFrame {...this.props}/>
             </div>
         )
     }

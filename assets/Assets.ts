@@ -1,8 +1,9 @@
-import { BuildingType, AnimalType } from "../enum"
+import { BuildingType, AnimalType, AdType } from "../enum"
 
 export const Sprites = {
     MEAT_MAN: 'meat_guy',
     ANIMAL_DEALER: 'animal_dealer',
+    LOAN_SHARK: 'shady_lender',
     COPS: 'cop',
     CASH: 'cash',
     MEAT: 'meat',
@@ -16,7 +17,6 @@ export const Sprites = {
         'person7'
     ],
     PersonVehicles: [
-        'fast',
         'jalopy',
         'vintage',
         'tuck',
@@ -29,6 +29,7 @@ export const defaults = [
     { key: 'gallet_city', resource: require('./galletcity_tiles.png'), type: 'image' },
     { key: 'meat_truck', resource: require('./meat_truck.png'), type: 'image' },
     { key: 'animal_truck', resource: require('./animal_truck.png'), type: 'image' },
+    { key: 'shady_lender', resource: require('./people/shady_investor.png'), type: 'image' },
     { key: 'swat_van', resource: require('./swat_van.png'), type: 'image' },
     { key: 'marker', resource: require('./marker.png'), type: 'image' },
     { key: 'fast', resource: require('./fast_car.png'), type: 'image' },
@@ -84,7 +85,6 @@ export const SpriteIndexes = {
 export const Icons = {
     animal_dealer: require('./people/animal_dealer.png'),
     warden: require('./people/warden.png'),
-    buyer: require('./people/buyer.png'),
     ad_man: require('./people/ad_man.png'),
     CASH: require('./icon/CreditsT.png'),
     MEAT: require('./food/meat2.png'),
@@ -93,9 +93,9 @@ export const Icons = {
     [AdType.RADIO]: require('./radio.png'),
     [AdType.TV]: require('./tv.png'),
     employeeAccident: require('./eaten.png'),
-    celebrityEndorsement: require('./endorsement.png'),
     meth: require('./meth.png'),
-    lowEmployment: require('./no_employee.png')
+    lowEmployment: require('./no_employee.png'),
+    shady_lender: require('./people/shady_investor.png')
 }
 
 export const Buildings = [

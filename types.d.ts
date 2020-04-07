@@ -34,7 +34,8 @@ declare enum UIReducerActions {
     ADBUY='adbuy',
     HIRE='hir',
     PAY='pay',
-    SUMMON_LENDER='smnL'
+    SUMMON_LENDER='smnL',
+    LOAN='lnw'
 }
 
 declare enum Modal {
@@ -109,6 +110,7 @@ interface Status {
     celebrityEndorsement: { startDay: number }
     meth: { startDay: number }
     lowEmployment: boolean
+    noMeat: boolean
 }
 
 interface Ad {

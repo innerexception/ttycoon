@@ -150,6 +150,13 @@ export const onPay = (amount:number)=> {
     })
 }
 
+export const onGetLoan = (amount:number)=> {
+    dispatch({
+        type: UIReducerActions.LOAN,
+        amount
+    })
+}
+
 export const onWin = () => {
     dispatch({
         type: UIReducerActions.WIN

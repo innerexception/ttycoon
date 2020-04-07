@@ -15,6 +15,7 @@ import Advertising from '../views/Advertising';
 import Hiring from '../views/Hiring';
 import { store } from '../../App';
 import LoanShark from '../views/LoanShark';
+import { getPublicInterest } from '../Util';
 
 export default class CanvasFrame extends React.Component {
 
@@ -41,9 +42,12 @@ export default class CanvasFrame extends React.Component {
                         <h6>Cash {Icon('CASH', '')}{state.cash} / {state.loan}</h6>
                         <h6>Meat {Icon('MEAT', '')}{state.meat}</h6>
                         <h6>PETA Threats: {getPetaText(state.peta)}</h6>
+                        <h6>Public Interest: {getPublicText(getPublicInterest(state))}</h6>
                         <h6>Staff: {state.employees.length} / {state.buildings.length}</h6>
                         <h6 style={{cursor:'pointer'}} onClick={onMuteAudio}>Mute</h6>
                         <div style={{display:'flex'}}>
+                            <h4>Contacts: </h4>
+                            <div onClick={()=>onShowModal(Modal.BUY)}>{Icon('builder', "Scooter's Boys (Construction)", true)}</div>
                             <div onClick={onSummonAnimalTruck}>{Icon('animal_dealer', "Bob's Exotics (Animals)", true)}</div>
                             <div onClick={()=>onShowModal(Modal.PRISON)}>{Icon('warden', "Warden James (Hiring)", true)}</div>
                             <div onClick={()=>onShowModal(Modal.ADS)}>{Icon('ad_man', "Jimmy Goodman (Advertising)", true)}</div>
@@ -56,7 +60,10 @@ export default class CanvasFrame extends React.Component {
 }
 
 const getStatusPercent = (day:number, status) => {
-    if(status) return 1-((day - status.startDay) / STATUS_DURATION)
+    if(status){
+        if(status.startDay) return 1-((day - status.startDay) / STATUS_DURATION)
+        else return 1
+    } 
     return 0
 }
 
@@ -67,4 +74,12 @@ const getPetaText = (val:number) => {
     if(val > 10) return 'Moderate'
     return 'Low'
 
+}
+
+const getPublicText = (val:number) => {
+    if(val > 22) return 'None'
+    if(val > 15) return 'Some'
+    if(val > 10) return 'Lots'
+    if(val > 5) return 'Insanity'
+    return 'Bedlam'
 }

@@ -67,7 +67,9 @@ const appReducer = (state = getInitialState(), action:any):RState => {
         case UIReducerActions.ADBUY:
             return { ...state, status: {...state.status, [action.ad.type]: { startDay: state.day }}, cash: state.cash - action.ad.price, engineEvent:null, modal:null}
         case UIReducerActions.PAY:
-            return { ...state, loan: state.loan -= action.amount, cash: state.cash -= action.amount, engineEvent:null }
+            return { ...state, loan: state.loan - action.amount, cash: state.cash - action.amount, engineEvent:null }
+        case UIReducerActions.LOAN:
+            return { ...state, loan: state.loan + action.amount, cash: state.cash + action.amount, engineEvent: null }
         default:
             return state
     }
@@ -85,8 +87,8 @@ const getInitialState = ():RState => {
         employees: [],
         maxEmployees: 0,
         jobs: [],
-        cash: 20000,
-        loan: 20000,
+        cash: 0,
+        loan: 0,
         meat: 0,
         peta: 0,
         day: 1,
@@ -99,7 +101,8 @@ const getInitialState = ():RState => {
             employeeAccident: null,
             celebrityEndorsement: null,
             lowEmployment: null,
-            meth: null
+            meth: null,
+            noMeat: null
         },
         sellingBuilding: null,
         admission: 0,

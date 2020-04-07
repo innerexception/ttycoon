@@ -1,5 +1,5 @@
 import * as v4 from 'uuid'
-import { Difficulty, Activities, AnimalType, BuildingType } from '../enum';
+import { Difficulty, Activities, AnimalType, BuildingType, Animals } from '../enum';
 import { SpriteIndexes, EmployeeNames } from '../assets/Assets';
 
 export const getDays = (difficulty:Difficulty) => {
@@ -16,14 +16,17 @@ export const findValue = (data:Phaser.Data.DataManager, searchKey:string) => {
     return val
 }
 
-export const hasCapacity = (building:Building, animal?:AnimalType) => {
+export const hasCapacity = (building:Building, animal:AnimalType) => {
     if(building.animal && building.animal !== animal) return false
-    switch(building.type){
-        case BuildingType.S_PEN: return building.animalCount < 1
-        case BuildingType.M_PEN: return building.animalCount < 3
-        case BuildingType.L_PEN: return building.animalCount < 6
-        default: return false
+    if(building.animal){
+        switch(building.type){
+            case BuildingType.S_PEN: return building.animal === animal && building.animalCount < 3
+            case BuildingType.M_PEN: return building.animal === animal && building.animalCount < 6
+            case BuildingType.L_PEN: return building.animal === animal && building.animalCount < 9
+            default: return false
+        }
     }
+    return true
 }
 
 export const getRandomInmates = () => {
@@ -35,4 +38,22 @@ export const getRandomInmates = () => {
             price: Phaser.Math.Between(5, 25)
         }
     }) as Array<Employee>
+}
+
+export const getPublicInterest = (state:RState) => {
+    let personChance = 25
+    personChance -= state.buildings.map(b=>{
+        let anim = Animals.find(a=>a.assetName === b.animal)
+        if(anim) return anim.interest * b.animalCount
+        return 0
+    }).reduce((sum, next)=>sum+next, 0)
+    if(state.status.celebrityEndorsement) personChance -= 10
+    if(state.status.employeeAccident) personChance += 10
+    if(state.status.internet) personChance -= 5
+    if(state.status.billboard) personChance -= 5
+    if(state.status.radio) personChance -= 10
+    if(state.status.tv) personChance -= 20
+    if(state.buildings.find(b=>b.type === BuildingType.STUDIO && b.isActive)) personChance -= 5
+    personChance += state.admission/5
+    return Math.max(0,personChance)
 }

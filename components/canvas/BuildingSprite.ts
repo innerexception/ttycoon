@@ -35,7 +35,9 @@ export default class BuildingSprite extends GameObjects.Sprite {
         else {
             this.count = 0
             this.animalSprite.destroy()
+            this.animalSprite = null
             this.countSprite.destroy()
+            this.countSprite = null
         }
     }
 }

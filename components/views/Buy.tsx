@@ -12,7 +12,7 @@ export default class Buy extends React.Component {
     render(){
         return (
             <div style={{...AppStyles.modal, height:'350px', width:'550px', justifyContent:'space-between', backgroundSize:'cover'}}>
-                <h2>BUY</h2>
+                <h2>WE GON BUILD IT</h2>
                 <div style={{height:'80%', overflow:'auto'}}>
                     {Buildings.map(b=>
                         <div style={{display:'flex'}} onClick={()=>onStartPlaceBuilding({...b, id: v4(), animal: null, animalCount: 0, isActive: true})}>

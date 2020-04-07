@@ -28,7 +28,8 @@ export enum UIReducerActions {
     ADBUY='adbuy',
     HIRE='hir',
     PAY='pay',
-    SUMMON_LENDER='smnL'
+    SUMMON_LENDER='smnL',
+    LOAN='lnw'
 }
 
 export const STATUS_DURATION = 5
@@ -98,31 +99,36 @@ export const Animals = [
         assetName: AnimalType.LION,
         name: 'Lion',
         meat: 5,
-        price: 2000
+        price: 2000,
+        interest: 2
     },
     {
         assetName: AnimalType.TIGER,
         name: 'Tiger',
         meat: 4,
-        price: 2000
+        price: 2000,
+        interest: 2
     },
     {
         assetName: AnimalType.BEAR,
         name: 'Bear',
         meat: 4,
-        price: 500
+        price: 500,
+        interest: 1
     },
     {
         assetName: AnimalType.MONKEY,
         name: 'Monkey',
         meat: 1,
-        price: 400
+        price: 400,
+        interest: 1
     },
     {
         assetName: AnimalType.LEMUR,
         name: 'Lemur',
         meat: 1,
-        price: 200
+        price: 200,
+        interest: 1
     }
 ]
 
@@ -154,12 +160,13 @@ export const Ads = [
 ]
 
 export const StatusDescription = {
-    [AdType.BILLBOARD]: 'Billboard Ad',
+    [AdType.BILLBOARD]: 'Billboard Ads',
     [AdType.INTERNET]: 'Internet Ads',
     [AdType.RADIO]: 'Radio Ads',
     [AdType.TV]: 'TV Ads',
     employeeAccident: 'Employee Eaten!',
     celebrityEndorsement: 'Celebrity Endorsement',
     meth: 'Meth Boost',
-    lowEmployment: 'Few employees, buildings may be inactive!'
+    lowEmployment: 'Few employees, buildings may be inactive!',
+    no_meat: 'Not enough meat for the animals! This is going to be bad...'
 }

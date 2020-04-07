@@ -4,7 +4,7 @@ import { defaults, SpriteIndexes, Buildings, Sprites } from '../../assets/Assets
 import { Modal, UIReducerActions, BuildingType, Animals, STATUS_DURATION } from "../../enum";
 import * as v4 from 'uuid'
 import { onDayOver, onShowSell, onReplaceState, onShowModal, onPlacedBuilding, onPlacedAnimal, onHideModal } from "../uiManager/Thunks";
-import { findValue, hasCapacity } from "../Util";
+import { findValue, hasCapacity, getPublicInterest } from "../Util";
 import BuildingSprite from "./BuildingSprite";
 import MeatTruck from "./MeatTruck";
 import GuestSprite from "./GuestSprite";
@@ -133,7 +133,7 @@ export default class ParkScene extends Scene {
         this.physics.world.on('worldbounds', this.personHitBounds);
         let plots = []
         this.plotSprites = zones.map(s=>{
-            let zone = this.add.tileSprite(s.x, s.y+s.displayHeight, s.displayWidth, s.displayHeight, 'tiles_sprites', SpriteIndexes.plot).setInteractive()
+            let zone = this.add.tileSprite(s.x, s.y+s.displayHeight, s.displayWidth, s.displayHeight, 'tiles_sprites', SpriteIndexes.plot)
             let plot = {
                 id: v4(),
                 building: null,
@@ -277,7 +277,7 @@ export default class ParkScene extends Scene {
         let brect = new Geom.Rectangle(animal.getTopLeft().x, animal.getTopLeft().y, animal.displayWidth, animal.displayHeight)
         return this.buildingSprites.filter(bs=>{
             let b = store.getState().buildings.find(b=>b.id === bs.id)
-            return hasCapacity(b)
+            return hasCapacity(b, this.placingAnimalType)
         }).find(p=>{
             let prect = new Geom.Rectangle(p.getTopLeft().x+3,p.getTopLeft().y+3,p.displayWidth-3, p.displayHeight-3)
             if(p.angle === 90) {
@@ -310,22 +310,29 @@ export default class ParkScene extends Scene {
         this.ticks++
         let state = store.getState()
 
-        let personChance = 25
-        if(state.status.celebrityEndorsement) personChance -= 10
-        if(state.status.employeeAccident) personChance += 10
-        if(state.status.internet) personChance -= 5
-        if(state.status.billboard) personChance -= 5
-        if(state.status.radio) personChance -= 10
-        if(state.status.tv) personChance -= 20
-        if(state.buildings.find(b=>b.type === BuildingType.STUDIO && b.isActive)) personChance -= 5
-        personChance += state.admission/5
-        personChance = Math.max(0,personChance)
+        let personChance = getPublicInterest(state)
         if(Phaser.Math.Between(0, personChance) === personChance){
             this.spawnPerson()
             state.peopleToday++
         }
 
         state.loan += Math.round(state.loan*0.001)
+
+        state.status.lowEmployment = false
+        let available = state.employees.length
+        if(state.status.meth) available=available*2 
+        state.buildings.forEach(b=>{
+            if(available <= 0){
+                b.isActive = false
+                this.setBuildingInactive(b.id)
+                state.status.lowEmployment = true
+            } 
+            else{
+                b.isActive = true
+                this.setBuildingActive(b.id)
+            } 
+            available--
+        })
 
         if(this.ticks % 10 === 0){
             state.day++
@@ -338,37 +345,33 @@ export default class ParkScene extends Scene {
                 onHideModal(Modal.MEAT)
             } 
 
-            let available = state.employees.length
-            if(state.status.meth) available=available*2
-            state.status.lowEmployment = false
+            state.status.noMeat = false
             state.buildings.forEach(b=>{
-                available--
-                if(available <= 0){
-                    b.isActive = false
-                    this.setBuildingInactive(b.id)
-                    state.status.lowEmployment = true
-                } 
-                else{
-                    b.isActive = true
-                    this.setBuildingActive(b.id)
-                } 
-
                 if(b.animalCount){
                     let anim=Animals.find(a=>a.assetName === b.animal)
                     if(state.meat >= anim.meat){
                         state.meat-=anim.meat
-                        if(b.animalCount >= 2 && Phaser.Math.Between(0,2)===2) b.animalCount++
+                        if(b.animalCount >= 2 && Phaser.Math.Between(0,2)===2){
+                            b.animalCount++
+                            let spr = this.buildingSprites.find(s=>s.id===b.id)
+                            spr.addAnimal(b.animal)
+                        } 
                     }
                     else {
+                        state.status.noMeat = true
                         let event = Phaser.Math.Between(0,3)
                         let spr = this.buildingSprites.find(spr=>spr.id===b.id)
                         switch(event){
                             //dies
                             case 0: b.animalCount--
-                                    if(b.animalCount <= 0) spr.removeAnimal()
                                     state.peta++
                                     state.meat++
                                     this.showText(spr.x, spr.y, 'A '+b.animal+' starved.', 'red')
+                                    if(b.animalCount <= 0){
+                                        spr.removeAnimal()
+                                        b.animal = null
+                                        b.animalCount = 0
+                                    }
                                     break
                             //eats employee
                             case 1: let dead = state.employees.splice(Phaser.Math.Between(0,state.employees.length-1), 1)[0]
@@ -445,7 +448,7 @@ export default class ParkScene extends Scene {
             //arrest
             let arrest
             state.employees.forEach(e=>{
-                if(Phaser.Math.Between(0,e.riskLevel)===0){
+                if(Phaser.Math.Between(0,50-e.riskLevel)===0){
                     arrest = e
                 }
             })
@@ -460,8 +463,8 @@ export default class ParkScene extends Scene {
                 this.showTalkingHead(Sprites.COPS, 'Your employee, '+arrest.name+', has been getting into trouble again.')
                 state.employees = state.employees.filter(e=>e.id !== arrest.id)
             }
-            //marriage
-            //divorce
+            //marriage?
+            //divorce?
         } 
         onReplaceState(state)
     }

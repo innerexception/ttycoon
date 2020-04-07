@@ -95,7 +95,9 @@ export const Icons = {
     employeeAccident: require('./eaten.png'),
     meth: require('./meth.png'),
     lowEmployment: require('./no_employee.png'),
-    shady_lender: require('./people/shady_investor.png')
+    no_meat: require('./no_meat.png'),
+    shady_lender: require('./people/shady_investor.png'),
+    builder: require('./people/builder.png')
 }
 
 export const Buildings = [

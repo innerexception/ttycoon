@@ -31,6 +31,8 @@ export enum UIReducerActions {
     SUMMON_LENDER='smnL'
 }
 
+export const STATUS_DURATION = 5
+
 export const StaticLayers = [
     'base', 'tiles'
 ]

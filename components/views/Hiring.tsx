@@ -18,7 +18,7 @@ export default class Hiring extends React.Component {
                             <div>
                                 <h4>{b.name}</h4>
                                 <h5>${b.price}/day</h5>
-                                <h5>Chance of arrest: {b.arrestChance}%</h5>
+                                <h5>Chance of arrest: {b.riskLevel}%</h5>
                             </div>
                         </div>
                     )}

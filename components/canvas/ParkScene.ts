@@ -1,7 +1,7 @@
 import { Scene, GameObjects, Tilemaps, Geom, Physics } from "phaser";
 import { store } from "../../App";
 import { defaults, SpriteIndexes, Buildings, Sprites } from '../../assets/Assets'
-import { Modal, UIReducerActions, BuildingType, Animals } from "../../enum";
+import { Modal, UIReducerActions, BuildingType, Animals, STATUS_DURATION } from "../../enum";
 import * as v4 from 'uuid'
 import { onDayOver, onShowSell, onReplaceState, onShowModal, onPlacedBuilding, onPlacedAnimal, onHideModal } from "../uiManager/Thunks";
 import { findValue, hasCapacity } from "../Util";
@@ -11,6 +11,9 @@ import GuestSprite from "./GuestSprite";
 import Vehicle from "./Vehicle";
 import GuestVehicle from "./GuestVehicle";
 
+
+const CONTACT_VEHICLE_OFFSET = 50
+const GUEST_VEHICLE_OFFSET = 25
 
 export default class ParkScene extends Scene {
 
@@ -73,6 +76,8 @@ export default class ParkScene extends Scene {
                     this.targetBuilding.addAnimal(this.placingAnimalType)
                     this.placingAnimal.destroy()
                     this.placingAnimal = null
+                    this.showTalkingHead(Sprites.ANIMAL_DEALER, 'Later chief!')
+                    this.animalTruck.exit()
                     break
                 case UIReducerActions.SUMMON_ANIMAL_TRUCK:
                     this.showTalkingHead(Sprites.ANIMAL_DEALER, 'Sure thing boss, on my way.')
@@ -143,10 +148,10 @@ export default class ParkScene extends Scene {
             s.destroy()
             return zone
         })
-        this.meatTruck = new MeatTruck(this, -100,300,'meat_truck', this.map.heightInPixels-25, this.map.widthInPixels/2)
-        this.animalTruck = new Vehicle(this, -100,300,'animal_truck', this.map.heightInPixels-20, this.map.widthInPixels/3)
-        this.swatVan = new Vehicle(this, -100,300,'swat_van', this.map.heightInPixels-20, (this.map.widthInPixels/2)+50)
-        this.lenderCar = new Vehicle(this, -100, 300, 'fast', this.map.heightInPixels-20,this.map.widthInPixels-100)
+        this.meatTruck = new MeatTruck(this, -100,300,'meat_truck', this.map.heightInPixels-CONTACT_VEHICLE_OFFSET, this.map.widthInPixels/2)
+        this.animalTruck = new Vehicle(this, -100,300,'animal_truck', this.map.heightInPixels-CONTACT_VEHICLE_OFFSET, this.map.widthInPixels/3)
+        this.swatVan = new Vehicle(this, -100,300,'swat_van', this.map.heightInPixels-CONTACT_VEHICLE_OFFSET, (this.map.widthInPixels/2)+50)
+        this.lenderCar = new Vehicle(this, -100, 300, 'fast', this.map.heightInPixels-CONTACT_VEHICLE_OFFSET,this.map.widthInPixels-100)
         this.time.addEvent({
             delay: 1000,
             callback: this.tick,
@@ -328,11 +333,14 @@ export default class ParkScene extends Scene {
                 this.showTalkingHead(Sprites.MEAT_MAN, 'Get yer meat here! Just slightly expired.')
                 this.meatTruck.enter(Modal.MEAT)
             } 
-            else this.meatTruck.exit()
+            else{
+                this.meatTruck.exit()
+                onHideModal(Modal.MEAT)
+            } 
 
             let available = state.employees.length
             if(state.status.meth) available=available*2
-
+            state.status.lowEmployment = false
             state.buildings.forEach(b=>{
                 available--
                 if(available <= 0){
@@ -366,7 +374,7 @@ export default class ParkScene extends Scene {
                             case 1: let dead = state.employees.splice(Phaser.Math.Between(0,state.employees.length-1), 1)[0]
                                     if(dead){
                                         this.showText(spr.x, spr.y, dead.name + ' was eaten.', 'red')
-                                        state.status.employeeAccident = true
+                                        state.status.employeeAccident = { startDay: state.day }
                                     } 
                                     break
                         }
@@ -389,6 +397,12 @@ export default class ParkScene extends Scene {
             //run PETA check, if failed send in the cops
             if(Phaser.Math.Between(state.peta, 50)===50){
                 this.swatVan.enter()
+                this.time.addEvent({
+                    delay: 10000,
+                    callback: ()=>{
+                        this.swatVan.exit()
+                    }
+                })
                 this.showTalkingHead(Sprites.COPS, "We've recieved a tip about animal abuse at this location. You've been fined $10,000.")
                 state.cash-=10000
             }
@@ -399,8 +413,53 @@ export default class ParkScene extends Scene {
                 state.cash -= payroll
             }
             state.peopleToday = 0
+            //clear old status
+            Object.keys(state.status).forEach(key=>{
+                let statusEffect = state.status[key]
+                if(statusEffect && state.day - statusEffect.startDay > STATUS_DURATION){
+                    state.status[key] = null
+                }
+            })
+
             //rampage
+            if(state.status.meth){
+                let rager
+                state.employees.forEach(e=>{
+                    if(Phaser.Math.Between(0,e.riskLevel)===0){
+                        rager = e
+                    }
+                })
+                if(rager){
+                    this.swatVan.enter()
+                    this.time.addEvent({
+                        delay: 5000,
+                        callback: ()=>{
+                            this.swatVan.exit()
+                        }
+                    })
+                    this.showTalkingHead(Sprites.COPS, 'Your employee, '+rager.name+', was shot by a berserk meth head.')
+                    state.employees = state.employees.filter(e=>e.id !== rager.id)
+                }
+            }
+
             //arrest
+            let arrest
+            state.employees.forEach(e=>{
+                if(Phaser.Math.Between(0,e.riskLevel)===0){
+                    arrest = e
+                }
+            })
+            if(arrest){
+                this.swatVan.enter()
+                this.time.addEvent({
+                    delay: 5000,
+                    callback: ()=>{
+                        this.swatVan.exit()
+                    }
+                })
+                this.showTalkingHead(Sprites.COPS, 'Your employee, '+arrest.name+', has been getting into trouble again.')
+                state.employees = state.employees.filter(e=>e.id !== arrest.id)
+            }
             //marriage
             //divorce
         } 
@@ -417,7 +476,7 @@ export default class ParkScene extends Scene {
     }
 
     spawnPerson = () => {
-        new GuestVehicle(this,-100, 300, Sprites.PersonVehicles[Phaser.Math.Between(0,Sprites.PersonVehicles.length-1)], this.map.heightInPixels-(Phaser.Math.Between(20, 25)), Phaser.Math.Between(50, this.map.widthInPixels-50))
+        new GuestVehicle(this,-100, 300, Sprites.PersonVehicles[Phaser.Math.Between(0,Sprites.PersonVehicles.length-1)], this.map.heightInPixels-GUEST_VEHICLE_OFFSET, Phaser.Math.Between(50, this.map.widthInPixels-50))
     }
 
     setSelectIconPosition(tuple:Tuple){

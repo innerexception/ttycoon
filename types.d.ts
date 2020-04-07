@@ -100,15 +100,21 @@ interface Tuple {
 }
 
 interface Status {
-    [AdType.BILLBOARD]: boolean
-    [AdType.INTERNET]: boolean
-    [AdType.RADIO]: boolean
-    [AdType.TV]: boolean
-    publicAccident: boolean
-    employeeAccident: boolean
-    celebrityEndorsement: boolean
-    meth: boolean
+    [AdType.BILLBOARD]: { startDay: number }
+    [AdType.INTERNET]: { startDay: number }
+    [AdType.RADIO]: { startDay: number }
+    [AdType.TV]: { startDay: number }
+    publicAccident: { startDay: number }
+    employeeAccident: { startDay: number }
+    celebrityEndorsement: { startDay: number }
+    meth: { startDay: number }
     lowEmployment: boolean
+}
+
+interface Ad {
+    description: string,
+    price: number,
+    type: AdType
 }
 
 interface Plot {
@@ -122,7 +128,7 @@ interface Plot {
 interface Employee {
     id:string
     name:string
-    arrestChance: number
+    riskLevel: number
     price: number
 }
 

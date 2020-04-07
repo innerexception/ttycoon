@@ -31,7 +31,7 @@ export const getRandomInmates = () => {
         return {
             id:v4(),
             name: EmployeeNames[Phaser.Math.Between(0,EmployeeNames.length-1)],
-            arrestChance: Phaser.Math.Between(0,10),
+            riskLevel: Phaser.Math.Between(0,10),
             price: Phaser.Math.Between(5, 25)
         }
     }) as Array<Employee>

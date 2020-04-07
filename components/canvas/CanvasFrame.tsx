@@ -2,7 +2,7 @@ import * as React from 'react'
 import AppStyles from '../../AppStyles';
 import Canvas from './Canvas'
 import { TopBar, Button, LightButton, RangeInput, Icon, ProgressBar, NumericInput } from '../Shared'
-import { Modal, StatusDescription } from '../../enum';
+import { Modal, StatusDescription, STATUS_DURATION } from '../../enum';
 import Lose from '../views/Lose';
 import Win from '../views/Win';
 import {onMuteAudio, onSummonAnimalTruck, onSetAdmission, onShowModal, onSummonLender } from '../uiManager/Thunks'
@@ -32,8 +32,8 @@ export default class CanvasFrame extends React.Component {
                     {state.modal === Modal.ADS && <Advertising/>}
                     {state.modal === Modal.PRISON && <Hiring/>}
                     {state.modal === Modal.PAY && <LoanShark/>}
-                    <div style={{position:'absolute', top:10,left:10, display:'flex'}}>
-                        {Object.keys(state.status).map(key=><div style={{marginRight:'10px', display: state[key] ? 'normal' : 'none'}}>{Icon(key, StatusDescription[key])}</div>)}
+                    <div style={{position:'absolute', top:80, display:'flex'}}>
+                        {Object.keys(state.status).map(key=><div style={{marginRight:'10px', display: state.status[key] ? 'block' : 'none', opacity: getStatusPercent(state.day, state.status[key])}}>{Icon(key, StatusDescription[key], true)}</div>)}
                     </div>
                     <div style={{position:'absolute', bottom:10,left:10}}>
                         <h6>Day {state.day}</h6>
@@ -53,6 +53,11 @@ export default class CanvasFrame extends React.Component {
                 </div>
         )
     }
+}
+
+const getStatusPercent = (day:number, status) => {
+    if(status) return 1-((day - status.startDay) / STATUS_DURATION)
+    return 0
 }
 
 const getPetaText = (val:number) => {

@@ -113,7 +113,7 @@ export const ProgressBar = (value:number, max:number, tooltip?:string) =>
     
 export const Icon = (iconName:string, tooltip:string, large?:boolean) => 
     <Tooltip placement="bottom" trigger={tooltip ? ['hover'] : []} overlay={<h6>{tooltip}</h6>}>
-        <div style={{cursor:'pointer', width:large ? '32px' : '20px', height: large ? '32px' : '20px', backgroundImage:'url('+Icons[iconName]+')', backgroundRepeat:'no-repeat', backgroundSize:'cover', backgroundPosition:"center", display:'inline-block'}}/>
+        <div style={{cursor:'pointer', width:large ? '32px' : '20px', height: large ? '32px' : '20px', backgroundImage:'url('+Icons[iconName]+')', backgroundRepeat:'no-repeat', backgroundSize:'contain', backgroundPosition:"center", display:'inline-block'}}/>
     </Tooltip>
 
     

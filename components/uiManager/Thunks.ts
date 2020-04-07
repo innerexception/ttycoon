@@ -163,7 +163,7 @@ export const onHideModal = (modal?:Modal) => {
     })
 }
 
-export const onBuyAd = (ad:AdType) => {
+export const onBuyAd = (ad:Ad) => {
     dispatch({
         type: UIReducerActions.ADBUY,
         ad

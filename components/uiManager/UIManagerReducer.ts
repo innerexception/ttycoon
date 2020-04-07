@@ -65,7 +65,7 @@ const appReducer = (state = getInitialState(), action:any):RState => {
         case UIReducerActions.REPLACE_STATE:
             return { ...action.state, engineEvent:null }
         case UIReducerActions.ADBUY:
-            return { ...state, status: {...state.status, [action.ad]: true}, engineEvent:null, modal:null}
+            return { ...state, status: {...state.status, [action.ad.type]: { startDay: state.day }}, cash: state.cash - action.ad.price, engineEvent:null, modal:null}
         case UIReducerActions.PAY:
             return { ...state, loan: state.loan -= action.amount, cash: state.cash -= action.amount, engineEvent:null }
         default:
@@ -91,15 +91,15 @@ const getInitialState = ():RState => {
         peta: 0,
         day: 1,
         status: {
-            [AdType.TV]:false,
-            [AdType.RADIO]:false,
-            [AdType.INTERNET]:false,
-            [AdType.BILLBOARD]:false,
-            publicAccident: false,
-            employeeAccident: false,
-            celebrityEndorsement: false,
-            lowEmployment: false,
-            meth: false
+            [AdType.TV]:null,
+            [AdType.RADIO]:null,
+            [AdType.INTERNET]:null,
+            [AdType.BILLBOARD]:null,
+            publicAccident: null,
+            employeeAccident: null,
+            celebrityEndorsement: null,
+            lowEmployment: null,
+            meth: null
         },
         sellingBuilding: null,
         admission: 0,

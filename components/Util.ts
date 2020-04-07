@@ -1,6 +1,6 @@
 import * as v4 from 'uuid'
 import { Difficulty, Activities, AnimalType, BuildingType } from '../enum';
-import { SpriteIndexes } from '../assets/Assets';
+import { SpriteIndexes, EmployeeNames } from '../assets/Assets';
 
 export const getDays = (difficulty:Difficulty) => {
     switch(difficulty){
@@ -27,5 +27,10 @@ export const hasCapacity = (building:Building, animal?:AnimalType) => {
 }
 
 export const getRandomInmates = () => {
-    return []
+    return new Array(3).fill({
+        id:v4(),
+        name: EmployeeNames[Phaser.Math.Between(0,EmployeeNames.length-1)],
+        arrestChance: Phaser.Math.Between(0,10),
+        price: Phaser.Math.Between(5, 25)
+    }) as Array<Employee>
 }

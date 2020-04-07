@@ -2,7 +2,7 @@ import * as React from 'react'
 import AppStyles from '../../AppStyles';
 import Viewscreen from './Viewscreen'
 import { TopBar, Button, LightButton, RangeInput, Icon, ProgressBar, NumericInput } from '../Shared'
-import { Modal } from '../../enum';
+import { Modal, StatusDescription } from '../../enum';
 import Lose from '../views/Lose';
 import Win from '../views/Win';
 import {onMuteAudio, onSummonAnimalTruck, onSetAdmission, onShowModal } from '../uiManager/Thunks'
@@ -11,45 +11,41 @@ import Sell from '../views/Sell';
 import Animals from '../views/Animals'
 import { Icons, Sprites } from '../../assets/Assets';
 import Meat from '../views/Meat';
-import SellAnimal from '../views/SellAnimal';
 import Advertising from '../views/Advertising';
 import Hiring from '../views/Hiring';
+import { store } from '../../App';
 
-interface Props {
-    modal:Modal
-    day:number
-    admission:number
-    cash:number
-    meat:number
-    peta:number
-}
-
-export default class ViewscreenFrame extends React.Component<Props> {
+export default class ViewscreenFrame extends React.Component {
 
     render(){
+        let state = store.getState()
         return (
                 <div style={{position:'relative', padding:'17px'}}>
-                    <Viewscreen {...this.props} />
-                    {this.props.modal === Modal.LOSE && <Lose/>}
-                    {this.props.modal === Modal.WIN && <Win/>}
-                    {this.props.modal === Modal.BUY && <Buy/>}
-                    {this.props.modal === Modal.SELL && <Sell/>}
-                    {this.props.modal === Modal.ANIMALS && <Animals/>}
-                    {this.props.modal === Modal.MEAT && <Meat/>}
-                    {this.props.modal === Modal.ADS && <Advertising/>}
-                    {this.props.modal === Modal.BUYER && <SellAnimal/>}
-                    {this.props.modal === Modal.PRISON && <Hiring/>}
+                    <Viewscreen />
+                    {state.modal === Modal.LOSE && <Lose/>}
+                    {state.modal === Modal.WIN && <Win/>}
+                    {state.modal === Modal.BUY && <Buy/>}
+                    {state.modal === Modal.SELL && <Sell/>}
+                    {state.modal === Modal.ANIMALS && <Animals/>}
+                    {state.modal === Modal.MEAT && <Meat/>}
+                    {state.modal === Modal.ADS && <Advertising/>}
+                    {state.modal === Modal.PRISON && <Hiring/>}
+                    <div style={{position:'absolute', top:10,left:10}}>
+                        {Object.keys(state.status).map(key=><div style={{marginRight:'10px'}}>{Icon(key, StatusDescription[key])}</div>)}
+                    </div>
                     <div style={{position:'absolute', bottom:10,left:10}}>
-                        <h6>Day {this.props.day}</h6>
-                        <h6>Admission {Icon('CASH', '')}{NumericInput(this.props.admission, (val)=>onSetAdmission(val), 1000000, 0)}</h6>
-                        <h6>Cash {Icon('CASH', '')}{this.props.cash}</h6>
-                        <h6>Meat {Icon('MEAT', '')}{this.props.meat}</h6>
-                        <h6>PETA Threats: {getPetaText(this.props.peta)}</h6>
+                        <h6>Day {state.day}</h6>
+                        <h6>Admission {Icon('CASH', '')}{NumericInput(state.admission, (val)=>onSetAdmission(val), 1000000, 0)}</h6>
+                        <h6>Cash {Icon('CASH', '')}{state.cash}</h6>
+                        <h6>Meat {Icon('MEAT', '')}{state.meat}</h6>
+                        <h6>PETA Threats: {getPetaText(state.peta)}</h6>
+                        <h6>Staff: {state.employees} / {state.buildings.length}</h6>
                         <h6 style={{cursor:'pointer'}} onClick={onMuteAudio}>Mute</h6>
-                        <div onClick={onSummonAnimalTruck}>{Icon(Icons.animal_dealer, "Bob's Exotics (Animals)", true)}</div>
-                        <div onClick={()=>onShowModal(Modal.PRISON)}>{Icon(Icons.warden, "Warden James (Hiring)", true)}</div>
-                        <div onClick={()=>onShowModal(Modal.ADS)}>{Icon(Icons.ad_man, "Jimmy Goodman (Advertising)", true)}</div>
-                        <div onClick={()=>onShowModal(Modal.BUYER)}>{Icon(Icons.buyer, "Smiley Joe (Buyer)", true)}</div>
+                        <div style={{display:'flex'}}>
+                            <div onClick={onSummonAnimalTruck}>{Icon(Icons.animal_dealer, "Bob's Exotics (Animals)", true)}</div>
+                            <div onClick={()=>onShowModal(Modal.PRISON)}>{Icon(Icons.warden, "Warden James (Hiring)", true)}</div>
+                            <div onClick={()=>onShowModal(Modal.ADS)}>{Icon(Icons.ad_man, "Jimmy Goodman (Advertising)", true)}</div>
+                        </div>
                     </div>
                 </div>
         )

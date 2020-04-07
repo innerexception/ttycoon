@@ -43,6 +43,9 @@ const appReducer = (state = getInitialState(), action:any):RState => {
             return { ...state, modal:null }
         case UIReducerActions.DAY_OVER:
             return { ...state, day: state.day+1, engineEvent: null}
+        case UIReducerActions.HIRE:
+            state.employees.push(action.employee)
+            return { ...state, employees: Array.from(state.employees)}
         case UIReducerActions.RESET:
             return getInitialState()
         case UIReducerActions.BUY_MEAT:
@@ -88,7 +91,9 @@ const getInitialState = ():RState => {
             [AdType.BILLBOARD]:false,
             publicAccident: false,
             employeeAccident: false,
-            celebrityEndorsement: false
+            celebrityEndorsement: false,
+            lowEmployment: false,
+            meth: false
         },
         sellingBuilding: null,
         admission: 0,

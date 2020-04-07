@@ -300,6 +300,7 @@ export default class ParkScene extends Scene {
         if(state.status.billboard) personChance -= 5
         if(state.status.radio) personChance -= 10
         if(state.status.tv) personChance -= 20
+        if(state.buildings.find(b=>b.type === BuildingType.STUDIO && b.isActive)) personChance -= 5
         personChance += state.admission/5
         personChance = Math.max(0,personChance)
         if(Phaser.Math.Between(0, personChance) === personChance){
@@ -313,7 +314,22 @@ export default class ParkScene extends Scene {
                 this.meatTruck.enter(Modal.MEAT)
             } 
             else this.meatTruck.exit()
+
+            let available = state.employees.length
+            if(state.status.meth) available=available*2
+
             state.buildings.forEach(b=>{
+                available--
+                if(available <= 0){
+                    b.isActive = false
+                    this.setBuildingInactive(b.id)
+                    state.status.lowEmployment = true
+                } 
+                else{
+                    b.isActive = true
+                    this.setBuildingActive(b.id)
+                } 
+
                 if(b.animalCount){
                     let anim=Animals.find(a=>a.assetName === b.animal)
                     if(state.meat >= anim.meat){
@@ -333,9 +349,25 @@ export default class ParkScene extends Scene {
                                     break
                             //eats employee
                             case 1: let dead = state.employees.splice(Phaser.Math.Between(0,state.employees.length-1), 1)[0]
-                                    if(dead) this.showText(spr.x, spr.y, dead.name + ' was eaten.', 'red')
+                                    if(dead){
+                                        this.showText(spr.x, spr.y, dead.name + ' was eaten.', 'red')
+                                        state.status.employeeAccident = true
+                                    } 
                                     break
                         }
+                    }
+                }
+
+                if(b.isActive){
+                    if(b.type === BuildingType.GIFT_SHOP){
+                        state.cash += state.peopleToday*5
+                    }
+                    if(b.type === BuildingType.PETTING_ARENA){
+                        state.cash += state.peopleToday*20
+                    }
+                    if(b.type === BuildingType.SNACK_HUT && state.meat >= 10){
+                        state.meat -= 10
+                        state.cash += state.peopleToday*10 
                     }
                 }
             })
@@ -350,12 +382,20 @@ export default class ParkScene extends Scene {
             state.peopleToday = 0
 
             onReplaceState(state)
-            //run employee mishap check
             //rampage
             //arrest
             //marriage
             //divorce
         } 
+    }
+
+    setBuildingActive = (id:string) => {
+        let spr = this.buildingSprites.find(s=>s.id===id)
+        spr.alpha = 1
+    }
+    setBuildingInactive = (id:string) => {
+        let spr = this.buildingSprites.find(s=>s.id===id)
+        spr.alpha = 0.7
     }
 
     spawnPerson = () => {
@@ -387,7 +427,7 @@ export default class ParkScene extends Scene {
             }
         })
         else {
-            this.talkingHead = this.add.sprite(25, this.map.heightInPixels-25, texture).setScale(0.5)
+            this.talkingHead = this.add.sprite(25, 25, texture).setScale(0.5)
             this.showText(this.talkingHead.getTopRight().x+40, this.talkingHead.y, text, 'white', 4)
             this.time.addEvent({
                 delay:5000,

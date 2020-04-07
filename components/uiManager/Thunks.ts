@@ -88,6 +88,13 @@ export const onInitGame = (game:Phaser.Game) => {
     })
 }
 
+export const onHire = (employee:Employee) => {
+    dispatch({
+        type: UIReducerActions.HIRE,
+        employee
+    })
+}
+
 export const onPlacedAnimal = (animalType:AnimalType, buildingId:string) => {
     dispatch({
         type: UIReducerActions.PLACED_ANIMAL,

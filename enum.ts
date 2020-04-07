@@ -25,7 +25,8 @@ export enum UIReducerActions {
     BUY_MEAT='bmeat',
     SET_ADMISSION='setad',
     REPLACE_STATE='repls',
-    ADBUY='adbuy'
+    ADBUY='adbuy',
+    HIRE='hir'
 }
 
 export const StaticLayers = [
@@ -146,3 +147,14 @@ export const Ads = [
         type: AdType.TV
     }
 ]
+
+export const StatusDescription = {
+    [AdType.BILLBOARD]: 'Billboard Ad',
+    [AdType.INTERNET]: 'Internet Ads',
+    [AdType.RADIO]: 'Radio Ads',
+    [AdType.TV]: 'TV Ads',
+    employeeAccident: 'Employee Eaten!',
+    celebrityEndorsement: 'Celebrity Endorsement',
+    meth: 'Meth Boost',
+    lowEmployment: 'Few employees, buildings may be inactive!'
+}

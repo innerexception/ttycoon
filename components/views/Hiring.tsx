@@ -15,10 +15,10 @@ export default class Hiring extends React.Component {
                 <div style={{height:'80%', overflow:'auto'}}>
                     {getRandomInmates().map(b=>
                         <div style={{display:'flex'}} onClick={()=>onHire(b)}>
-                            <div style={{backgroundImage: 'url('+b.asset+')', width:b.width, height:b.height, backgroundSize:'contain', backgroundRepeat:'no-repeat'}}/>
                             <div>
-                                <h4>{b.name} ${b.price}</h4>
-                                <h5>{b.description}</h5>
+                                <h4>{b.name}</h4>
+                                <h5>${b.price}/day</h5>
+                                <h5>Chance of arrest: {b.arrestChance}%</h5>
                             </div>
                         </div>
                     )}

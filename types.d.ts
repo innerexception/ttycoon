@@ -31,7 +31,8 @@ declare enum UIReducerActions {
     BUY_MEAT='bmeat',
     SET_ADMISSION='setad',
     REPLACE_STATE='repls',
-    ADBUY='adbuy'
+    ADBUY='adbuy',
+    HIRE='hir'
 }
 
 declare enum Modal {
@@ -76,12 +77,6 @@ declare enum BuildingType {
     PETTING_ARENA='pet'
 }
 
-declare enum AddictionType {
-    METH='meth',
-    COKE='coke',
-    WEED='weed'
-}
-
 declare enum Job {
     CAGE_CLEAN='Cage Cleaner',
     TOUR_GUIDE='Tour Guide',
@@ -109,6 +104,8 @@ interface Status {
     publicAccident: boolean
     employeeAccident: boolean
     celebrityEndorsement: boolean
+    meth: boolean
+    lowEmployment: boolean
 }
 
 interface Plot {
@@ -121,11 +118,9 @@ interface Plot {
 
 interface Employee {
     id:string
-    name: string
-    addiction: AddictionType
+    name:string
     arrestChance: number
     price: number
-    ability: number
 }
 
 interface Building {
@@ -134,11 +129,12 @@ interface Building {
     animal: AnimalType
     animalCount: number
     price: number
-    asset: any,
-    width: number,
-    height: number,
-    description: string,
+    asset: any
+    width: number
+    height: number
+    description: string
     name: string
+    isActive: boolean
 }
 
 interface RState {

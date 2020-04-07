@@ -15,7 +15,7 @@ export default class Buy extends React.Component {
                 <h2>BUY</h2>
                 <div style={{height:'80%', overflow:'auto'}}>
                     {Buildings.map(b=>
-                        <div style={{display:'flex'}} onClick={()=>onStartPlaceBuilding({...b, id: v4(), animal: null, animalCount: 0})}>
+                        <div style={{display:'flex'}} onClick={()=>onStartPlaceBuilding({...b, id: v4(), animal: null, animalCount: 0, isActive: true})}>
                             <div style={{backgroundImage: 'url('+b.asset+')', width:b.width, height:b.height, backgroundSize:'contain', backgroundRepeat:'no-repeat'}}/>
                             <div>
                                 <h4>{b.name} ${b.price}</h4>

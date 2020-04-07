@@ -87,7 +87,15 @@ export const Icons = {
     buyer: require('./people/buyer.png'),
     ad_man: require('./people/ad_man.png'),
     CASH: require('./icon/CreditsT.png'),
-    MEAT: require('./food/meat2.png')
+    MEAT: require('./food/meat2.png'),
+    [AdType.BILLBOARD]: require('./billboard.png'),
+    [AdType.INTERNET]: require('./internet.png'),
+    [AdType.RADIO]: require('./radio.png'),
+    [AdType.TV]: require('./tv.png'),
+    employeeAccident: require('./eaten.png'),
+    celebrityEndorsement: require('./endorsement.png'),
+    meth: require('./meth.png'),
+    lowEmployment: require('./no_employee.png')
 }
 
 export const Buildings = [
@@ -163,4 +171,27 @@ export const Buildings = [
         description: 'Youtube channel gives advertising boost if manned',
         name: 'Studio'
     }
+]
+
+export const EmployeeNames = [
+    "Alessio 'Old Guy' Strollo",
+    "Luis 'Three Toes' Lato",
+    "Melvin 'The Skinny' Pasquinelli",
+    "Brent 'The Peacemaker' Barraco",
+    "Severo 'Iron' Andreano",
+    "Adelmo 'Tommy Gun' Boord",
+    "Pollione 'The Dentist' Steady",
+    "Eliezer 'The Reaper' Ekins",
+    "Randall 'The Ring' Isabell",
+    "Balderico 'Smokes' Louison",
+    "Caroline 'The Hump' Taormina",
+    "Marie 'Blind' Vastano",
+    "Mattie 'Four Fingers' Patania",
+    "Jolie 'The Cat' Vece",
+    "Kalyn 'Knuckles' Cardosi",
+    "Devon 'The Undertaker' Messinger",
+    "Evelina 'Princess' Dry",
+    "Bruna 'No Man' Herring",
+    "Monserrat 'The Lion' Levens",
+    "Clelia 'Bulletproof' Simes"
 ]

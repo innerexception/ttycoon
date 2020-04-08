@@ -83,8 +83,6 @@ export default class ParkScene extends Scene {
                     this.targetBuilding.addAnimal(b)
                     this.placingAnimal.destroy()
                     this.placingAnimal = null
-                    this.showTalkingHead(Sprites.ANIMAL_DEALER, 'Later chief!')
-                    this.animalTruck.exit()
                     break
                 case UIReducerActions.SUMMON_ANIMAL_TRUCK:
                     this.showTalkingHead(Sprites.ANIMAL_DEALER, 'Sure thing boss, on my way.')
@@ -125,6 +123,7 @@ export default class ParkScene extends Scene {
             sell: this.sound.add('destroyed'),
             cops: this.sound.add('cops'),
             register: this.sound.add('register'),
+            mumbler: this.sound.add('mumbler')
         }
         this.sound.add('gameplay').play({loop:true})
         this.emitter = this.add.particles('meat').setDepth(3)
@@ -331,13 +330,13 @@ export default class ParkScene extends Scene {
         this.ticks++
         let state = store.getState()
 
-        let personChance = getPublicInterest(state)
-        if(personChance < 25 && Phaser.Math.Between(0, personChance) === personChance){
+        let personChance = Math.round(getPublicInterest(state)/5)
+        if(personChance < 5 && Phaser.Math.Between(0, personChance) === personChance){
             this.spawnPerson()
             state.peopleToday++
         }
 
-        state.loan += Math.round(state.loan*0.001)
+        state.loan += Math.round(state.loan*0.0005)
 
         state.status.lowEmployment = false
         let available = state.employees.length
@@ -376,7 +375,7 @@ export default class ParkScene extends Scene {
                     let anim=Animals.find(a=>a.assetName === b.animal)
                     if(state.meat >= anim.meat){
                         state.meat-=anim.meat
-                        if(b.animalCount >= 2 && Phaser.Math.Between(0,2)===2){
+                        if(b.animalCount >= 2 && Phaser.Math.Between(0,1)===0){
                             if(hasCapacity(b, b.animal)){
                                 b.animalCount++
                                 let spr = this.buildingSprites.find(s=>s.id===b.id)
@@ -559,6 +558,7 @@ export default class ParkScene extends Scene {
         })
         else {
             this.talkingHead = this.add.sprite(25, 25, texture).setScale(0.5)
+            this.sounds.mumbler.play()
             this.showText(this.talkingHead.getTopRight().x+40, this.talkingHead.y, text, 'white', 4)
             this.time.addEvent({
                 delay:5000,

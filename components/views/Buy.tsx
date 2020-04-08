@@ -16,17 +16,17 @@ export default class Buy extends React.Component {
                 <h2>WE GON BUILD IT</h2>
                 <div style={{height:'80%', overflow:'auto'}}>
                     {Buildings.map(b=>
-                        <div style={{display:'flex', opacity: canAfford(b.price) ? 1 : 0.5}} onClick={canAfford(b.price) ? ()=>onStartPlaceBuilding({...b, id: v4(), animal: null, animalCount: 0, isActive: true}) :null}>
-                            <div style={{backgroundImage: 'url('+b.asset+')', width:b.width, height:b.height, backgroundSize:'contain', backgroundRepeat:'no-repeat'}}/>
-                            <div>
-                                <h4>{b.name} ${b.price}</h4>
-                                <h5>{b.description}</h5>
+                        <div style={{margin:'1em',display:'flex', opacity: canAfford(b.price) ? 1 : 0.5}} onClick={canAfford(b.price) ? ()=>onStartPlaceBuilding({...b, id: v4(), animal: null, animalCount: 0, isActive: true}) :null}>
+                            <div style={{backgroundImage: 'url('+b.asset+')', width:'50px', height:'50px', backgroundSize:'contain', backgroundPosition:"center", backgroundRepeat:'no-repeat'}}/>
+                            <div style={{marginLeft:'1em', width:'75%'}}>
+                                <h5>{b.name} ${b.price}</h5>
+                                <h6>{b.description}</h6>
                             </div>
                         </div>
                     )}
                 </div>
-                <div style={{display:'flex'}}>
-                    <div>{Button(true, ()=>onHideModal(), 'Cancel')}</div>
+                <div style={{display:'flex', justifyContent:'flex-end'}}>
+                    <div>{Button(true, ()=>onHideModal(), 'X')}</div>
                 </div>
             </div>
         )

@@ -72,6 +72,7 @@ export const defaults = [
     { key: 'meat', resource: require('./audio/meat.mp3'), type: 'audio' },
     { key: 'roar', resource: require('./audio/roar.mp3'), type: 'audio' },
     { key: 'fast', resource: require('./audio/fast.mp3'), type: 'audio' },
+    { key: 'mumbler', resource: require('./audio/mumbler.mp3'), type: 'audio' },
     { key: 'gameplay', resource: require('./audio/gameplay.mp3'), type: 'audio' },
     { key: 'selected', resource: require('./selected.png'), type: 'image'},
     { key: 'map', resource: require('./map.json'), type: 'tilemapTiledJSON', data: {}},
@@ -126,9 +127,9 @@ export const Buildings = [
         width: 32,
         height: 32,
         price: 100,
-        description: 'The Smallest Cage',
+        description: 'Holds 4 animals',
         name: 'Small Cage',
-        maxAnimals: 3
+        maxAnimals: 4
     },
     {
         asset: require('./buildings/m_pen.png'),
@@ -136,9 +137,9 @@ export const Buildings = [
         width: 64,
         height: 32,
         price: 200,
-        description: 'The Medium Cage',
+        description: 'Holds 9 animals',
         name: 'Med Cage',
-        maxAnimals: 6
+        maxAnimals: 9
     },
     {
         asset: require('./buildings/l_pen.png'),
@@ -146,9 +147,9 @@ export const Buildings = [
         width: 64,
         height: 64,
         price: 1000,
-        description: 'The Large Cage',
+        description: 'Holds 18 animals',
         name: 'Large Cage',
-        maxAnimals: 9
+        maxAnimals: 18
     },
     {
         asset: require('./buildings/giftshop.png'),
@@ -183,7 +184,7 @@ export const Buildings = [
         width: 32,
         height: 32,
         price: 1000,
-        description: 'Housing Trailer',
+        description: 'Employee trailer support 2 people',
         name: 'Trailer'
     },
     {

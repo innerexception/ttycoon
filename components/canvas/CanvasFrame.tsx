@@ -41,12 +41,13 @@ export default class CanvasFrame extends React.Component {
                             </div>)}
                     </div>
                     <div style={{position:'absolute', top:40}}>
-                        <h4 style={{marginBottom:'5px'}}>Goal</h4>
-                        <h6 style={{display:'flex', alignItems:'center'}}><span style={{marginRight:'10px'}}>{Icon('CASH', 'Net worth')}</span> {state.cash-state.loan} / 100000</h6>
+                        <h4 style={{marginBottom:'5px'}}>Goals, Day {state.day}</h4>
+                        <h6 style={{display:'flex', alignItems:'center'}}><span style={{marginRight:'10px'}}>{Icon('CASH', 'Net worth, cash minus loans')}</span> {state.cash-state.loan} / 100000</h6>
                         <h6 style={{display:'flex', alignItems:'center'}}><span style={{marginRight:'10px'}}>{Icon('TIGER', 'Tigers')}</span> {getTigerCount(state.buildings)} / 50</h6>
                     </div>
-                    <div style={{position:'absolute', bottom:10,left:10, display:"flex", alignItems:'flex-start', justifyContent:'space-between', width:'100%'}}>
-                        <div>
+                    <div style={{position:'absolute', bottom:10,left:10, display:"flex", alignItems:'flex-start', width:'100%'}}>
+                        <div style={{marginRight:'25px'}}>
+                            
                             <div style={{display:'flex', alignItems:'center'}}>
                                 <h5>{Icon('phone', 'Contacts', true)}</h5>
                                 <h5>:</h5>
@@ -57,22 +58,24 @@ export default class CanvasFrame extends React.Component {
                                 <div onClick={()=>onShowModal(Modal.ADS)}>{Icon('ad_man', "Jimmy Goodman (Advertising)", true)}</div>
                             </div>
                             <div>
-                                <h6>Day {state.day}</h6>
                                 <h6 style={{display:'flex', alignItems:'center'}}>Admission {Icon('CASH', '')}{NumericInput(state.admission, (val)=>onSetAdmission(val), 1000000, 0)}</h6>
                             </div>
                         </div>
-                        <div>
+                        <div style={{marginRight:'25px'}}>
                             <div style={{display:'flex', alignItems:"center"}}>
-                                {Icon('audio','Publicity', true)}<h6>: {getPublicText(getPublicInterest(state))}</h6>
+                                {Icon('audio','Publicity. Determines how many people tour the park. Jimmy Goodman can help with this. Ticket prices and having many different types of animals helps too. Also stay out of trouble...', true)}<h6>: {getPublicText(getPublicInterest(state))}</h6>
                             </div>
                             <div style={{display:'flex', alignItems:"center"}}>
-                                {Icon('cops', 'Chance of police', true)}<h6>: {getPetaText(state.peta)}</h6>
+                                {Icon('cops', 'Chance of police activity', true)}<h6>: {getPetaText(state.peta)}</h6>
                             </div>
                         </div>
                         <div>
-                            <h6>Staff: {state.employees.length} / req {state.buildings.filter(b=>b.type !==BuildingType.HOUSING).length} / housing {state.maxEmployees}</h6>
-                            <h6 style={{display:'flex', alignItems:'center'}}>{Icon('MEAT', 'Meat')} {state.meat}</h6>
-                            <h6 style={{display:'flex', alignItems:'center'}}>{Icon('CASH', 'Cash on hand')} {state.cash}</h6>
+                            <div style={{display:'flex', alignItems:"center"}}>
+                                {Icon('MEAT','Meat. All your animals need it. Buy it from the meat truck that comes every 4 days!', true)}<h6>: {state.meat}</h6>
+                            </div>
+                            <div style={{display:'flex', alignItems:"center"}}>
+                                {Icon('CASH', 'Cash on hand', true)}<h6>: {state.cash}</h6>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -98,10 +101,10 @@ const getPetaText = (val:number) => {
 }
 
 const getPublicText = (val:number) => {
-    if(val > 22) return 'None'
+    if(val > 25) return 'None'
     if(val > 15) return 'Some'
     if(val > 10) return 'Lots'
-    if(val > 5) return 'Insanity'
+    if(val > 5) return 'Crowds'
     return 'Bedlam'
 }
 

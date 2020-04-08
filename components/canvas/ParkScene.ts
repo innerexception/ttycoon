@@ -246,6 +246,7 @@ export default class ParkScene extends Scene {
             } 
             return true
         })
+        this.selectIcon.visible = false
     }
 
     setSelectedPlot = (sprite:GameObjects.TileSprite) => {
@@ -331,7 +332,7 @@ export default class ParkScene extends Scene {
                 b.isActive = true
                 this.setBuildingActive(b.id)
             } 
-            available--
+            if(b.type!==BuildingType.HOUSING) available--
         })
 
         if(this.ticks % 10 === 0){
@@ -495,7 +496,7 @@ export default class ParkScene extends Scene {
                 yoyo: true
             })
         }
-        this.selectIcon.setPosition(tuple.x,tuple.y)
+        this.selectIcon.setPosition(tuple.x,tuple.y).setVisible(true)
         this.sounds.step.play()
     }
 

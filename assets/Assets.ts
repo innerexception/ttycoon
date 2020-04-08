@@ -54,6 +54,10 @@ export const defaults = [
     { key: BuildingType.M_PEN, resource: require('./buildings/m_pen.png'), type: 'image'},
     { key: BuildingType.S_PEN, resource: require('./buildings/s_pen.png'), type: 'image'},
     { key: BuildingType.GIFT_SHOP, resource: require('./buildings/giftshop.png'), type: 'image'},
+    { key: BuildingType.HOUSING, resource: require('./buildings/housing.png'), type: 'image'},
+    { key: BuildingType.SNACK_HUT, resource: require('./buildings/snack_hut.png'), type: 'image'},
+    { key: BuildingType.PETTING_ARENA, resource: require('./buildings/petting_arena.png'), type: 'image'},
+    { key: BuildingType.STUDIO, resource: require('./buildings/studio.png'), type: 'image'},
     { key: 'step', resource: require('./audio/step.mp3'), type: 'audio' },
     { key: 'rock', resource: require('./audio/rock.mp3'), type: 'audio' },
     { key: 'error', resource: require('./audio/error.mp3'), type: 'audio' },
@@ -97,7 +101,10 @@ export const Icons = {
     lowEmployment: require('./no_employee.png'),
     no_meat: require('./no_meat.png'),
     shady_lender: require('./people/shady_investor.png'),
-    builder: require('./people/builder.png')
+    builder: require('./people/builder.png'),
+    phone: require('./cellphone.png'),
+    cops: require('./people/cop.png'),
+    audio: require('./audio.png')
 }
 
 export const Buildings = [

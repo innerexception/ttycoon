@@ -1,4 +1,4 @@
-import { UIReducerActions, Difficulty, Modal, Animals, AdType } from '../../enum'
+import { UIReducerActions, Difficulty, Modal, Animals, AdType, BuildingType } from '../../enum'
 import * as v4 from 'uuid'
 import ParkScene from '../canvas/ParkScene';
 
@@ -14,8 +14,9 @@ const appReducer = (state = getInitialState(), action:any):RState => {
             return { ...state, modal: Modal.SELL, sellingBuilding: action.sellingBuilding, engineEvent: null}
         case UIReducerActions.BUY:
             state.buildings.push(action.building)
+            if(action.building.type === BuildingType.HOUSING) state.maxEmployees++
             state.cash-=action.building.price
-            return { ...state, buildings: Array.from(state.buildings), modal: null, engineEvent: UIReducerActions.BUY}
+            return { ...state, buildings: Array.from(state.buildings), modal: null, engineEvent: UIReducerActions.BUY, maxEmployees: state.maxEmployees}
         case UIReducerActions.PLACED_ANIMAL:
             state.buildings.forEach(b=>{
                 if(b.id === action.buildingId){
@@ -26,9 +27,10 @@ const appReducer = (state = getInitialState(), action:any):RState => {
             state.cash -= Animals.find(a=>a.assetName===action.animalType).price
             return { ...state, buildings: Array.from(state.buildings), engineEvent: UIReducerActions.PLACED_ANIMAL }
         case UIReducerActions.SELL:
-            state.buildings.filter(p=>p.id !== state.sellingBuilding.id);
+            state.buildings = state.buildings.filter(p=>p.id !== state.sellingBuilding.id)
+            if(state.sellingBuilding.type === BuildingType.HOUSING) state.maxEmployees--
             (state.game.scene.getScene('map') as ParkScene).sellBuilding(state.sellingBuilding.id)
-            return { ...state, buildings: Array.from(state.buildings), modal: null, engineEvent: null}
+            return { ...state, buildings: Array.from(state.buildings), modal: null, engineEvent: null, maxEmployees: state.maxEmployees}
         case UIReducerActions.UPDATE_PLOTS:
             return { ...state, buildings: action.plots, engineEvent: null }
         case UIReducerActions.HIDE_MODAL: 

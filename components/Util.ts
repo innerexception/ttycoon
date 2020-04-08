@@ -42,7 +42,7 @@ export const getRandomInmates = () => {
 }
 
 export const getPublicInterest = (state:RState) => {
-    let personChance = 25
+    let personChance = 30
     personChance -= state.buildings.map(b=>{
         let anim = Animals.find(a=>a.assetName === b.animal)
         if(anim) return anim.interest * b.animalCount

@@ -107,7 +107,7 @@ const getInitialState = ():RState => {
             noMeat: null
         },
         sellingBuilding: null,
-        admission: 0,
+        admission: 5,
         peopleToday: 0
     }
 }

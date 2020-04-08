@@ -36,7 +36,8 @@ export default class Vehicle extends GameObjects.Sprite {
     exit = () => {
         if(this.isParked){
             this.disableInteractive()
-            this.marker.setVisible(false)
+            this.marker.setVisible(false);
+            (this.scene as ParkScene).selectIcon && (this.scene as ParkScene).selectIcon.setVisible(false)
             this.off('pointerdown')
             this.isParked = false
             this.scene.tweens.add({

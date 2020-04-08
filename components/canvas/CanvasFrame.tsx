@@ -2,7 +2,7 @@ import * as React from 'react'
 import AppStyles from '../../AppStyles';
 import Canvas from './Canvas'
 import { TopBar, Button, LightButton, RangeInput, Icon, ProgressBar, NumericInput } from '../Shared'
-import { Modal, StatusDescription, STATUS_DURATION } from '../../enum';
+import { Modal, StatusDescription, STATUS_DURATION, AnimalType } from '../../enum';
 import Lose from '../views/Lose';
 import Win from '../views/Win';
 import {onMuteAudio, onSummonAnimalTruck, onSetAdmission, onShowModal, onSummonLender } from '../uiManager/Thunks'
@@ -58,16 +58,20 @@ export default class CanvasFrame extends React.Component {
                             </div>
                             <div>
                                 <h6>Day {state.day}</h6>
-                                <h6 style={{display:'flex'}}>Admission {Icon('CASH', '')}{NumericInput(state.admission, (val)=>onSetAdmission(val), 1000000, 0)}</h6>
+                                <h6 style={{display:'flex', alignItems:'center'}}>Admission {Icon('CASH', '')}{NumericInput(state.admission, (val)=>onSetAdmission(val), 1000000, 0)}</h6>
                             </div>
                         </div>
-                        <div style={{display:'flex', alignItems:"center"}}>{Icon('cops', 'Chance of police', true)}<h6>: {getPetaText(state.peta)}</h6></div>
-                        
                         <div>
-                            <h6>Publicity: {getPublicText(getPublicInterest(state))}</h6>
+                            <div style={{display:'flex', alignItems:"center"}}>
+                                {Icon('audio','Publicity', true)}<h6>: {getPublicText(getPublicInterest(state))}</h6>
+                            </div>
+                            <div style={{display:'flex', alignItems:"center"}}>
+                                {Icon('cops', 'Chance of police', true)}<h6>: {getPetaText(state.peta)}</h6>
+                            </div>
+                        </div>
+                        <div>
                             <h6>Staff: {state.employees.length} / req {state.buildings.length} / housing {state.maxEmployees}</h6>
                             <h6 style={{display:'flex', alignItems:'center'}}>{Icon('MEAT', 'Meat')} {state.meat}</h6>
-                            <h6 style={{cursor:'pointer'}} onClick={onMuteAudio}>{Icon('audio','Toggle Audio')}</h6>
                         </div>
                     </div>
                 </div>

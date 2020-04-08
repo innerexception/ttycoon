@@ -3,7 +3,6 @@ import AppStyles, { colors } from '../AppStyles';
 import { ButtonStrip, Select, Button } from './Shared'
 import { onInitSession, onShowModal } from './uiManager/Thunks';
 import { Difficulty, Modal } from '../enum';
-import Help from './views/Help';
 const boot = require('../assets/audio/intro.mp3')
 
 interface Props {

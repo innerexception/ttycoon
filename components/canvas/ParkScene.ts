@@ -75,6 +75,9 @@ export default class ParkScene extends Scene {
                     this.placingBuilding = null
                     this.sounds.build.play()
                     break
+                case UIReducerActions.PAY:
+                    this.sounds.register.play()
+                    break
                 case UIReducerActions.PLACED_ANIMAL:
                     let b = uiState.buildings.find(b=>b.id === this.targetBuilding.id)
                     this.targetBuilding.addAnimal(b)
@@ -82,17 +85,14 @@ export default class ParkScene extends Scene {
                     this.placingAnimal = null
                     this.showTalkingHead(Sprites.ANIMAL_DEALER, 'Later chief!')
                     this.animalTruck.exit()
-                    this.sounds.car2.play()
                     break
                 case UIReducerActions.SUMMON_ANIMAL_TRUCK:
                     this.showTalkingHead(Sprites.ANIMAL_DEALER, 'Sure thing boss, on my way.')
-                    this.sounds.car2.play()
                     this.animalTruck.enter(Modal.ANIMALS)
                     break
                 case UIReducerActions.DISMISS_ANIMAL_TRUCK:
                     this.showTalkingHead(Sprites.ANIMAL_DEALER, 'Later chief!')
                     this.animalTruck.exit()
-                    this.sounds.car2.play()
                     break
                 case UIReducerActions.SUMMON_LENDER:
                     this.showTalkingHead(Sprites.LOAN_SHARK, 'You got my money?')
@@ -118,15 +118,15 @@ export default class ParkScene extends Scene {
             step: this.sound.add('step'),
             error: this.sound.add('error'),
             jalopy: this.sound.add('old'),
-            car2: this.sound.add('car2'),
             fast: this.sound.add('fast'),
             meat: this.sound.add('meat'),
             roar: this.sound.add('roar'),
             build: this.sound.add('build'),
             sell: this.sound.add('destroyed'),
             cops: this.sound.add('cops'),
-            register: this.sound.add('register')
+            register: this.sound.add('register'),
         }
+        this.sound.add('gameplay').play({loop:true})
         this.emitter = this.add.particles('meat').setDepth(3)
         this.meatEmitters = []
         for(var i=1; i<=5;i++){
@@ -390,6 +390,7 @@ export default class ParkScene extends Scene {
                                 if(cap){
                                     cap.animalCount++
                                     let spr = this.buildingSprites.find(s=>s.id===cap.id)
+                                    cap.animal= b.animal
                                     spr.addAnimal(cap)
                                     this.showText(spr.x, spr.y, 'A new '+b.animal+' was born! But there was no space so we moved it here.', 'green')
                                     return

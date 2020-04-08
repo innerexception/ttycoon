@@ -2,7 +2,7 @@ import * as React from 'react'
 import AppStyles from '../../AppStyles';
 import Canvas from './Canvas'
 import { TopBar, Button, LightButton, RangeInput, Icon, ProgressBar, NumericInput } from '../Shared'
-import { Modal, StatusDescription, STATUS_DURATION, AnimalType } from '../../enum';
+import { Modal, StatusDescription, STATUS_DURATION, AnimalType, BuildingType } from '../../enum';
 import Lose from '../views/Lose';
 import Win from '../views/Win';
 import {onMuteAudio, onSummonAnimalTruck, onSetAdmission, onShowModal, onSummonLender } from '../uiManager/Thunks'
@@ -42,7 +42,7 @@ export default class CanvasFrame extends React.Component {
                     </div>
                     <div style={{position:'absolute', top:40}}>
                         <h4 style={{marginBottom:'5px'}}>Goal</h4>
-                        <h6 style={{display:'flex', alignItems:'center'}}><span style={{marginRight:'10px'}}>{Icon('CASH', 'On Hand $'+state.cash+' - Loan $'+state.loan)}</span> {state.cash-state.loan} / 100000</h6>
+                        <h6 style={{display:'flex', alignItems:'center'}}><span style={{marginRight:'10px'}}>{Icon('CASH', 'Net worth')}</span> {state.cash-state.loan} / 100000</h6>
                         <h6 style={{display:'flex', alignItems:'center'}}><span style={{marginRight:'10px'}}>{Icon('TIGER', 'Tigers')}</span> {getTigerCount(state.buildings)} / 50</h6>
                     </div>
                     <div style={{position:'absolute', bottom:10,left:10, display:"flex", alignItems:'flex-start', justifyContent:'space-between', width:'100%'}}>
@@ -70,8 +70,9 @@ export default class CanvasFrame extends React.Component {
                             </div>
                         </div>
                         <div>
-                            <h6>Staff: {state.employees.length} / req {state.buildings.length} / housing {state.maxEmployees}</h6>
+                            <h6>Staff: {state.employees.length} / req {state.buildings.filter(b=>b.type !==BuildingType.HOUSING).length} / housing {state.maxEmployees}</h6>
                             <h6 style={{display:'flex', alignItems:'center'}}>{Icon('MEAT', 'Meat')} {state.meat}</h6>
+                            <h6 style={{display:'flex', alignItems:'center'}}>{Icon('CASH', 'Cash on hand')} {state.cash}</h6>
                         </div>
                     </div>
                 </div>

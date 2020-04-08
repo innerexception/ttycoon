@@ -14,7 +14,7 @@ const appReducer = (state = getInitialState(), action:any):RState => {
             return { ...state, modal: Modal.SELL, sellingBuilding: action.sellingBuilding, engineEvent: null}
         case UIReducerActions.BUY:
             state.buildings.push(action.building)
-            if(action.building.type === BuildingType.HOUSING) state.maxEmployees++
+            if(action.building.type === BuildingType.HOUSING) state.maxEmployees+=2
             state.cash-=action.building.price
             return { ...state, buildings: Array.from(state.buildings), modal: null, engineEvent: UIReducerActions.BUY, maxEmployees: state.maxEmployees}
         case UIReducerActions.PLACED_ANIMAL:
@@ -69,9 +69,9 @@ const appReducer = (state = getInitialState(), action:any):RState => {
         case UIReducerActions.ADBUY:
             return { ...state, status: {...state.status, [action.ad.type]: { startDay: state.day }}, cash: state.cash - action.ad.price, engineEvent:null, modal:null}
         case UIReducerActions.PAY:
-            return { ...state, loan: state.loan - action.amount, cash: state.cash - action.amount, engineEvent:null }
+            return { ...state, loan: state.loan - action.amount, cash: state.cash - action.amount, engineEvent:UIReducerActions.PAY }
         case UIReducerActions.LOAN:
-            return { ...state, loan: state.loan + action.amount, cash: state.cash + action.amount, engineEvent: null }
+            return { ...state, loan: state.loan + action.amount, cash: state.cash + action.amount, engineEvent:UIReducerActions.PAY }
         default:
             return state
     }

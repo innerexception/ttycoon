@@ -15,13 +15,9 @@ employee hiring - open menu, choose 1 per day, prison van will drop them off
     -addictions
 
 sounds: 
-cars
 cash noise w/ visual red/green floating numbers
-talking mumbling noise
-meat squish sound
-build sound
-eaten sound
-cops sound
 shooting sound
 phonecall sound
+
+add meat decay / freezer building
 

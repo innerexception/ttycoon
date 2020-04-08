@@ -63,8 +63,6 @@ export const defaults = [
     { key: BuildingType.STUDIO, resource: require('./buildings/studio.png'), type: 'image'},
     { key: 'step', resource: require('./audio/step.mp3'), type: 'audio' },
     { key: 'build', resource: require('./audio/build.mp3'), type: 'audio' },
-    { key: 'car', resource: require('./audio/car.mp3'), type: 'audio' },
-    { key: 'car2', resource: require('./audio/car2.mp3'), type: 'audio' },
     { key: 'old', resource: require('./audio/jalopy.mp3'), type: 'audio' },
     { key: 'cops', resource: require('./audio/rock.mp3'), type: 'audio' },
     { key: 'error', resource: require('./audio/error.mp3'), type: 'audio' },
@@ -74,7 +72,7 @@ export const defaults = [
     { key: 'meat', resource: require('./audio/meat.mp3'), type: 'audio' },
     { key: 'roar', resource: require('./audio/roar.mp3'), type: 'audio' },
     { key: 'fast', resource: require('./audio/fast.mp3'), type: 'audio' },
-    
+    { key: 'gameplay', resource: require('./audio/gameplay.mp3'), type: 'audio' },
     { key: 'selected', resource: require('./selected.png'), type: 'image'},
     { key: 'map', resource: require('./map.json'), type: 'tilemapTiledJSON', data: {}},
     { key: 'tiles_sprites', resource: require('./tiles.png'), type: 'spritesheet', data: { frameWidth: 8, frameHeight: 8 }},

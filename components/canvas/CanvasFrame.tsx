@@ -63,7 +63,7 @@ export default class CanvasFrame extends React.Component {
                         </div>
                         <div style={{marginRight:'25px'}}>
                             <div style={{display:'flex', alignItems:"center"}}>
-                                {Icon('audio','Publicity. Determines how many people tour the park. Jimmy Goodman can help with this. Ticket prices and having many different types of animals helps too. Also stay out of trouble...', true)}<h6>: {getPublicText(getPublicInterest(state))}</h6>
+                                {Icon('audio','Demand. Determines how many people tour the park. Jimmy Goodman can help with this. Ticket prices and having many different types of animals helps too. Also stay out of trouble...', true)}<h6>: {getPublicText(getPublicInterest(state))}</h6>
                             </div>
                             <div style={{display:'flex', alignItems:"center"}}>
                                 {Icon('cops', 'Chance of police activity', true)}<h6>: {getPetaText(state.peta)}</h6>

@@ -432,13 +432,16 @@ export default class ParkScene extends Scene {
                 if(b.isActive){
                     if(b.type === BuildingType.GIFT_SHOP){
                         state.cash += state.peopleToday*5
+                        this.floatText(this.entranceBooth.x, this.entranceBooth.y, 'Gift Shop +$'+(state.peopleToday*5), 'green')
                     }
                     if(b.type === BuildingType.PETTING_ARENA){
                         state.cash += state.peopleToday*20
+                        this.floatText(this.entranceBooth.x, this.entranceBooth.y, 'Petting Arena +$'+(state.peopleToday*20), 'green')
                     }
                     if(b.type === BuildingType.SNACK_HUT && state.meat >= 10){
                         state.meat -= 10
                         state.cash += state.peopleToday*10 
+                        this.floatText(this.entranceBooth.x, this.entranceBooth.y, 'Snack Hut +$'+(state.peopleToday*10), 'green')
                     }
                 }
             })

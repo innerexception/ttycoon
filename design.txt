@@ -2,10 +2,6 @@ tiger tycoon - exotic park management
 
 -contacts / phone tray (adbuy, animal seller, prison warden, exotic buyer* (random appearance))
 -contacts cooldown
--employee hire menu (vet, tour guide, cage cleaner)
--employees walking around?
--adbuy menu
--shady investor, may call your loan in 
 
 
 meat drain - animal dies (peta bar) or is released (cumulative chance of swat van) or employee eaten
@@ -17,3 +13,15 @@ employee hiring - open menu, choose 1 per day, prison van will drop them off
     -ability for positions
     -price
     -addictions
+
+sounds: 
+cars
+cash noise w/ visual red/green floating numbers
+talking mumbling noise
+meat squish sound
+build sound
+eaten sound
+cops sound
+shooting sound
+phonecall sound
+

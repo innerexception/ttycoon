@@ -1,12 +1,13 @@
 import { GameObjects, Physics, Scene, Geom, Game } from "phaser"
 import { Activities } from "../../enum";
+import { store } from "../../App";
+import { getCapacityColor } from "../Util";
 
 
 export default class BuildingSprite extends GameObjects.Sprite {
     
     id:string
     animalSprite: GameObjects.Sprite
-    count:number
     countSprite: GameObjects.Text
    
     constructor(scene:Scene, x:number, y:number, texture:string, building:Building){
@@ -15,25 +16,25 @@ export default class BuildingSprite extends GameObjects.Sprite {
         this.id = building.id
         this.setDepth(1)
         this.setInteractive()
-        this.count = 0
     }
 
-    addAnimal = (animal:AnimalType) => {
-        this.count++
+    addAnimal = (building:Building) => {
         if(this.animalSprite){
-            this.countSprite.setText(this.count.toString())
+            this.countSprite.setText(building.animalCount.toString())
+            this.countSprite.setTint(getCapacityColor(building))
         } 
         else{
-            this.animalSprite=this.scene.add.sprite(this.getCenter().x, this.getCenter().y, animal).setScale(0.5)
-            this.countSprite = this.scene.add.text(this.animalSprite.x-10, this.animalSprite.y, this.count.toString())
+            this.animalSprite=this.scene.add.sprite(this.getCenter().x, this.getCenter().y, building.animal).setScale(0.5)
+            this.countSprite = this.scene.add.text(this.animalSprite.x-10, this.animalSprite.y, building.animalCount.toString())
         }
     }
 
-    removeAnimal = () => {
-        this.count--
-        if(this.count > 0) this.countSprite.setText(this.count.toString())
+    removeAnimal = (building:Building) => {
+        if(building.animalCount > 0){
+            this.countSprite.setText(building.animalCount.toString())
+            this.countSprite.setTint(getCapacityColor(building))
+        } 
         else {
-            this.count = 0
             this.animalSprite.destroy()
             this.animalSprite = null
             this.countSprite.destroy()

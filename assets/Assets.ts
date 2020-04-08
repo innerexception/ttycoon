@@ -7,6 +7,7 @@ export const Sprites = {
     COPS: 'cop',
     CASH: 'cash',
     MEAT: 'meat',
+    TUTORIAL: 'tutorial',
     Persons: [
         'person1',
         'person2',
@@ -42,6 +43,7 @@ export const defaults = [
     { key: 'meat3', resource: require('./food/meat3.png'), type: 'image' },
     { key: 'meat4', resource: require('./food/meat4.png'), type: 'image' },
     { key: 'meat5', resource: require('./food/meat5.png'), type: 'image' },
+    { key: 'tutorial', resource: require('./people/tutorial.png'), type: 'image' },
     { key: AnimalType.BEAR, resource: require('./animals/bear.png'), type: 'image' },
     { key: AnimalType.LION, resource: require('./animals/lion.png'), type: 'image' },
     { key: AnimalType.MONKEY, resource: require('./animals/monkey.png'), type: 'image' },
@@ -104,7 +106,9 @@ export const Icons = {
     builder: require('./people/builder.png'),
     phone: require('./cellphone.png'),
     cops: require('./people/cop.png'),
-    audio: require('./audio.png')
+    audio: require('./audio.png'),
+    doc: require('./people/tutorial.png'),
+    TIGER: require('./animals/tiger.png')
 }
 
 export const Buildings = [
@@ -113,34 +117,37 @@ export const Buildings = [
         type: BuildingType.S_PEN,
         width: 32,
         height: 32,
-        price: 0,
+        price: 100,
         description: 'The Smallest Cage',
-        name: 'Small Cage'
+        name: 'Small Cage',
+        maxAnimals: 3
     },
     {
         asset: require('./buildings/m_pen.png'),
         type: BuildingType.M_PEN,
         width: 64,
         height: 32,
-        price: 0,
+        price: 200,
         description: 'The Medium Cage',
-        name: 'Med Cage'
+        name: 'Med Cage',
+        maxAnimals: 6
     },
     {
         asset: require('./buildings/l_pen.png'),
         type: BuildingType.L_PEN,
         width: 64,
         height: 64,
-        price: 0,
+        price: 1000,
         description: 'The Large Cage',
-        name: 'Large Cage'
+        name: 'Large Cage',
+        maxAnimals: 9
     },
     {
         asset: require('./buildings/giftshop.png'),
         type: BuildingType.GIFT_SHOP,
         width: 32,
         height: 32,
-        price: 0,
+        price: 5000,
         description: 'Gift Shop increases cash if manned.',
         name: 'Gift Shop'
     },
@@ -149,7 +156,7 @@ export const Buildings = [
         type: BuildingType.PETTING_ARENA,
         width: 32,
         height: 32,
-        price: 0,
+        price: 5000,
         description: 'Supply the Cuddle Pit with young animals to generate cash',
         name: 'Cuddle Pit'
     },
@@ -158,7 +165,7 @@ export const Buildings = [
         type: BuildingType.SNACK_HUT,
         width: 32,
         height: 32,
-        price: 0,
+        price: 2000,
         description: 'Sells snax if manned and you have meat',
         name: 'Snack Hut'
     },
@@ -167,7 +174,7 @@ export const Buildings = [
         type: BuildingType.HOUSING,
         width: 32,
         height: 32,
-        price: 0,
+        price: 1000,
         description: 'Housing Trailer',
         name: 'Trailer'
     },
@@ -176,7 +183,7 @@ export const Buildings = [
         type: BuildingType.STUDIO,
         width: 32,
         height: 32,
-        price: 0,
+        price: 10000,
         description: 'Youtube channel gives advertising boost if manned',
         name: 'Studio'
     }

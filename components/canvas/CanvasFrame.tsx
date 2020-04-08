@@ -40,31 +40,33 @@ export default class CanvasFrame extends React.Component {
                                 {state.status[key] && state.status[key].startDay && <div style={{height:'5px'}}>{ProgressBar(getStatusPercent(state.day, state.status[key]), 1)}</div>}
                             </div>)}
                     </div>
-                    <div style={{position:'absolute', top:65}}>
-                        <h6 style={{display:'flex', alignItems:'center'}}>{Icon('CASH', 'Cash')} {state.cash} / {state.loan}</h6>
-                        <h6 style={{display:'flex', alignItems:'center'}}>{Icon('MEAT', 'Meat')} {state.meat}</h6>
+                    <div style={{position:'absolute', top:40}}>
+                        <h4 style={{marginBottom:'5px'}}>Goal</h4>
+                        <h6 style={{display:'flex', alignItems:'center'}}><span style={{marginRight:'10px'}}>{Icon('CASH', 'On Hand $'+state.cash+' - Loan $'+state.loan)}</span> {state.cash-state.loan} / 100000</h6>
+                        <h6 style={{display:'flex', alignItems:'center'}}><span style={{marginRight:'10px'}}>{Icon('TIGER', 'Tigers')}</span> {getTigerCount(state.buildings)} / 50</h6>
                     </div>
                     <div style={{position:'absolute', bottom:10,left:10, display:"flex", alignItems:'flex-start', justifyContent:'space-between', width:'100%'}}>
                         <div>
                             <div style={{display:'flex', alignItems:'center'}}>
                                 <h5>{Icon('phone', 'Contacts', true)}</h5>
                                 <h5>:</h5>
+                                <div onClick={onSummonLender}>{Icon('shady_lender', "Howard Steinberg (Loans)", true)}</div>
                                 <div onClick={()=>onShowModal(Modal.BUY)}>{Icon('builder', "Scooter's Boys (Construction)", true)}</div>
                                 <div onClick={onSummonAnimalTruck}>{Icon('animal_dealer', "Bob's Exotics (Animals)", true)}</div>
                                 <div onClick={()=>onShowModal(Modal.PRISON)}>{Icon('warden', "Warden James (Hiring)", true)}</div>
                                 <div onClick={()=>onShowModal(Modal.ADS)}>{Icon('ad_man', "Jimmy Goodman (Advertising)", true)}</div>
-                                <div onClick={onSummonLender}>{Icon('shady_lender', "Howard Steinberg (Loans)", true)}</div>
                             </div>
-                            
+                            <div>
+                                <h6>Day {state.day}</h6>
+                                <h6 style={{display:'flex'}}>Admission {Icon('CASH', '')}{NumericInput(state.admission, (val)=>onSetAdmission(val), 1000000, 0)}</h6>
+                            </div>
                         </div>
                         <div style={{display:'flex', alignItems:"center"}}>{Icon('cops', 'Chance of police', true)}<h6>: {getPetaText(state.peta)}</h6></div>
-                        <div>
-                            <h6>Day {state.day}</h6>
-                            <h6 style={{display:'flex'}}>Admission {Icon('CASH', '')}{NumericInput(state.admission, (val)=>onSetAdmission(val), 1000000, 0)}</h6>
-                        </div>
+                        
                         <div>
                             <h6>Publicity: {getPublicText(getPublicInterest(state))}</h6>
                             <h6>Staff: {state.employees.length} / req {state.buildings.length} / housing {state.maxEmployees}</h6>
+                            <h6 style={{display:'flex', alignItems:'center'}}>{Icon('MEAT', 'Meat')} {state.meat}</h6>
                             <h6 style={{cursor:'pointer'}} onClick={onMuteAudio}>{Icon('audio','Toggle Audio')}</h6>
                         </div>
                     </div>
@@ -97,3 +99,5 @@ const getPublicText = (val:number) => {
     if(val > 5) return 'Insanity'
     return 'Bedlam'
 }
+
+const getTigerCount = (buildings:Array<Building>) => buildings.filter(b=>b.animal===AnimalType.TIGER).map(b=>b.animalCount).reduce((sum, next)=>sum+next, 0)

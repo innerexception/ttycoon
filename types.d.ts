@@ -137,8 +137,9 @@ interface Employee {
 interface Building {
     id:string
     type: BuildingType
-    animal: AnimalType
-    animalCount: number
+    animal?: AnimalType
+    animalCount?: number
+    maxAnimals?: number
     price: number
     asset: any
     width: number

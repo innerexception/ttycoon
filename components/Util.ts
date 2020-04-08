@@ -1,6 +1,7 @@
 import * as v4 from 'uuid'
 import { Difficulty, Activities, AnimalType, BuildingType, Animals } from '../enum';
 import { SpriteIndexes, EmployeeNames } from '../assets/Assets';
+import { store } from '../App';
 
 export const getDays = (difficulty:Difficulty) => {
     switch(difficulty){
@@ -57,3 +58,11 @@ export const getPublicInterest = (state:RState) => {
     personChance += state.admission/5
     return Math.max(0,personChance)
 }
+
+export const getCapacityColor = (building:Building)=>{
+    let remaining = building.maxAnimals - building.animalCount
+    if(remaining > 2) return 0x00ff00
+    else return 0xffa500 
+}
+
+export const canAfford = (amount:number) => store.getState().cash >= amount

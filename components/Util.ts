@@ -1,6 +1,5 @@
 import * as v4 from 'uuid'
-import { Difficulty, Activities, AnimalType, BuildingType, Animals } from '../enum';
-import { SpriteIndexes, EmployeeNames } from '../assets/Assets';
+import { Difficulty, Activities, AnimalType, BuildingType, Animals, EmployeeNames } from '../enum';
 import { store } from '../App';
 
 export const getDays = (difficulty:Difficulty) => {
@@ -53,6 +52,10 @@ export const getPublicInterest = (state:RState) => {
     personChance += state.admission/5
     return Math.max(0,personChance)
 }
+
+export const getAnimalCount = (buildings:Array<Building>) => 
+    buildings.filter(b=>b.animal).map(b=>b.animalCount).reduce((sum, next)=>sum+next, 0)
+
 
 export const getCapacityColor = (building:Building)=>{
     let remaining = building.maxAnimals - building.animalCount

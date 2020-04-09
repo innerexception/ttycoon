@@ -1,6 +1,7 @@
 import { UIReducerActions, Difficulty, Modal, Animals, AdType, BuildingType } from '../../enum'
 import * as v4 from 'uuid'
 import ParkScene from '../canvas/ParkScene';
+import { getAnimalCount } from '../Util';
 
 const appReducer = (state = getInitialState(), action:any):RState => {
     switch (action.type) {
@@ -27,6 +28,7 @@ const appReducer = (state = getInitialState(), action:any):RState => {
             state.cash -= Animals.find(a=>a.assetName===action.animalType).price
             return { ...state, buildings: Array.from(state.buildings), engineEvent: UIReducerActions.PLACED_ANIMAL }
         case UIReducerActions.SELL:
+            state.peta+=getAnimalCount(state.buildings)
             state.buildings = state.buildings.filter(p=>p.id !== state.sellingBuilding.id)
             if(state.sellingBuilding.type === BuildingType.HOUSING) state.maxEmployees -= 2;
             (state.game.scene.getScene('map') as ParkScene).sellBuilding(state.sellingBuilding.id)
@@ -108,6 +110,7 @@ const getInitialState = ():RState => {
         },
         sellingBuilding: null,
         admission: 5,
-        peopleToday: 0
+        peopleToday: 0,
+        violations: 0
     }
 }

@@ -168,4 +168,5 @@ interface RState {
     sellingBuilding: Building
     peopleToday:number
     admission:number
+    violations: number
 }

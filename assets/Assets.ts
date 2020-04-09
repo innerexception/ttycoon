@@ -22,7 +22,9 @@ export const Sprites = {
         'jalopy',
         'vintage',
         'tuck',
-        'bus'
+        'bus',
+        'taxi',
+        'fancy'
     ]
 }
 
@@ -39,6 +41,8 @@ export const defaults = [
     { key: 'tuck', resource: require('./tuck.png'), type: 'image' },
     { key: 'booth', resource: require('./entrance.png'), type: 'image' },
     { key: 'vintage', resource: require('./vintage_car.png'), type: 'image' },
+    { key: 'fancy', resource: require('./buyer_car.png'), type: 'image' },
+    { key: 'taxi', resource: require('./taxi.png'), type: 'image' },
     { key: 'jalopy', resource: require('./jalopy_car.png'), type: 'image' },
     { key: 'meat1', resource: require('./food/meat1.png'), type: 'image' },
     { key: 'meat2', resource: require('./food/meat2.png'), type: 'image' },
@@ -189,27 +193,4 @@ export const Buildings = [
         description: 'Youtube channel gives advertising boost if manned',
         name: 'Studio'
     }
-]
-
-export const EmployeeNames = [
-    "Alessio 'Old Guy' Strollo",
-    "Luis 'Three Toes' Lato",
-    "Melvin 'The Skinny' Pasquinelli",
-    "Brent 'The Peacemaker' Barraco",
-    "Severo 'Iron' Andreano",
-    "Adelmo 'Tommy Gun' Boord",
-    "Pollione 'The Dentist' Steady",
-    "Eliezer 'The Reaper' Ekins",
-    "Randall 'The Ring' Isabell",
-    "Balderico 'Smokes' Louison",
-    "Caroline 'The Hump' Taormina",
-    "Marie 'Blind' Vastano",
-    "Mattie 'Four Fingers' Patania",
-    "Jolie 'The Cat' Vece",
-    "Kalyn 'Knuckles' Cardosi",
-    "Devon 'The Undertaker' Messinger",
-    "Evelina 'Princess' Dry",
-    "Bruna 'No Man' Herring",
-    "Monserrat 'The Lion' Levens",
-    "Clelia 'Bulletproof' Simes"
 ]

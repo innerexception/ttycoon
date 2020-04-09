@@ -108,4 +108,4 @@ const getPublicText = (val:number) => {
     return 'Bedlam'
 }
 
-const getTigerCount = (buildings:Array<Building>) => buildings.filter(b=>b.animal===AnimalType.TIGER).map(b=>b.animalCount).reduce((sum, next)=>sum+next, 0)
+export const getTigerCount = (buildings:Array<Building>) => buildings.filter(b=>b.animal===AnimalType.TIGER).map(b=>b.animalCount).reduce((sum, next)=>sum+next, 0)

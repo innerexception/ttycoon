@@ -2,9 +2,9 @@ import * as React from 'react'
 import AppStyles from '../../AppStyles';
 import { TopBar, Button, Icon, NumericInput, LightButton } from '../Shared'
 import { onPlacedBuilding, onHideModal, onStartPlaceBuilding } from '../uiManager/Thunks';
-import { Buildings } from '../../assets/Assets';
 import * as v4 from 'uuid'
 import { canAfford } from '../Util';
+import { Buildings } from '../../assets/Assets';
 
 export default class Buy extends React.Component {
 

@@ -3,13 +3,14 @@ import { store } from "../../App";
 import { defaults, SpriteIndexes, Sprites } from '../../assets/Assets'
 import { Modal, UIReducerActions, BuildingType, Animals, STATUS_DURATION } from "../../enum";
 import * as v4 from 'uuid'
-import { onShowSell, onReplaceState, onShowModal, onPlacedBuilding, onPlacedAnimal, onHideModal } from "../uiManager/Thunks";
+import { onShowSell, onReplaceState, onShowModal, onPlacedBuilding, onPlacedAnimal, onHideModal, onWin } from "../uiManager/Thunks";
 import { findValue, hasCapacity, getPublicInterest } from "../Util";
 import BuildingSprite from "./BuildingSprite";
 import MeatTruck from "./MeatTruck";
 import GuestSprite from "./GuestSprite";
 import Vehicle from "./Vehicle";
 import GuestVehicle from "./GuestVehicle";
+import { getTigerCount } from "./CanvasFrame";
 
 
 const CONTACT_VEHICLE_OFFSET = 50
@@ -409,6 +410,7 @@ export default class ParkScene extends Scene {
                     let anim=Animals.find(a=>a.assetName === b.animal)
                     if(state.meat >= anim.meat){
                         state.meat-=anim.meat
+                        if(state.meat < 10) state.status.noMeat = true
                         if(b.animalCount >= 2 && Phaser.Math.Between(0,1)===0){
                             if(hasCapacity(b, b.animal)){
                                 b.animalCount++
@@ -494,6 +496,7 @@ export default class ParkScene extends Scene {
                 this.sounds.cops.play()
                 state.cash-=10000
                 state.peta = 0
+                state.violations++
             }
             //get the day's take
             let take = state.peopleToday * state.admission
@@ -556,6 +559,13 @@ export default class ParkScene extends Scene {
             //marriage?
             //divorce?
         } 
+
+        if(getTigerCount(state.buildings) >= 50 && state.cash - state.loan >= 100000) onShowModal(Modal.WIN)
+        if(state.violations > 3){
+            this.swatVan.enter()
+            onShowModal(Modal.LOSE)
+        } 
+
         onReplaceState(state)
     }
 

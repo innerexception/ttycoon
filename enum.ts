@@ -184,3 +184,26 @@ export const StatusDescription = {
     lowEmployment: 'Few employees, buildings may be inactive!',
     no_meat: 'Not enough meat for the animals! This is going to be bad...'
 }
+
+export const EmployeeNames = [
+    "Alessio 'Old Guy' Strollo",
+    "Luis 'Three Toes' Lato",
+    "Melvin 'The Skinny' Pasquinelli",
+    "Brent 'The Peacemaker' Barraco",
+    "Severo 'Iron' Andreano",
+    "Adelmo 'Tommy Gun' Boord",
+    "Pollione 'The Dentist' Steady",
+    "Eliezer 'The Reaper' Ekins",
+    "Randall 'The Ring' Isabell",
+    "Balderico 'Smokes' Louison",
+    "Caroline 'The Hump' Taormina",
+    "Marie 'Blind' Vastano",
+    "Mattie 'Four Fingers' Patania",
+    "Jolie 'The Cat' Vece",
+    "Kalyn 'Knuckles' Cardosi",
+    "Devon 'The Undertaker' Messinger",
+    "Evelina 'Princess' Dry",
+    "Bruna 'No Man' Herring",
+    "Monserrat 'The Lion' Levens",
+    "Clelia 'Bulletproof' Simes"
+]

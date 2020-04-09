@@ -9,7 +9,7 @@ export default class LoanShark extends React.PureComponent {
 
     render(){
         return (
-            <div style={{...AppStyles.modal, height:'100px', width:'550px', justifyContent:'space-between', backgroundSize:'cover'}}>
+            <div style={{...AppStyles.modal, height:'300px', width:'550px', justifyContent:'space-between', backgroundSize:'cover'}}>
                 <h2>PAY UP</h2>
                 {Button(true, ()=>onGetLoan(1000), '$1000 Loan')}
                 {Button(true, ()=>onGetLoan(10000), '$10000 Loan')}

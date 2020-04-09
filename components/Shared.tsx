@@ -90,10 +90,10 @@ export const IconSelect = (value:string, onValueChange:Function, values: Array<s
         {LightButton(values.findIndex(v=>v===value) < values.length-1, ()=>onValueChange(values[values.findIndex(v=>v===value)+1]),'>')}
     </div>
 
-export const ProgressBar = (value:number, max:number, tooltip?:string) => 
+export const ProgressBar = (value:number, max:number, color:string, tooltip?:string) => 
     <Tooltip placement="bottom" trigger={tooltip ? ['hover'] : []} overlay={<h6>{tooltip}</h6>}>
-        <div style={{width:'100%', height:'100%', background:'transparent'}}>
-            <div style={{background:colors.lGreen, width:Math.round((value/max)*100)+'%', height:'100%'}}/>
+        <div style={{width:'100%', height:'100%', background:'transparent', border: '1px solid'}}>
+            <div style={{background:color, width:Math.round((value/max)*100)+'%', height:'100%'}}/>
         </div>
     </Tooltip>
 

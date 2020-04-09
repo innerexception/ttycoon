@@ -14,7 +14,7 @@ import GuestVehicle from "./GuestVehicle";
 
 const CONTACT_VEHICLE_OFFSET = 50
 const GUEST_VEHICLE_OFFSET = 25
-const DAY_LENGTH = 20
+const DAY_LENGTH = 15
 
 export default class ParkScene extends Scene {
 
@@ -43,6 +43,7 @@ export default class ParkScene extends Scene {
     emitter: GameObjects.Particles.ParticleEmitterManager
     meatEmitters: Array<GameObjects.Particles.ParticleEmitter>
     entranceBooth: GameObjects.Sprite
+    instruction: GameObjects.Text
 
     constructor(config){
         super(config)
@@ -85,8 +86,18 @@ export default class ParkScene extends Scene {
                     this.placingAnimal = null
                     break
                 case UIReducerActions.SUMMON_ANIMAL_TRUCK:
-                    this.showTalkingHead(Sprites.ANIMAL_DEALER, 'Sure thing boss, on my way.')
-                    this.animalTruck.enter(Modal.ANIMALS)
+                    if(!this.animalTruck.isParked){
+                        this.showTalkingHead(Sprites.ANIMAL_DEALER, 'Sure thing boss, on my way.')
+                        this.animalTruck.enter(Modal.ANIMALS)
+                        this.time.addEvent({
+                            delay: 25000,
+                            callback: ()=>{
+                                this.showTalkingHead(Sprites.ANIMAL_DEALER, 'Gotta go chief! Call me if you need more!')
+                                this.animalTruck.exit()
+                                onHideModal(Modal.ANIMALS)
+                            }
+                        })
+                    }
                     break
                 case UIReducerActions.DISMISS_ANIMAL_TRUCK:
                     this.showTalkingHead(Sprites.ANIMAL_DEALER, 'Later chief!')
@@ -97,7 +108,7 @@ export default class ParkScene extends Scene {
                     this.lenderCar.enter(Modal.PAY)
                     this.sounds.fast.play()
                     this.time.addEvent({
-                        delay: 10000,
+                        delay: 15000,
                         callback: ()=>{
                             this.showTalkingHead(Sprites.LOAN_SHARK, "Don't waste my time.")
                             this.lenderCar.exit()
@@ -206,12 +217,14 @@ export default class ParkScene extends Scene {
                 if(this.placingBuilding && this.placingBuilding.tintTopLeft === 0x00ff00){
                     this.placingBuilding.clearTint()
                     this.placingBuilding.clearAlpha()
+                    this.instruction.destroy()
                     onPlacedBuilding(this.tempBuilding)
                     return
                 }
                 if(this.placingAnimal && this.placingAnimal.tintTopLeft === 0x00ff00){
                     this.placingAnimal.clearTint()
                     this.placingAnimal.clearAlpha()
+                    this.instruction.destroy()
                     onPlacedAnimal(this.placingAnimalType, this.targetBuilding.id)
                     return
                 }
@@ -235,10 +248,12 @@ export default class ParkScene extends Scene {
             if(this.placingBuilding){
                 this.placingBuilding.destroy()
                 this.placingBuilding = null    
+                this.instruction.destroy()
             }
             if(this.placingAnimal){
                 this.placingAnimal.destroy()
                 this.placingAnimal = null
+                this.instruction.destroy()
             }
         })
         
@@ -248,11 +263,21 @@ export default class ParkScene extends Scene {
     startPlacingBuilding = (building:Building) => {
         this.placingBuilding = new BuildingSprite(this, this.map.widthInPixels/2, this.map.heightInPixels/2, building.type, building).setAlpha(0.5)
         this.tempBuilding = building
+        this.instruction = this.add.text(10,10,'(Esc to cancel placing, shift to rotate)', {
+            fontFamily: 'Arcology', 
+            fontSize: '8px',
+            color:'white'
+        })
     }
 
     startPlacingAnimal = (type:AnimalType) => {
         this.placingAnimal = this.add.sprite(this.map.widthInPixels/2, this.map.heightInPixels/2, type).setAlpha(0.5).setScale(0.6)
         this.placingAnimalType = type
+        this.instruction = this.add.text(10,10,'(Esc to cancel placing)',{
+            fontFamily: 'Arcology', 
+            fontSize: '8px',
+            color:'white'
+        })
     }
 
     sellBuilding = (buildingId:string) => {
@@ -287,10 +312,21 @@ export default class ParkScene extends Scene {
         if(building.angle === 90) {
             brect = new Geom.Rectangle(building.getBottomLeft().x, building.getBottomLeft().y, building.displayHeight, building.displayWidth)
         }
-        return this.plotSprites.find(p=>
+        let plotFit = this.plotSprites.find(p=>
             Phaser.Geom.Rectangle.ContainsRect(
                 new Geom.Rectangle(p.getTopLeft().x,p.getTopLeft().y,p.displayWidth, p.displayHeight), brect)
         )
+        if(plotFit){
+            let prect = plotFit.getBounds()
+            let existingBuilds = this.buildingSprites.filter(b=>Phaser.Geom.Rectangle.Contains(prect,b.x,b.y))
+            return !existingBuilds.find(b=>{
+                let brect = new Geom.Rectangle(b.getTopLeft().x, b.getTopLeft().y, b.displayWidth, b.displayHeight)
+                if(building.angle === 90) {
+                    brect = new Geom.Rectangle(b.getBottomLeft().x, b.getBottomLeft().y, b.displayHeight, b.displayWidth)
+                }
+                return Phaser.Geom.Rectangle.Contains(brect, building.x, building.y)
+            })
+        }
     }
 
     checkAnimalIntersection = (animal:GameObjects.Sprite) => {
@@ -341,7 +377,7 @@ export default class ParkScene extends Scene {
         state.status.lowEmployment = false
         let available = state.employees.length
         if(state.status.meth) available=available*2 
-        state.buildings.forEach(b=>{
+        state.buildings.filter(b=>b.type !== BuildingType.HOUSING).forEach(b=>{
             if(available <= 0){
                 b.isActive = false
                 this.setBuildingInactive(b.id)
@@ -351,7 +387,7 @@ export default class ParkScene extends Scene {
                 b.isActive = true
                 this.setBuildingActive(b.id)
             } 
-            if(b.type!==BuildingType.HOUSING) available--
+            available--
         })
 
         if(this.ticks % DAY_LENGTH === 0){
@@ -397,6 +433,7 @@ export default class ParkScene extends Scene {
                                 //otherwise it dies
                                 this.showTalkingHead(Sprites.TUTORIAL, "A new "+b.animal+" was born, but there wasn't space for it...make sure you have enough cages!")
                                 state.meat++
+                                state.peta++
                             }
                         } 
                     }
@@ -436,6 +473,7 @@ export default class ParkScene extends Scene {
                     }
                     if(b.type === BuildingType.PETTING_ARENA){
                         state.cash += state.peopleToday*20
+                        state.peta++
                         this.floatText(this.entranceBooth.x, this.entranceBooth.y, 'Petting Arena +$'+(state.peopleToday*20), 'green')
                     }
                     if(b.type === BuildingType.SNACK_HUT && state.meat >= 10){
@@ -446,7 +484,7 @@ export default class ParkScene extends Scene {
                 }
             })
             //run PETA check, if failed send in the cops
-            if(Phaser.Math.Between(state.peta, 50)===50){
+            if(state.peta > 3 && Phaser.Math.Between(state.peta, 25)===25){
                 this.swatVan.enter()
                 this.time.addEvent({
                     delay: 10000,
@@ -457,6 +495,7 @@ export default class ParkScene extends Scene {
                 this.showTalkingHead(Sprites.COPS, "We've recieved a tip about animal abuse at this location. You've been fined $10,000.")
                 this.sounds.cops.play()
                 state.cash-=10000
+                state.peta = 0
             }
             //get the day's take
             let take = state.peopleToday * state.admission
@@ -524,11 +563,11 @@ export default class ParkScene extends Scene {
 
     setBuildingActive = (id:string) => {
         let spr = this.buildingSprites.find(s=>s.id===id)
-        spr.alpha = 1
+        spr.clearInactive()
     }
     setBuildingInactive = (id:string) => {
         let spr = this.buildingSprites.find(s=>s.id===id)
-        spr.alpha = 0.7
+        spr.setInactive()
     }
 
     spawnPerson = () => {

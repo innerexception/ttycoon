@@ -1,5 +1,5 @@
 import * as React from 'react'
-import AppStyles from '../../AppStyles';
+import AppStyles, { colors } from '../../AppStyles';
 import Canvas from './Canvas'
 import { TopBar, Button, LightButton, RangeInput, Icon, ProgressBar, NumericInput } from '../Shared'
 import { Modal, StatusDescription, STATUS_DURATION, AnimalType, BuildingType } from '../../enum';
@@ -37,7 +37,7 @@ export default class CanvasFrame extends React.Component {
                         {Object.keys(state.status).map(key=>
                             <div style={{marginRight:'10px', display: state.status[key] ? 'block' : 'none'}}>
                                 {Icon(key, StatusDescription[key], true)}
-                                {state.status[key] && state.status[key].startDay && <div style={{height:'5px'}}>{ProgressBar(getStatusPercent(state.day, state.status[key]), 1)}</div>}
+                                {state.status[key] && state.status[key].startDay && <div style={{height:'5px'}}>{ProgressBar(getStatusPercent(state.day, state.status[key]), 1, colors.orange)}</div>}
                             </div>)}
                     </div>
                     <div style={{position:'absolute', top:40}}>
@@ -63,10 +63,10 @@ export default class CanvasFrame extends React.Component {
                         </div>
                         <div style={{marginRight:'25px'}}>
                             <div style={{display:'flex', alignItems:"center"}}>
-                                {Icon('audio','Demand. Determines how many people tour the park. Jimmy Goodman can help with this. Ticket prices and having many different types of animals helps too. Also stay out of trouble...', true)}<h6>: {getPublicText(getPublicInterest(state))}</h6>
+                                {Icon('audio','', true)}<div style={{height:'10px', width: '50px', marginLeft:'10px'}}>{ProgressBar(Math.max(0, 30-getPublicInterest(state)), 30, colors.lGreen, 'Demand. Determines how many people tour the park. Jimmy Goodman can help with this. Ticket prices and having many different types of animals helps too. Also stay out of trouble...')}</div>
                             </div>
                             <div style={{display:'flex', alignItems:"center"}}>
-                                {Icon('cops', 'Chance of police activity', true)}<h6>: {getPetaText(state.peta)}</h6>
+                                {Icon('cops', '', true)} <div style={{height:'10px', width: '50px', marginLeft:'10px'}}>{ProgressBar(state.peta, 50, colors.red, 'Chance of police activity')}</div>
                             </div>
                         </div>
                         <div>

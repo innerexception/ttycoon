@@ -25,9 +25,7 @@ export default class Buy extends React.Component {
                         </div>
                     )}
                 </div>
-                <div style={{display:'flex', justifyContent:'flex-end'}}>
-                    <div>{Button(true, ()=>onHideModal(), 'X')}</div>
-                </div>
+                <div>{Button(true, ()=>onHideModal(), 'Cancel')}</div>
             </div>
         )
     }

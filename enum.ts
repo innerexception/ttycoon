@@ -52,7 +52,8 @@ export enum AnimalType {
     ELEPHANT='elep',
     HIPPO='hippo',
     LEMUR='lemur',
-    MONKEY='monkey'
+    MONKEY='monkey',
+    LIGER='liger'
 }
 
 export enum BuildingType {
@@ -96,39 +97,52 @@ export enum Modal {
 
 export const Animals = [
     {
-        assetName: AnimalType.LION,
-        name: 'Lion',
-        meat: 5,
-        price: 2000,
-        interest: 2
-    },
-    {
         assetName: AnimalType.TIGER,
         name: 'Tiger',
         meat: 4,
         price: 2000,
-        interest: 2
+        interest: 2,
+        description: 'You need 50 to win. What more is there to say?'
+    },
+    {
+        assetName: AnimalType.LIGER,
+        name: 'Liger',
+        meat: 4,
+        price: 2000,
+        interest: 4,
+        description: 'Super interesting. Generates lots of demand. Skills are almost magical.'
+    },
+    {
+        assetName: AnimalType.LION,
+        name: 'Lion',
+        meat: 5,
+        price: 1000,
+        interest: 3,
+        description: 'A Classic. Generates lots of demand. Very sexy. Cheaper than a liger.'
     },
     {
         assetName: AnimalType.BEAR,
         name: 'Bear',
         meat: 4,
         price: 500,
-        interest: 1
+        interest: 1,
+        description: 'Bears combo well with lions and tigers. OH my. Cheap and generates low demand.'
     },
     {
         assetName: AnimalType.MONKEY,
         name: 'Monkey',
         meat: 1,
         price: 400,
-        interest: 1
+        interest: 1,
+        description: "Sometimes it's good to have a money on your back."
     },
     {
         assetName: AnimalType.LEMUR,
         name: 'Lemur',
         meat: 1,
         price: 200,
-        interest: 1
+        interest: 1,
+        description: "A dime a dozen, great for generating some quick demand."
     }
 ]
 

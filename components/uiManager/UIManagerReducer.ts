@@ -28,7 +28,7 @@ const appReducer = (state = getInitialState(), action:any):RState => {
             return { ...state, buildings: Array.from(state.buildings), engineEvent: UIReducerActions.PLACED_ANIMAL }
         case UIReducerActions.SELL:
             state.buildings = state.buildings.filter(p=>p.id !== state.sellingBuilding.id)
-            if(state.sellingBuilding.type === BuildingType.HOUSING) state.maxEmployees--
+            if(state.sellingBuilding.type === BuildingType.HOUSING) state.maxEmployees -= 2;
             (state.game.scene.getScene('map') as ParkScene).sellBuilding(state.sellingBuilding.id)
             return { ...state, buildings: Array.from(state.buildings), modal: null, engineEvent: null, maxEmployees: state.maxEmployees}
         case UIReducerActions.UPDATE_PLOTS:

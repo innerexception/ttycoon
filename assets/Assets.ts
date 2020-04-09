@@ -8,6 +8,7 @@ export const Sprites = {
     CASH: 'cash',
     MEAT: 'meat',
     TUTORIAL: 'tutorial',
+    no_employee: 'no_employee',
     Persons: [
         'person1',
         'person2',
@@ -45,11 +46,13 @@ export const defaults = [
     { key: 'meat4', resource: require('./food/meat4.png'), type: 'image' },
     { key: 'meat5', resource: require('./food/meat5.png'), type: 'image' },
     { key: 'tutorial', resource: require('./people/tutorial.png'), type: 'image' },
+    { key: 'no_employee', resource: require('./no_employee.png'), type: 'image' },
     { key: AnimalType.BEAR, resource: require('./animals/bear.png'), type: 'image' },
     { key: AnimalType.LION, resource: require('./animals/lion.png'), type: 'image' },
     { key: AnimalType.MONKEY, resource: require('./animals/monkey.png'), type: 'image' },
     { key: AnimalType.TIGER, resource: require('./animals/tiger.png'), type: 'image' },
     { key: AnimalType.LEMUR, resource: require('./animals/lemur.png'), type: 'image' },
+    { key: AnimalType.LIGER, resource: require('./animals/liger.png'), type: 'image' },
     { key: Sprites.ANIMAL_DEALER, resource: require('./people/animal_dealer.png'), type: 'image' },
     { key: Sprites.COPS, resource: require('./people/cop.png'), type: 'image' },
     { key: Sprites.MEAT_MAN, resource: require('./people/meat_man.png'), type: 'image' },
@@ -90,7 +93,7 @@ export const defaults = [
 ]
 
 export const SpriteIndexes = {
-    plot: 11,
+    plot: 8,
     avatarwork: 3,
     avatarfood: 1,
     avatarentertainment:3,

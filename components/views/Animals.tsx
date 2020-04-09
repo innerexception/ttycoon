@@ -13,12 +13,17 @@ export default class Sell extends React.Component {
         return (
             <div style={{...AppStyles.modal, height:'400px', width:'550px', justifyContent:'space-between', backgroundSize:'cover'}}>
                 <h2>I GOT IT ALL</h2>
-                {Animals.map(a=>
-                    <div style={{margin:'1em', display:'flex', cursor:'pointer', opacity: canAfford(a.price) ? 1 : 0.5}} onClick={canAfford(a.price) ? ()=>onStartPlaceAnimal(a.assetName):null}>
-                        <div style={{width:'24px', height:'24px', backgroundImage:'url('+require('../../assets/animals/'+a.assetName+'.png'), backgroundRepeat:'no-repeat'}}/>
-                        <h4 style={{marginLeft:'1em', width:'75%'}}>{a.name} ${a.price}</h4>
-                    </div>
-                )}
+                <div style={{height:'80%', overflow:'auto'}}>
+                    {Animals.map(a=>
+                        <div>
+                            <div style={{margin:'1em', display:'flex', cursor:'pointer', opacity: canAfford(a.price) ? 1 : 0.5}} onClick={canAfford(a.price) ? ()=>onStartPlaceAnimal(a.assetName):null}>
+                                <div style={{width:'24px', height:'24px', backgroundImage:'url('+require('../../assets/animals/'+a.assetName+'.png'), backgroundRepeat:'no-repeat'}}/>
+                                <h4 style={{marginLeft:'1em', width:'75%'}}>{a.name} ${a.price}</h4>
+                            </div>
+                            <h5>{a.description}</h5>
+                        </div>
+                    )}
+                </div>
                 <div>{Button(true, onDismissAnimalTruck, 'Bye')}</div>
             </div>
         )

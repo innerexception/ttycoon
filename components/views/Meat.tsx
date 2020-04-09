@@ -9,7 +9,7 @@ export default class Meat extends React.PureComponent {
 
     render(){
         return (
-            <div style={{...AppStyles.modal, height:'100px', width:'550px', justifyContent:'space-between', backgroundSize:'cover'}}>
+            <div style={{...AppStyles.modal, height:'300px', width:'550px', justifyContent:'space-between', backgroundSize:'cover'}}>
                 <h2>MEAT</h2>
                 {Button(canAffordMeat(1), ()=>onBuyMeat(1), 'Buy 1')}
                 {Button(canAffordMeat(10), ()=>onBuyMeat(10), 'Buy 10')}

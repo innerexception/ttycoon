@@ -66,7 +66,8 @@ declare enum AnimalType {
     ELEPHANT='elep',
     HIPPO='hippo',
     LEMUR='lemur',
-    MONKEY='monkey'
+    MONKEY='monkey',
+    LIGER='liger'
 }
 
 declare enum BuildingType {

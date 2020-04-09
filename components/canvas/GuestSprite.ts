@@ -42,4 +42,6 @@ export default class GuestSprite extends Physics.Arcade.Sprite {
         dir.x = dir.x/mag; dir.y = dir.y/mag;
         this.setVelocity(dir.x*speed, dir.y*speed)
     }
+
+    //TODO: add chatter
 }

@@ -22,6 +22,7 @@ export default class Vehicle extends GameObjects.Sprite {
     }
 
     enter = (modal?:Modal) => {
+        this.isParked = true
         this.setPosition(-100,this.yPos)
         this.scene.tweens.add({
             targets: this,
@@ -39,7 +40,6 @@ export default class Vehicle extends GameObjects.Sprite {
             this.marker.setVisible(false);
             (this.scene as ParkScene).selectIcon && (this.scene as ParkScene).selectIcon.setVisible(false)
             this.off('pointerdown')
-            this.isParked = false
             this.scene.tweens.add({
                 targets: this,
                 x: (this.scene as ParkScene).map.widthInPixels+100,
@@ -57,7 +57,8 @@ export default class Vehicle extends GameObjects.Sprite {
                             yoyo:true
                         })
                     }
-                }
+                },
+                onComplete: () => this.isParked = false
             })
         }
     }
@@ -77,7 +78,6 @@ export default class Vehicle extends GameObjects.Sprite {
                 repeat:-1
             })
         }
-        this.isParked = true
     }
 
     onUpdateEnter = () => {
@@ -85,7 +85,7 @@ export default class Vehicle extends GameObjects.Sprite {
             this.scene.tweens.add({
                 targets: this,
                 y: {
-                    to: this.y+2,
+                    to: this.y+1,
                     from: this.yPos
                 },
                 duration: 100,

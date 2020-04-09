@@ -42,6 +42,7 @@ export const defaults = [
     { key: 'booth', resource: require('./entrance.png'), type: 'image' },
     { key: 'vintage', resource: require('./vintage_car.png'), type: 'image' },
     { key: 'fancy', resource: require('./buyer_car.png'), type: 'image' },
+    { key: 'camo', resource: require('./camo.jpg'), type: 'image' },
     { key: 'taxi', resource: require('./taxi.png'), type: 'image' },
     { key: 'jalopy', resource: require('./jalopy_car.png'), type: 'image' },
     { key: 'meat1', resource: require('./food/meat1.png'), type: 'image' },
@@ -138,9 +139,9 @@ export const Buildings = [
         width: 32,
         height: 32,
         price: 100,
-        description: 'Holds 4 animals',
+        description: 'Holds 5 animals',
         name: 'Small Cage',
-        maxAnimals: 4
+        maxAnimals: 5
     },
     {
         asset: require('./buildings/m_pen.png'),
@@ -148,9 +149,9 @@ export const Buildings = [
         width: 64,
         height: 32,
         price: 200,
-        description: 'Holds 9 animals',
+        description: 'Holds 10 animals',
         name: 'Medium Cage',
-        maxAnimals: 9
+        maxAnimals: 10
     },
     {
         asset: require('./buildings/giftshop.png'),

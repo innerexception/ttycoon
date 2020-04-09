@@ -18,6 +18,10 @@ const appReducer = (state = getInitialState(), action:any):RState => {
             if(action.building.type === BuildingType.HOUSING) state.maxEmployees+=2
             state.cash-=action.building.price
             return { ...state, buildings: Array.from(state.buildings), modal: null, engineEvent: UIReducerActions.BUY, maxEmployees: state.maxEmployees}
+        case UIReducerActions.METH:
+            state.status.meth = { startDay: state.day }
+            state.cash -= 1000
+            return { ...state, engineEvent: UIReducerActions.METH }
         case UIReducerActions.PLACED_ANIMAL:
             state.buildings.forEach(b=>{
                 if(b.id === action.buildingId){
@@ -50,6 +54,7 @@ const appReducer = (state = getInitialState(), action:any):RState => {
             return { ...state, modal:null }
         case UIReducerActions.HIRE:
             state.employees.push(action.employee)
+            state.cash -= 500
             return { ...state, employees: Array.from(state.employees), engineEvent:null, modal:null }
         case UIReducerActions.RESET:
             return getInitialState()

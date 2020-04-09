@@ -31,9 +31,7 @@ export default class Login extends React.Component<Props> {
                 <div style={{padding:'10px'}}>
                     <div style={{marginBottom:'10px'}}>
                     {ButtonStrip([
-                        {text: 'Short', handler: ()=>{this.state.roar.play(); onInitSession(Difficulty.EASY)}, active: false},
-                        {text: 'Medium', handler: ()=>{this.state.roar.play(); onInitSession(Difficulty.MEDIUM)}, active: false},
-                        {text: 'Long', handler: ()=>{this.state.roar.play(); onInitSession(Difficulty.HARD)}, active: false},
+                        {text: 'Start', handler: ()=>{this.state.roar.play(); onInitSession(Difficulty.EASY)}, active: false},
                     ])}
                     </div>
                 </div>

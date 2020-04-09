@@ -29,7 +29,8 @@ export enum UIReducerActions {
     HIRE='hir',
     PAY='pay',
     SUMMON_LENDER='smnL',
-    LOAN='lnw'
+    LOAN='lnw',
+    METH='meth'
 }
 
 export const FONT_DEFAULT = {

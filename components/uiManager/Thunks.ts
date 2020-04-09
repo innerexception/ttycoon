@@ -136,6 +136,12 @@ export const onSummonLender = ()=> {
     })
 }
 
+export const onTakeMeth = ()=> {
+    dispatch({
+        type: UIReducerActions.METH,
+    })
+}
+
 export const onSetAdmission = (amount:number)=> {
     dispatch({
         type: UIReducerActions.SET_ADMISSION,

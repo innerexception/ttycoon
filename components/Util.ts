@@ -18,8 +18,8 @@ export const findValue = (data:Phaser.Data.DataManager, searchKey:string) => {
 
 export const hasCapacity = (building:Building, animal:AnimalType) => {
     if(building.animal && building.animal !== animal) return false
-    if(building.animal){
-        return building.animal === animal && building.animalCount < building.maxAnimals
+    if(building.animal && building.animal === animal){
+        return  building.animalCount < building.maxAnimals
     }
     return building.type === BuildingType.S_PEN || building.type === BuildingType.M_PEN || building.type === BuildingType.L_PEN
 }

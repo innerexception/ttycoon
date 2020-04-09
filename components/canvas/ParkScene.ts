@@ -88,7 +88,7 @@ export default class ParkScene extends Scene {
                     break
                 case UIReducerActions.SUMMON_ANIMAL_TRUCK:
                     if(!this.animalTruck.isParked){
-                        this.showTalkingHead(Sprites.ANIMAL_DEALER, 'Sure thing boss, on my way.')
+                        this.showTalkingHead(Sprites.ANIMAL_DEALER, "I'll meet you, but I can't stay long...")
                         this.animalTruck.enter(Modal.ANIMALS)
                         this.time.addEvent({
                             delay: 25000,
@@ -117,6 +117,9 @@ export default class ParkScene extends Scene {
                             onHideModal(Modal.PAY)
                         }
                     })
+                    break
+                case UIReducerActions.METH:
+                    this.cameras.main.shake(150, 0.01)
                     break
             }
     }
@@ -249,13 +252,12 @@ export default class ParkScene extends Scene {
             if(this.placingBuilding){
                 this.placingBuilding.destroy()
                 this.placingBuilding = null    
-                this.instruction.destroy()
             }
             if(this.placingAnimal){
                 this.placingAnimal.destroy()
                 this.placingAnimal = null
-                this.instruction.destroy()
             }
+            this.instruction.destroy()
         })
         
         this.input.mouse.disableContextMenu()
@@ -397,33 +399,33 @@ export default class ParkScene extends Scene {
             } 
 
             state.status.noMeat = false
-            state.buildings.forEach(b=>{
-                if(b.animalCount){
-                    let anim=Animals.find(a=>a.assetName === b.animal)
+            state.buildings.forEach(existingBuilding=>{
+                if(existingBuilding.animalCount){
+                    let anim=Animals.find(a=>a.assetName === existingBuilding.animal)
                     if(state.meat >= anim.meat){
                         state.meat-=anim.meat
                         if(state.meat < 10) state.status.noMeat = true
-                        if(b.animalCount >= 2 && Phaser.Math.Between(0,1)===0){
-                            if(hasCapacity(b, b.animal)){
-                                b.animalCount++
-                                let spr = this.buildingSprites.find(s=>s.id===b.id)
-                                spr.addAnimal(b)
-                                this.showText(spr.x, spr.y, 'A new '+b.animal+' was born!', 'green')
+                        if(existingBuilding.animalCount >= 2 && Phaser.Math.Between(0,1)===0){
+                            if(hasCapacity(existingBuilding, existingBuilding.animal)){
+                                existingBuilding.animalCount++
+                                let spr = this.buildingSprites.find(s=>s.id===existingBuilding.id)
+                                spr.addAnimal(existingBuilding)
+                                this.showText(spr.x, spr.y, 'A new '+existingBuilding.animal+' was born!', 'green')
                                 return
                             }
                             else {
                                 //see if there is another building with space
-                                let cap = state.buildings.find(b=>hasCapacity(b, b.animal))
+                                let cap = state.buildings.find(b=>hasCapacity(b, existingBuilding.animal))
                                 if(cap){
                                     cap.animalCount++
                                     let spr = this.buildingSprites.find(s=>s.id===cap.id)
-                                    cap.animal= b.animal
+                                    cap.animal= existingBuilding.animal
                                     spr.addAnimal(cap)
-                                    this.showText(spr.x, spr.y, 'A new '+b.animal+' was born! But there was no space so we moved it here.', 'green')
+                                    this.showText(spr.x, spr.y, 'A new '+existingBuilding.animal+' was born! But there was no space so we moved it here.', 'green')
                                     return
                                 }
                                 //otherwise it dies
-                                this.showTalkingHead(Sprites.TUTORIAL, "A new "+b.animal+" was born, but there wasn't space for it...make sure you have enough cages!")
+                                this.showTalkingHead(Sprites.TUTORIAL, "A new "+existingBuilding.animal+" was born, but there wasn't space for it...make sure you have enough cages!")
                                 state.meat++
                                 state.peta++
                             }
@@ -433,17 +435,17 @@ export default class ParkScene extends Scene {
                         state.status.noMeat = true
                         this.showTalkingHead(Sprites.TUTORIAL, "Animals are starving, make sure you have enough meat!")
                         let event = Phaser.Math.Between(0,3)
-                        let spr = this.buildingSprites.find(spr=>spr.id===b.id)
+                        let spr = this.buildingSprites.find(spr=>spr.id===existingBuilding.id)
                         switch(event){
                             //dies
-                            case 0: b.animalCount--
+                            case 0: existingBuilding.animalCount--
                                     state.peta++
                                     state.meat++
-                                    this.showText(spr.x, spr.y, 'A '+b.animal+' starved.', 'red')
-                                    if(b.animalCount <= 0){
-                                        b.animal = null
-                                        b.animalCount = 0
-                                        spr.removeAnimal(b)
+                                    this.showText(spr.x, spr.y, 'A '+existingBuilding.animal+' starved.', 'red')
+                                    if(existingBuilding.animalCount <= 0){
+                                        existingBuilding.animal = null
+                                        existingBuilding.animalCount = 0
+                                        spr.removeAnimal(existingBuilding)
                                     }
                                     break
                             //eats employee
@@ -458,17 +460,17 @@ export default class ParkScene extends Scene {
                     }
                 }
 
-                if(b.isActive){
-                    if(b.type === BuildingType.GIFT_SHOP){
+                if(existingBuilding.isActive){
+                    if(existingBuilding.type === BuildingType.GIFT_SHOP){
                         state.cash += state.peopleToday*5
                         this.floatText(this.entranceBooth.x, this.entranceBooth.y, 'Gift Shop +$'+(state.peopleToday*5), 'green')
                     }
-                    if(b.type === BuildingType.PETTING_ARENA){
+                    if(existingBuilding.type === BuildingType.PETTING_ARENA){
                         state.cash += state.peopleToday*20
                         state.peta++
                         this.floatText(this.entranceBooth.x, this.entranceBooth.y+30, 'Petting Arena +$'+(state.peopleToday*20), 'green')
                     }
-                    if(b.type === BuildingType.SNACK_HUT && state.meat >= 10){
+                    if(existingBuilding.type === BuildingType.SNACK_HUT && state.meat >= 10){
                         state.meat -= 10
                         state.cash += state.peopleToday*10 
                         this.floatText(this.entranceBooth.x, this.entranceBooth.y+60, 'Snack Hut +$'+(state.peopleToday*10), 'green')
@@ -512,7 +514,7 @@ export default class ParkScene extends Scene {
             if(state.status.meth){
                 let rager
                 state.employees.forEach(e=>{
-                    if(Phaser.Math.Between(0,e.riskLevel)===0){
+                    if(Phaser.Math.Between(0,20-e.riskLevel)===0){
                         rager = e
                     }
                 })
@@ -533,7 +535,7 @@ export default class ParkScene extends Scene {
             //arrest
             let arrest
             state.employees.forEach(e=>{
-                if(Phaser.Math.Between(0,50-e.riskLevel)===0){
+                if(Phaser.Math.Between(0,30-e.riskLevel)===0){
                     arrest = e
                 }
             })
@@ -615,14 +617,14 @@ export default class ParkScene extends Scene {
 
     showText = (x:number, y:number, text:string, color:string, duration?:number) => {
         let font = this.add.text(x-30, y, text,  {...FONT_DEFAULT, color})
-        font.setStroke('#000000', 2);
+        font.setStroke('#000000', 4);
         font.setWordWrapWidth(200)
         font.setDepth(4)
         this.add.tween({
             targets: font,
             ease: 'Stepped',
             easeParams:[4],
-            duration: duration ? duration*1000 : 1500,
+            duration: duration ? duration*1000 : 3000,
             y: y,
             onComplete: ()=>{
                 font.destroy()
@@ -632,7 +634,7 @@ export default class ParkScene extends Scene {
 
     floatText = (x:number, y:number, text:string, color:string) => {
         let font = this.add.text(x-30, y, text, {...FONT_DEFAULT, color})
-        font.setStroke('#000000', 2);
+        font.setStroke('#000000', 4);
         font.setWordWrapWidth(200)
         font.setDepth(4)
         this.add.tween({

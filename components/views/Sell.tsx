@@ -12,8 +12,10 @@ export default class Sell extends React.Component {
                 <div style={AppStyles.modalInner}>
                     <h2 style={{textAlign:'center'}}>{Icon('construction', '', true)}{Icon('construction', '', true)}CLEAR{Icon('construction', '', true)}{Icon('construction', '', true)}</h2>
                     <h4>Really destroy {store.getState().sellingBuilding.type}?</h4>
-                    <div>{Button(true, ()=>onSellBuilding(store.getState().sellingBuilding.id), 'Yes')}</div>
-                    <div style={{display:'flex', justifyContent:'flex-end'}}>{Button(true, ()=>onHideModal(), 'No')}</div>
+                    <div style={{display:'flex', justifyContent:'flex-end'}}>
+                        {Button(true, ()=>onSellBuilding(store.getState().sellingBuilding.id), 'Yes')}
+                        {Button(true, ()=>onHideModal(), 'No')}
+                    </div>
                 </div>
             </div>
         )

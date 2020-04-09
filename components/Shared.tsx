@@ -18,7 +18,7 @@ export const TopBar = (text:string|JSX.Element) =>
     </div>
 
 export const Button = (enabled:boolean, handler:any, text:JSX.Element | string, toolTip?:string) => 
-    <Tooltip placement="right" trigger={toolTip ? ['hover'] : []} overlay={<h6>{toolTip}</h6>}>
+    <Tooltip placement="right" trigger={toolTip ? ['hover'] : []} overlay={<h3>{toolTip}</h3>}>
         <div onClick={handler} style={{...AppStyles.buttonInner, opacity: enabled ? 1 : 0.5, pointerEvents: enabled ? 'all' : 'none'}}>{text}</div>
     </Tooltip>
 

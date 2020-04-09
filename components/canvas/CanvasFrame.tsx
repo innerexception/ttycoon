@@ -5,7 +5,7 @@ import { TopBar, Button, LightButton, RangeInput, Icon, ProgressBar, NumericInpu
 import { Modal, StatusDescription, STATUS_DURATION, AnimalType, BuildingType } from '../../enum';
 import Lose from '../views/Lose';
 import Win from '../views/Win';
-import {onMuteAudio, onSummonAnimalTruck, onSetAdmission, onShowModal, onSummonLender } from '../uiManager/Thunks'
+import {onMuteAudio, onSummonAnimalTruck, onSetAdmission, onShowModal, onSummonLender, onTakeMeth } from '../uiManager/Thunks'
 import Buy from '../views/Buy';
 import Sell from '../views/Sell';
 import Animals from '../views/Animals'
@@ -18,7 +18,12 @@ import LoanShark from '../views/LoanShark';
 import { getPublicInterest } from '../Util';
 import Tutorial from '../views/Tutorial';
 
-export default class CanvasFrame extends React.Component {
+interface Props {
+    cash:number
+    loan:number
+}
+
+export default class CanvasFrame extends React.Component<Props> {
 
     render(){
         let state = store.getState()
@@ -30,10 +35,10 @@ export default class CanvasFrame extends React.Component {
                     {state.modal === Modal.BUY && <Buy/>}
                     {state.modal === Modal.SELL && <Sell/>}
                     {state.modal === Modal.ANIMALS && <Animals/>}
-                    {state.modal === Modal.MEAT && <Meat/>}
+                    {state.modal === Modal.MEAT && <Meat cash={this.props.cash}/>}
                     {state.modal === Modal.ADS && <Advertising/>}
                     {state.modal === Modal.PRISON && <Hiring/>}
-                    {state.modal === Modal.PAY && <LoanShark/>}
+                    {state.modal === Modal.PAY && <LoanShark cash={this.props.cash} loan={this.props.loan}/>}
                     {state.modal === Modal.TUTORIAL && <Tutorial/>}
                     <div style={{position:'absolute', top:70, right:10, display:'flex'}}>
                         {Object.keys(state.status).map(key=>
@@ -53,11 +58,11 @@ export default class CanvasFrame extends React.Component {
                             <div style={{display:'flex', alignItems:'center'}}>
                                 <h5>{Icon('phone', 'Contacts', true)}</h5>
                                 <h5>:</h5>
-                                <div onClick={onSummonLender}>{Icon('shady_lender', "Howard Steinberg (Loans)", true)}</div>
                                 <div onClick={()=>onShowModal(Modal.BUY)}>{Icon('builder', "Scooter's Boys (Construction)", true)}</div>
                                 <div onClick={onSummonAnimalTruck}>{Icon('animal_dealer', "Bob's Exotics (Animals)", true)}</div>
                                 <div onClick={()=>onShowModal(Modal.PRISON)}>{Icon('warden', "Warden James (Hiring)", true)}</div>
                                 <div onClick={()=>onShowModal(Modal.ADS)}>{Icon('ad_man', "Jimmy Goodman (Advertising)", true)}</div>
+                                <div onClick={onSummonLender}>{Icon('shady_lender', "Howard Steinberg (Loans)", true)}</div>
                             </div>
                             <div>
                                 <h6 style={{display:'flex', alignItems:'center'}}>Admission {NumericInput(state.admission, (val)=>onSetAdmission(val), 1000000, 0)}</h6>
@@ -77,6 +82,11 @@ export default class CanvasFrame extends React.Component {
                             </div>
                             <div style={{display:'flex', alignItems:"center"}}>
                                 {Icon('CASH', 'Cash on hand', true)}<h6>: {state.cash}</h6>
+                            </div>
+                        </div>
+                        <div>
+                            <div style={{display:'flex', alignItems:"center"}}>
+                                {Button(true, onTakeMeth, Icon('meth', '', true), "When it's meth time, all employees can run 2 buildings!")}<h6>: $1000</h6>
                             </div>
                         </div>
                     </div>

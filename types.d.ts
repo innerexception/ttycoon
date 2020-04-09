@@ -49,7 +49,8 @@ declare enum Modal {
     BUYER='buyer',
     ADS='adz',
     PRISON='priz',
-    PAY='pay'
+    PAY='pay',
+    TUTORIAL='tut'
 }
 
 declare enum AdType {

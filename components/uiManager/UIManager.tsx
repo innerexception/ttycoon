@@ -18,8 +18,8 @@ export default class UIManager extends React.Component<Props> {
     render(){
         return (
             <div style={styles.frame}>
-                {/* {!this.props.difficulty && <Splash/>} */}
-                <CanvasFrame {...this.props}/>
+                {!this.props.difficulty && <Splash/>}
+                {this.props.difficulty && <CanvasFrame {...this.props}/>}
             </div>
         )
     }

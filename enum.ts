@@ -32,6 +32,12 @@ export enum UIReducerActions {
     LOAN='lnw'
 }
 
+export const FONT_DEFAULT = {
+    fontFamily: 'Body', 
+    fontSize: '12px',
+    color:'white'
+}
+
 export const STATUS_DURATION = 5
 
 export const StaticLayers = [
@@ -92,7 +98,8 @@ export enum Modal {
     BUYER='buyer',
     ADS='adz',
     PRISON='priz',
-    PAY='pay'
+    PAY='pay',
+    TUTORIAL='tut'
 }
 
 export const Animals = [

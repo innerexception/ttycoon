@@ -13,7 +13,7 @@ export const colors = {
     purple: '#360097',
     pink: '#ff0097',
     red: '#dc0000',
-    orange: '#ff6500',
+    orange: '#c1560d',
     ddBrown: '#392414',
     background: 'black',
 }
@@ -32,13 +32,12 @@ export default {
     buttonOuter: {
         cursor:'pointer',
         textAlign:'center' as 'center',
-        border: '3px solid',
         background: 'white',
         padding:'2px',
         color:colors.grey3
     },
     buttonInner: {
-        border:'1px solid', padding:'5px',
+        padding:'5px',
         background:'black',
         cursor:'pointer'
     },
@@ -69,18 +68,22 @@ export default {
         marginBottom:'1px'
     },
     modal: {
-        background:colors.background,
+        backgroundImage: 'url('+require('./assets/Tigre.png')+')', 
+        backgroundColor:'darkorange',
+        backgroundSize:'12px',
         position:'absolute' as 'absolute',
         maxWidth: '80%',
         maxHeight: '80%',
         margin: 'auto',
-        display:'flex',
-        flexDirection: 'column' as 'column',
-        justifyContent: 'flex-start',
         zIndex:2,
-        border:'5px solid',
-        padding:'10px',
-        top:0,left:0,bottom:0,right:0
+        padding:'13px',
+        top:0,left:0,bottom:0,right:0,
+        border:'1px solid'
+    },
+    modalInner: {
+        background: colors.background,
+        width:'100%',
+        height:'100%'
     },
     bottomBarContent: {
         background:' rgb(90, 90, 90)',

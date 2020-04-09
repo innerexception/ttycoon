@@ -9,12 +9,14 @@ export default class Meat extends React.PureComponent {
 
     render(){
         return (
-            <div style={{...AppStyles.modal, height:'300px', width:'550px', justifyContent:'space-between', backgroundSize:'cover'}}>
-                <h2>MEAT</h2>
-                {Button(canAffordMeat(1), ()=>onBuyMeat(1), 'Buy 1')}
-                {Button(canAffordMeat(10), ()=>onBuyMeat(10), 'Buy 10')}
-                {Button(canAffordMeat(100), ()=>onBuyMeat(100), 'Buy 100')}
-                <div>{Button(true, ()=>onHideModal(), 'DONE')}</div>
+            <div style={{...AppStyles.modal, height:'191px', width:'351px'}}>
+                <div style={AppStyles.modalInner}>
+                    <h2 style={{textAlign:'center'}}>{Icon('MEAT', '', true)}{Icon('MEAT', '', true)}MEAT{Icon('MEAT', '', true)}{Icon('MEAT', '', true)}</h2>
+                    {Button(canAffordMeat(1), ()=>onBuyMeat(1), 'Buy 1')}
+                    {Button(canAffordMeat(10), ()=>onBuyMeat(10), 'Buy 10')}
+                    {Button(canAffordMeat(100), ()=>onBuyMeat(100), 'Buy 100')}
+                    <div style={{display:'flex', justifyContent:'flex-end'}}>{Button(true, ()=>onHideModal(), 'DONE')}</div>
+                </div>
             </div>
         )
     }

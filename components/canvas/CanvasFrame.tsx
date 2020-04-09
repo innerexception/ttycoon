@@ -16,6 +16,7 @@ import Hiring from '../views/Hiring';
 import { store } from '../../App';
 import LoanShark from '../views/LoanShark';
 import { getPublicInterest } from '../Util';
+import Tutorial from '../views/Tutorial';
 
 export default class CanvasFrame extends React.Component {
 
@@ -33,6 +34,7 @@ export default class CanvasFrame extends React.Component {
                     {state.modal === Modal.ADS && <Advertising/>}
                     {state.modal === Modal.PRISON && <Hiring/>}
                     {state.modal === Modal.PAY && <LoanShark/>}
+                    {state.modal === Modal.TUTORIAL && <Tutorial/>}
                     <div style={{position:'absolute', top:70, right:10, display:'flex'}}>
                         {Object.keys(state.status).map(key=>
                             <div style={{marginRight:'10px', display: state.status[key] ? 'block' : 'none'}}>
@@ -58,7 +60,7 @@ export default class CanvasFrame extends React.Component {
                                 <div onClick={()=>onShowModal(Modal.ADS)}>{Icon('ad_man', "Jimmy Goodman (Advertising)", true)}</div>
                             </div>
                             <div>
-                                <h6 style={{display:'flex', alignItems:'center'}}>Admission {Icon('CASH', '')}{NumericInput(state.admission, (val)=>onSetAdmission(val), 1000000, 0)}</h6>
+                                <h6 style={{display:'flex', alignItems:'center'}}>Admission {NumericInput(state.admission, (val)=>onSetAdmission(val), 1000000, 0)}</h6>
                             </div>
                         </div>
                         <div style={{marginRight:'25px'}}>

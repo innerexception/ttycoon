@@ -124,7 +124,11 @@ export const Icons = {
     cops: require('./people/cop.png'),
     audio: require('./audio.png'),
     doc: require('./people/tutorial.png'),
-    TIGER: require('./animals/tiger.png')
+    TIGER: require('./Tigre.png'),
+    ads: require('./ads.png'),
+    sale: require('./sale.png'),
+    convict: require('./convict.png'),
+    construction: require('./construction.png')
 }
 
 export const Buildings = [

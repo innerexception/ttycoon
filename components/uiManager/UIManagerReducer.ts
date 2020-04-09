@@ -6,7 +6,7 @@ import { getAnimalCount } from '../Util';
 const appReducer = (state = getInitialState(), action:any):RState => {
     switch (action.type) {
         case UIReducerActions.NEW_SESSION:
-            return { ...state, engineEvent: null, difficulty: action.difficulty}
+            return { ...state, engineEvent: null, difficulty: action.difficulty, modal:Modal.TUTORIAL}
         case UIReducerActions.SHOW_MODAL: 
             return { ...state, modal: action.modal, engineEvent:null }
         case UIReducerActions.SHOW_BUY:

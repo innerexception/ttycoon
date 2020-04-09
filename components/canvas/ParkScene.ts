@@ -1,7 +1,7 @@
 import { Scene, GameObjects, Tilemaps, Geom, Physics } from "phaser";
 import { store } from "../../App";
 import { defaults, SpriteIndexes, Sprites } from '../../assets/Assets'
-import { Modal, UIReducerActions, BuildingType, Animals, STATUS_DURATION } from "../../enum";
+import { Modal, UIReducerActions, BuildingType, Animals, STATUS_DURATION, FONT_DEFAULT } from "../../enum";
 import * as v4 from 'uuid'
 import { onShowSell, onReplaceState, onShowModal, onPlacedBuilding, onPlacedAnimal, onHideModal, onWin } from "../uiManager/Thunks";
 import { findValue, hasCapacity, getPublicInterest } from "../Util";
@@ -264,21 +264,13 @@ export default class ParkScene extends Scene {
     startPlacingBuilding = (building:Building) => {
         this.placingBuilding = new BuildingSprite(this, this.map.widthInPixels/2, this.map.heightInPixels/2, building.type, building).setAlpha(0.5)
         this.tempBuilding = building
-        this.instruction = this.add.text(10,10,'(Esc to cancel placing, shift to rotate)', {
-            fontFamily: 'Arcology', 
-            fontSize: '8px',
-            color:'white'
-        })
+        this.instruction = this.add.text(10,10,'(Esc to cancel placing, shift to rotate)', FONT_DEFAULT)
     }
 
     startPlacingAnimal = (type:AnimalType) => {
         this.placingAnimal = this.add.sprite(this.map.widthInPixels/2, this.map.heightInPixels/2, type).setAlpha(0.5).setScale(0.6)
         this.placingAnimalType = type
-        this.instruction = this.add.text(10,10,'(Esc to cancel placing)',{
-            fontFamily: 'Arcology', 
-            fontSize: '8px',
-            color:'white'
-        })
+        this.instruction = this.add.text(10,10,'(Esc to cancel placing)', FONT_DEFAULT)
     }
 
     sellBuilding = (buildingId:string) => {
@@ -474,12 +466,12 @@ export default class ParkScene extends Scene {
                     if(b.type === BuildingType.PETTING_ARENA){
                         state.cash += state.peopleToday*20
                         state.peta++
-                        this.floatText(this.entranceBooth.x, this.entranceBooth.y+20, 'Petting Arena +$'+(state.peopleToday*20), 'green')
+                        this.floatText(this.entranceBooth.x, this.entranceBooth.y+30, 'Petting Arena +$'+(state.peopleToday*20), 'green')
                     }
                     if(b.type === BuildingType.SNACK_HUT && state.meat >= 10){
                         state.meat -= 10
                         state.cash += state.peopleToday*10 
-                        this.floatText(this.entranceBooth.x, this.entranceBooth.y+30, 'Snack Hut +$'+(state.peopleToday*10), 'green')
+                        this.floatText(this.entranceBooth.x, this.entranceBooth.y+60, 'Snack Hut +$'+(state.peopleToday*10), 'green')
                     }
                 }
             })
@@ -494,6 +486,7 @@ export default class ParkScene extends Scene {
                 })
                 this.showTalkingHead(Sprites.COPS, "We've recieved a tip about animal abuse at this location. You've been fined $10,000.")
                 this.sounds.cops.play()
+                this.showTalkingHead(Sprites.TUTORIAL, "Careful! If the cops show up more than 3 times, they'll put you in prison like me!")
                 state.cash-=10000
                 state.peta = 0
                 state.violations++
@@ -621,11 +614,7 @@ export default class ParkScene extends Scene {
     }
 
     showText = (x:number, y:number, text:string, color:string, duration?:number) => {
-        let font = this.add.text(x-30, y, text, {
-            fontFamily: 'Arcology', 
-            fontSize: '8px',
-            color
-        })
+        let font = this.add.text(x-30, y, text,  {...FONT_DEFAULT, color})
         font.setStroke('#000000', 2);
         font.setWordWrapWidth(200)
         font.setDepth(4)
@@ -642,11 +631,7 @@ export default class ParkScene extends Scene {
     }
 
     floatText = (x:number, y:number, text:string, color:string) => {
-        let font = this.add.text(x-30, y, text, {
-            fontFamily: 'Arcology', 
-            fontSize: '8px',
-            color
-        })
+        let font = this.add.text(x-30, y, text, {...FONT_DEFAULT, color})
         font.setStroke('#000000', 2);
         font.setWordWrapWidth(200)
         font.setDepth(4)

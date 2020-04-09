@@ -9,13 +9,16 @@ export default class LoanShark extends React.PureComponent {
 
     render(){
         return (
-            <div style={{...AppStyles.modal, height:'300px', width:'550px', justifyContent:'space-between', backgroundSize:'cover'}}>
-                <h2>PAY UP</h2>
-                {Button(true, ()=>onGetLoan(1000), '$1000 Loan')}
-                {Button(true, ()=>onGetLoan(10000), '$10000 Loan')}
-                {Button(canAfford(1000), ()=>onPay(1000), 'Pay $1000')}
-                {Button(canAfford(10000), ()=>onPay(10000), 'Pay $10000')}
-                <div>{Button(true, ()=>onHideModal(), 'DONE')}</div>
+            <div style={{...AppStyles.modal, height:'259px', width:'451px'}}>
+                <div style={AppStyles.modalInner}>
+                    <h2 style={{textAlign:'center'}}>{Icon('CASH', '', true)}{Icon('CASH', '', true)}PAY UP!{Icon('CASH', '', true)}{Icon('CASH', '', true)}</h2>
+                    <h3 style={{textAlign:'center'}}>You owe me ${store.getState().loan}</h3>
+                    {Button(true, ()=>onGetLoan(1000), 'Take $1000 Loan')}
+                    {Button(true, ()=>onGetLoan(10000), 'Take $10000 Loan')}
+                    {Button(canAfford(1000), ()=>onPay(1000), 'Pay $1000')}
+                    {Button(canAfford(10000), ()=>onPay(10000), 'Pay $10000')}
+                    <div style={{display:'flex', justifyContent:'flex-end'}}>{Button(true, ()=>onHideModal(), 'DONE')}</div>
+                </div>
             </div>
         )
     }

@@ -50,7 +50,7 @@ export const RangeSpinner = (value:number, onValueChange:Function, leftLabel:str
 
 export const LightButton = (enabled:boolean, handler:any, text:string, tab?:boolean) => 
     <div onClick={handler} style={{...AppStyles.buttonInner, opacity: enabled ? 1 : 0.5, pointerEvents: enabled ? 'all' : 'none', 
-        textAlign:'center', borderBottom: tab && !enabled ? '1px dashed':'1px solid', borderBottomLeftRadius: tab?0:'3px', borderBottomRightRadius:tab?0:'3px', marginBottom: tab ? '-1px' : 0}}>{text}</div>
+        textAlign:'center', marginBottom: tab ? '-1px' : 0}}>{text}</div>
 
 // export const Warning = (handler:any, icon:string, color:string) => 
 //     <div onClick={handler} style={{...AppStyles.buttonInner, ...AppStyles.bounce, backgroundColor:color, color:'red', position:'absolute', top:-35, right:10, border:'none' }}>{Icon(icon, '')}!</div>
@@ -65,7 +65,7 @@ export const RangeInput = (value:number, onValueChange:Function, leftLabel:JSX.E
 export const NumericInput = (value:number, onValueChange:Function, max?:number, min?:number) => 
     <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
         {LightButton(min || min===0 ? value > min:true, ()=>onValueChange(value-1),'<')}
-        <div style={{width:'2em', textAlign:"center"}}>{value}</div>
+        <div style={{display:'flex', alignItems:"center"}}>{Icon('CASH','')}{value}</div>
         {LightButton(max ? value < max:true, ()=>onValueChange(value+1),'>')}
     </div>
 
@@ -91,7 +91,7 @@ export const IconSelect = (value:string, onValueChange:Function, values: Array<s
     </div>
 
 export const ProgressBar = (value:number, max:number, color:string, tooltip?:string) => 
-    <Tooltip placement="bottom" trigger={tooltip ? ['hover'] : []} overlay={<h6>{tooltip}</h6>}>
+    <Tooltip placement="bottom" trigger={tooltip ? ['hover'] : []} overlay={<h3>{tooltip}</h3>}>
         <div style={{width:'100%', height:'100%', background:'transparent', border: '1px solid'}}>
             <div style={{background:color, width:Math.round((value/max)*100)+'%', height:'100%'}}/>
         </div>
@@ -112,7 +112,7 @@ export const ProgressBar = (value:number, max:number, color:string, tooltip?:str
 //     </div>
     
 export const Icon = (iconName:string, tooltip:string, large?:boolean) => 
-    <Tooltip placement="bottom" trigger={tooltip ? ['hover'] : []} overlay={<h6>{tooltip}</h6>}>
+    <Tooltip placement="bottom" trigger={tooltip ? ['hover'] : []} overlay={<h3>{tooltip}</h3>}>
         <div style={{cursor:'pointer', width:large ? '32px' : '20px', height: large ? '32px' : '20px', backgroundImage:'url('+Icons[iconName]+')', backgroundRepeat:'no-repeat', backgroundSize:'contain', backgroundPosition:"center", display:'inline-block'}}/>
     </Tooltip>
 

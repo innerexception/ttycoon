@@ -20,14 +20,9 @@ export const findValue = (data:Phaser.Data.DataManager, searchKey:string) => {
 export const hasCapacity = (building:Building, animal:AnimalType) => {
     if(building.animal && building.animal !== animal) return false
     if(building.animal){
-        switch(building.type){
-            case BuildingType.S_PEN: return building.animal === animal && building.animalCount < 3
-            case BuildingType.M_PEN: return building.animal === animal && building.animalCount < 6
-            case BuildingType.L_PEN: return building.animal === animal && building.animalCount < 9
-            default: return false
-        }
+        return building.animal === animal && building.animalCount < building.maxAnimals
     }
-    return true
+    return building.type === BuildingType.S_PEN || building.type === BuildingType.M_PEN || building.type === BuildingType.L_PEN
 }
 
 export const getRandomInmates = () => {
@@ -49,7 +44,7 @@ export const getPublicInterest = (state:RState) => {
         return 0
     }).reduce((sum, next)=>sum+next, 0)
     if(state.status.celebrityEndorsement) personChance -= 10
-    if(state.status.employeeAccident) personChance += 10
+    if(state.status.employeeAccident) personChance += 20
     if(state.status.internet) personChance -= 5
     if(state.status.billboard) personChance -= 5
     if(state.status.radio) personChance -= 10

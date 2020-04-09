@@ -101,7 +101,7 @@ export const Animals = [
         name: 'Tiger',
         meat: 4,
         price: 2000,
-        interest: 2,
+        interest: 1,
         description: 'You need 50 to win. What more is there to say?'
     },
     {
@@ -109,7 +109,7 @@ export const Animals = [
         name: 'Liger',
         meat: 4,
         price: 2000,
-        interest: 4,
+        interest: 3,
         description: 'Super interesting. Generates lots of demand. Skills are almost magical.'
     },
     {
@@ -117,7 +117,7 @@ export const Animals = [
         name: 'Lion',
         meat: 5,
         price: 1000,
-        interest: 3,
+        interest: 2,
         description: 'A Classic. Generates lots of demand. Very sexy. Cheaper than a liger.'
     },
     {

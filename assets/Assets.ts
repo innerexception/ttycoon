@@ -141,18 +141,8 @@ export const Buildings = [
         height: 32,
         price: 200,
         description: 'Holds 9 animals',
-        name: 'Med Cage',
+        name: 'Medium Cage',
         maxAnimals: 9
-    },
-    {
-        asset: require('./buildings/l_pen.png'),
-        type: BuildingType.L_PEN,
-        width: 64,
-        height: 64,
-        price: 1000,
-        description: 'Holds 18 animals',
-        name: 'Large Cage',
-        maxAnimals: 18
     },
     {
         asset: require('./buildings/giftshop.png'),

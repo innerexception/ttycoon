@@ -71,7 +71,7 @@ export default class CanvasFrame extends React.Component {
                         </div>
                         <div>
                             <div style={{display:'flex', alignItems:"center"}}>
-                                {Icon('MEAT','Meat. All your animals need it. Buy it from the meat truck that comes every 4 days!', true)}<h6>: {state.meat}</h6>
+                                {Icon('MEAT','Meat. All your animals need it. Buy it from the meat truck that comes every 3 days!', true)}<h6>: {state.meat}</h6>
                             </div>
                             <div style={{display:'flex', alignItems:"center"}}>
                                 {Icon('CASH', 'Cash on hand', true)}<h6>: {state.cash}</h6>

@@ -317,14 +317,14 @@ export default class ParkScene extends Scene {
                 new Geom.Rectangle(p.getTopLeft().x,p.getTopLeft().y,p.displayWidth, p.displayHeight), brect)
         )
         if(plotFit){
-            let prect = plotFit.getBounds()
-            let existingBuilds = this.buildingSprites.filter(b=>Phaser.Geom.Rectangle.Contains(prect,b.x,b.y))
+            let prect = new Geom.Rectangle(plotFit.getTopLeft().x, plotFit.getTopLeft().y, plotFit.displayWidth, plotFit.displayHeight)
+            let existingBuilds = this.buildingSprites.filter(b=>Phaser.Geom.Rectangle.Contains(prect,b.getTopLeft().x,b.getTopLeft().y))
             return !existingBuilds.find(b=>{
-                let brect = new Geom.Rectangle(b.getTopLeft().x, b.getTopLeft().y, b.displayWidth, b.displayHeight)
-                if(building.angle === 90) {
-                    brect = new Geom.Rectangle(b.getBottomLeft().x, b.getBottomLeft().y, b.displayHeight, b.displayWidth)
+                let erect = new Geom.Rectangle(b.getTopLeft().x, b.getTopLeft().y, b.displayWidth, b.displayHeight)
+                if(b.angle === 90) {
+                    erect = new Geom.Rectangle(b.getBottomLeft().x, b.getBottomLeft().y, b.displayHeight, b.displayWidth)
                 }
-                return Phaser.Geom.Rectangle.Contains(brect, building.x, building.y)
+                return Phaser.Geom.Rectangle.Overlaps(erect, brect)
             })
         }
     }
@@ -392,15 +392,13 @@ export default class ParkScene extends Scene {
 
         if(this.ticks % DAY_LENGTH === 0){
             state.day++
-            if(state.day % 4 === 0){
+            if(state.day % 3 === 0){
                 this.showTalkingHead(Sprites.MEAT_MAN, 'Get yer meat here! Just slightly expired.')
                 this.meatTruck.enter(Modal.MEAT)
-                this.sounds.jalopy.play()
             } 
             else{
                 if(this.meatTruck.isParked){
                     this.meatTruck.exit()
-                    this.sounds.jalopy.play()
                 }
                 onHideModal(Modal.MEAT)
             } 
@@ -474,12 +472,12 @@ export default class ParkScene extends Scene {
                     if(b.type === BuildingType.PETTING_ARENA){
                         state.cash += state.peopleToday*20
                         state.peta++
-                        this.floatText(this.entranceBooth.x, this.entranceBooth.y, 'Petting Arena +$'+(state.peopleToday*20), 'green')
+                        this.floatText(this.entranceBooth.x, this.entranceBooth.y+20, 'Petting Arena +$'+(state.peopleToday*20), 'green')
                     }
                     if(b.type === BuildingType.SNACK_HUT && state.meat >= 10){
                         state.meat -= 10
                         state.cash += state.peopleToday*10 
-                        this.floatText(this.entranceBooth.x, this.entranceBooth.y, 'Snack Hut +$'+(state.peopleToday*10), 'green')
+                        this.floatText(this.entranceBooth.x, this.entranceBooth.y+30, 'Snack Hut +$'+(state.peopleToday*10), 'green')
                     }
                 }
             })

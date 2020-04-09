@@ -1,7 +1,6 @@
 tiger tycoon - exotic park management
 
 -contacts / phone tray (adbuy, animal seller, prison warden, exotic buyer* (random appearance))
--contacts cooldown
 
 
 meat drain - animal dies (peta bar) or is released (cumulative chance of swat van) or employee eaten
@@ -19,5 +18,5 @@ cash noise w/ visual red/green floating numbers
 shooting sound
 phonecall sound
 
-add meat decay / freezer building
+add meat decay / freezer building?
 

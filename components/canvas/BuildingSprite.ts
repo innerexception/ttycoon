@@ -45,7 +45,7 @@ export default class BuildingSprite extends GameObjects.Sprite {
     }
 
     setInactive = () => {
-        if(!this.badge) this.badge = this.scene.add.image(this.x, this.y, Sprites.no_employee).setDepth(3)
+        if(!this.badge) this.badge = this.scene.add.image(this.x-10, this.y-10, Sprites.no_employee).setDepth(3).setDisplaySize(16,16)
     }
 
     clearInactive = () => {

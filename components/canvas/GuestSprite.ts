@@ -1,5 +1,4 @@
 import { GameObjects, Physics, Scene, Geom, Game, Tilemaps } from "phaser"
-import { Activities } from "../../enum";
 
 
 export default class GuestSprite extends Physics.Arcade.Sprite {
@@ -20,16 +19,23 @@ export default class GuestSprite extends Physics.Arcade.Sprite {
             callback: ()=>{
                 this.destroy()
             }
+        });
+        scene.anims.create({
+            key: texture,
+            frames: scene.anims.generateFrameNumbers(texture, { start: 0, end: 3 }),
+            frameRate: 8,
+            repeat: -1
         })
+        this.anims.play(texture)
     }
     pickNewDirection = () => {
         let targetTileCoords = {x: this.x, y: this.y}
             switch(Phaser.Math.Between(0,3)){
                 case 0: targetTileCoords.y++
                 break
-                case 1: targetTileCoords.x--
+                case 1: targetTileCoords.x--; this.setFlipX(true);
                 break
-                case 2: targetTileCoords.x++
+                case 2: targetTileCoords.x++; this.setFlipX(false);
                 break
                 case 3: targetTileCoords.y--
             }
@@ -41,6 +47,10 @@ export default class GuestSprite extends Physics.Arcade.Sprite {
         let mag = Math.sqrt(dir.x*dir.x + dir.y*dir.y);
         dir.x = dir.x/mag; dir.y = dir.y/mag;
         this.setVelocity(dir.x*speed, dir.y*speed)
+    }
+
+    preUpdate(time:number, delta:number){
+        this.anims.update(time, delta)
     }
 
     //TODO: add chatter

@@ -47,6 +47,9 @@ export default class CanvasFrame extends React.Component<Props> {
                                 {state.status[key] && state.status[key].startDay && <div style={{height:'5px'}}>{ProgressBar(getStatusPercent(state.day, state.status[key]), 1, colors.orange)}</div>}
                             </div>)}
                     </div>
+                    <div style={{position:'absolute', bottom:0, right:0, zIndex:5}}>
+                        <div onClick={onMuteAudio}>{Icon('sound', "Toggle Sound", true)}</div>
+                    </div>
                     <div style={{position:'absolute', top:40}}>
                         <h4 style={{marginBottom:'5px'}}>Goals, Day {state.day}</h4>
                         <h6 style={{display:'flex', alignItems:'center'}}><span style={{marginRight:'10px'}}>{Icon('CASH', 'Net worth, cash minus loans')}</span> {state.cash-state.loan} / 100000</h6>
@@ -54,7 +57,6 @@ export default class CanvasFrame extends React.Component<Props> {
                     </div>
                     <div style={{position:'absolute', bottom:10,left:10, display:"flex", alignItems:'flex-start', width:'100%'}}>
                         <div style={{marginRight:'25px'}}>
-                            
                             <div style={{display:'flex', alignItems:'center'}}>
                                 <h5>{Icon('phone', 'Contacts', true)}</h5>
                                 <h5>:</h5>
@@ -70,7 +72,7 @@ export default class CanvasFrame extends React.Component<Props> {
                         </div>
                         <div style={{marginRight:'25px'}}>
                             <div style={{display:'flex', alignItems:"center"}}>
-                                {Icon('audio','', true)}<div style={{height:'10px', width: '50px', marginLeft:'10px'}}>{ProgressBar(Math.max(0, 30-getPublicInterest(state)), 30, colors.lGreen, 'Demand. Determines how many people tour the park. Jimmy Goodman can help with this. Ticket prices and having many different types of animals helps too. Also stay out of trouble...')}</div>
+                                {Icon('audio','', true)}<div style={{height:'10px', width: '50px', marginLeft:'10px'}}>{ProgressBar(Math.max(0, 30-getPublicInterest(state)), 30, colors.lGreen, 'Demand. Determines how many people tour the park. Jimmy Goodman can help with this. Ticket prices and having many different types of animals affect this too. Also stay out of trouble...')}</div>
                             </div>
                             <div style={{display:'flex', alignItems:"center"}}>
                                 {Icon('cops', '', true)} <div style={{height:'10px', width: '50px', marginLeft:'10px'}}>{ProgressBar(state.peta, 50, colors.red, 'Chance of police activity')}</div>

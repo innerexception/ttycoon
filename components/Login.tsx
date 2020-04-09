@@ -15,8 +15,7 @@ export default class Login extends React.Component<Props> {
     state = { transitionState: 0, roar: new Audio(roar) }
 
     componentDidMount(){
-        // this.state.audio.loop = true
-        // this.state.audio.play()
+        this.state.roar.volume = 0.2
     }
 
     componentWillUnmount(){

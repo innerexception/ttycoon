@@ -129,7 +129,8 @@ export const Icons = {
     ads: require('./ads.png'),
     sale: require('./sale.png'),
     convict: require('./convict.png'),
-    construction: require('./construction.png')
+    construction: require('./construction.png'),
+    sound: require('./sound.png')
 }
 
 export const Buildings = [

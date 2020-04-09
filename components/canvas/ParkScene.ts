@@ -11,6 +11,7 @@ import GuestSprite from "./GuestSprite";
 import Vehicle from "./Vehicle";
 import GuestVehicle from "./GuestVehicle";
 import { getTigerCount } from "./CanvasFrame";
+import { colors } from "../../AppStyles";
 
 
 const CONTACT_VEHICLE_OFFSET = 50
@@ -88,12 +89,12 @@ export default class ParkScene extends Scene {
                     break
                 case UIReducerActions.SUMMON_ANIMAL_TRUCK:
                     if(!this.animalTruck.isParked){
-                        this.showTalkingHead(Sprites.ANIMAL_DEALER, "I'll meet you, but I can't stay long...")
+                        this.showTalkingHead(Sprites.ANIMAL_DEALER, "I'll meet you, but I can't stay long...", 'white')
                         this.animalTruck.enter(Modal.ANIMALS)
                         this.time.addEvent({
                             delay: 25000,
                             callback: ()=>{
-                                this.showTalkingHead(Sprites.ANIMAL_DEALER, 'Gotta go chief! Call me if you need more!')
+                                this.showTalkingHead(Sprites.ANIMAL_DEALER, 'Gotta go chief! Call me if you need more!', 'white')
                                 this.animalTruck.exit()
                                 onHideModal(Modal.ANIMALS)
                             }
@@ -101,17 +102,17 @@ export default class ParkScene extends Scene {
                     }
                     break
                 case UIReducerActions.DISMISS_ANIMAL_TRUCK:
-                    this.showTalkingHead(Sprites.ANIMAL_DEALER, 'Later chief!')
+                    this.showTalkingHead(Sprites.ANIMAL_DEALER, 'Later chief!', 'white')
                     this.animalTruck.exit()
                     break
                 case UIReducerActions.SUMMON_LENDER:
-                    this.showTalkingHead(Sprites.LOAN_SHARK, 'You got my money?')
+                    this.showTalkingHead(Sprites.LOAN_SHARK, 'You got my money?', 'white')
                     this.lenderCar.enter(Modal.PAY)
                     this.sounds.fast.play()
                     this.time.addEvent({
                         delay: 15000,
                         callback: ()=>{
-                            this.showTalkingHead(Sprites.LOAN_SHARK, "Don't waste my time.")
+                            this.showTalkingHead(Sprites.LOAN_SHARK, "Don't waste my time.", 'white')
                             this.lenderCar.exit()
                             this.sounds.fast.play()
                             onHideModal(Modal.PAY)
@@ -126,7 +127,7 @@ export default class ParkScene extends Scene {
 
     create = () =>
     {
-        this.sound.volume = 0.1
+        this.sound.volume = 0.4
         this.sounds = {
             step: this.sound.add('step'),
             error: this.sound.add('error'),
@@ -140,7 +141,7 @@ export default class ParkScene extends Scene {
             register: this.sound.add('register'),
             mumbler: this.sound.add('mumbler')
         }
-        this.sound.add('gameplay').play({loop:true})
+        this.sound.add('gameplay').play({loop:true, volume: 0.2})
         this.emitter = this.add.particles('meat').setDepth(3)
         this.meatEmitters = []
         for(var i=1; i<=5;i++){
@@ -388,7 +389,7 @@ export default class ParkScene extends Scene {
         if(this.ticks % DAY_LENGTH === 0){
             state.day++
             if(state.day % 3 === 0){
-                this.showTalkingHead(Sprites.MEAT_MAN, 'Get yer meat here! Just slightly expired.')
+                this.showTalkingHead(Sprites.MEAT_MAN, 'Get yer meat here! Just slightly expired.', 'white')
                 this.meatTruck.enter(Modal.MEAT)
             } 
             else{
@@ -425,7 +426,7 @@ export default class ParkScene extends Scene {
                                     return
                                 }
                                 //otherwise it dies
-                                this.showTalkingHead(Sprites.TUTORIAL, "A new "+existingBuilding.animal+" was born, but there wasn't space for it...make sure you have enough cages!")
+                                this.showTalkingHead(Sprites.TUTORIAL, "A new "+existingBuilding.animal+" was born, but there wasn't space for it...make sure you have enough cages!", colors.orange)
                                 state.meat++
                                 state.peta++
                             }
@@ -433,7 +434,7 @@ export default class ParkScene extends Scene {
                     }
                     else {
                         state.status.noMeat = true
-                        this.showTalkingHead(Sprites.TUTORIAL, "Animals are starving, make sure you have enough meat!")
+                        this.showTalkingHead(Sprites.TUTORIAL, "Animals are starving, make sure you have enough meat!", colors.orange)
                         let event = Phaser.Math.Between(0,3)
                         let spr = this.buildingSprites.find(spr=>spr.id===existingBuilding.id)
                         switch(event){
@@ -486,9 +487,9 @@ export default class ParkScene extends Scene {
                         this.swatVan.exit()
                     }
                 })
-                this.showTalkingHead(Sprites.COPS, "We've recieved a tip about animal abuse at this location. You've been fined $10,000.")
+                this.showTalkingHead(Sprites.COPS, "We've recieved a tip about animal abuse at this location. You've been fined $10,000.", colors.red)
                 this.sounds.cops.play()
-                this.showTalkingHead(Sprites.TUTORIAL, "Careful! If the cops show up more than 3 times, they'll put you in prison like me!")
+                this.showTalkingHead(Sprites.TUTORIAL, "Careful! If the cops show up more than 3 times, they'll put you in prison like me!", colors.orange)
                 state.cash-=10000
                 state.peta = 0
                 state.violations++
@@ -526,7 +527,7 @@ export default class ParkScene extends Scene {
                             this.swatVan.exit()
                         }
                     })
-                    this.showTalkingHead(Sprites.COPS, 'Your employee, '+rager.name+', was shot by a berserk meth head.')
+                    this.showTalkingHead(Sprites.COPS, 'Your employee, '+rager.name+', was shot by a berserk meth head.', colors.orange)
                     state.employees = state.employees.filter(e=>e.id !== rager.id)
                     this.sounds.cops.play()
                 }
@@ -547,7 +548,7 @@ export default class ParkScene extends Scene {
                         this.swatVan.exit()
                     }
                 })
-                this.showTalkingHead(Sprites.COPS, 'Your employee, '+arrest.name+', has been getting into trouble again.')
+                this.showTalkingHead(Sprites.COPS, 'Your employee, '+arrest.name+', has been getting into trouble again.', colors.orange)
                 state.employees = state.employees.filter(e=>e.id !== arrest.id)
                 this.sounds.cops.play()
             }
@@ -594,17 +595,17 @@ export default class ParkScene extends Scene {
         this.sounds.step.play()
     }
 
-    showTalkingHead = (texture:string, text:string) => {
+    showTalkingHead = (texture:string, text:string, color:string) => {
         if(this.talkingHead) this.time.addEvent({
             delay: 2000,
             callback: ()=>{
-                this.showTalkingHead(texture, text)
+                this.showTalkingHead(texture, text, color)
             }
         })
         else {
             this.talkingHead = this.add.sprite(25, 25, texture).setScale(0.5)
             this.sounds.mumbler.play()
-            this.showText(this.talkingHead.getTopRight().x+40, this.talkingHead.y, text, 'white', 4)
+            this.showText(this.talkingHead.getTopRight().x+40, this.talkingHead.y, text, color, 4)
             this.time.addEvent({
                 delay:5000,
                 callback: ()=>{

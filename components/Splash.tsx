@@ -12,7 +12,7 @@ export default class Splash extends React.Component<Props> {
     state = { transitionState: 0, audio: new Audio(boot) }
 
     componentDidMount(){
-        setTimeout(()=>{this.setState({transitionState: 1});this.state.audio.play()}, 1000)
+        setTimeout(()=>{this.setState({transitionState: 1});this.state.audio.volume = 0.2; this.state.audio.play()}, 1000)
         setTimeout(()=>{this.setState({transitionState: 2})}, 4000)
         setTimeout(()=>{this.setState({transitionState: 3})}, 7000)
     }

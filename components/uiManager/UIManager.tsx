@@ -33,7 +33,8 @@ const styles = {
         overflow:'hidden',
         display:'flex',
         alignItems:'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        position:'relative' as 'relative'
     },
     dot: {
         height:'0.5em',

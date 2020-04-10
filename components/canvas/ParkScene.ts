@@ -267,12 +267,20 @@ export default class ParkScene extends Scene {
     }
 
     startPlacingBuilding = (building:Building) => {
+        if(this.placingBuilding){
+            this.placingBuilding.destroy()
+            this.placingBuilding = null
+        }
         this.placingBuilding = new BuildingSprite(this, this.map.widthInPixels/2, this.map.heightInPixels/2, building.type, building).setAlpha(0.5)
         this.tempBuilding = building
         this.instruction = this.add.text(10,10,'(Esc to cancel placing, shift to rotate)', FONT_DEFAULT)
     }
 
     startPlacingAnimal = (type:AnimalType) => {
+        if(this.placingAnimal){
+            this.placingAnimal.destroy()
+            this.placingAnimal = null
+        }
         this.placingAnimal = this.add.sprite(this.map.widthInPixels/2, this.map.heightInPixels/2, type).setAlpha(0.5).setScale(0.6)
         this.placingAnimalType = type
         this.instruction = this.add.text(10,10,'(Esc to cancel placing)', FONT_DEFAULT)

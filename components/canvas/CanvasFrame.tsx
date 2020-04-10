@@ -28,7 +28,7 @@ export default class CanvasFrame extends React.Component<Props> {
     render(){
         let state = store.getState()
         return (
-                <div style={{position:'relative', padding:'17px'}}>
+                <div style={{padding:'17px'}}>
                     <Canvas />
                     {state.modal === Modal.LOSE && <Lose/>}
                     {state.modal === Modal.WIN && <Win/>}
@@ -40,7 +40,7 @@ export default class CanvasFrame extends React.Component<Props> {
                     {state.modal === Modal.PRISON && <Hiring/>}
                     {state.modal === Modal.PAY && <LoanShark cash={this.props.cash} loan={this.props.loan}/>}
                     {state.modal === Modal.TUTORIAL && <Tutorial/>}
-                    <div style={{position:'absolute', top:70, right:10, display:'flex'}}>
+                    <div style={{position:'absolute', top:'10px', right:'10px', display:'flex'}}>
                         {Object.keys(state.status).map(key=>
                             <div style={{marginRight:'10px', display: state.status[key] ? 'block' : 'none'}}>
                                 {Icon(key, StatusDescription[key], true)}
@@ -50,12 +50,12 @@ export default class CanvasFrame extends React.Component<Props> {
                     <div style={{position:'absolute', bottom:0, right:0, zIndex:5}}>
                         <div onClick={onMuteAudio}>{Icon('sound', "Toggle Sound", true)}</div>
                     </div>
-                    <div style={{position:'absolute', top:40}}>
+                    <div style={{position:'absolute', top:'10px', left:'30px'}}>
                         <h4 style={{marginBottom:'5px'}}>Goals, Day {state.day}</h4>
                         <h6 style={{display:'flex', alignItems:'center'}}><span style={{marginRight:'10px'}}>{Icon('CASH', 'Net worth, cash minus loans')}</span> {state.cash-state.loan} / 100000</h6>
                         <h6 style={{display:'flex', alignItems:'center'}}><span style={{marginRight:'10px'}}>{Icon('TIGER', 'Tigers')}</span> {getTigerCount(state.buildings)} / 50</h6>
                     </div>
-                    <div style={{position:'absolute', bottom:10,left:10, display:"flex", alignItems:'flex-start', width:'100%'}}>
+                    <div style={{position:'absolute', bottom:0,left:'30px', display:"flex", alignItems:'flex-start', width:'100%'}}>
                         <div style={{marginRight:'25px'}}>
                             <div style={{display:'flex', alignItems:'center'}}>
                                 <h5>{Icon('phone', 'Contacts', true)}</h5>

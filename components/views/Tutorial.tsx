@@ -25,6 +25,7 @@ export default class Tutorial extends React.Component {
             case 1: 
                 return <div style={{padding:'1em', height:'90%', display:'flex', flexDirection:'column', justifyContent:'space-between'}}>
                             <h4>To Become A Tiger Tycoon:</h4>
+                            <h3 style={{marginBottom:'5px'}}>Build some cages. Then put some tigers in them. Profit!</h3>
                             <h5 style={{marginBottom:'5px'}}>1. Have at least 50 tigers.</h5>
                             <h5 style={{marginBottom:'5px'}}>2. Be debt free and have 100 grand in the bank.</h5>
                             <h5 style={{marginBottom:'5px'}}>First, talk to Scooter {Icon('builder', 'Scooter', true)} about buildings.</h5>

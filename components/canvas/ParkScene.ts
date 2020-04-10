@@ -414,6 +414,7 @@ export default class ParkScene extends Scene {
                                 let spr = this.buildingSprites.find(s=>s.id===existingBuilding.id)
                                 spr.addAnimal(existingBuilding)
                                 this.floatSprite(spr.x, spr.y, existingBuilding.animal, 0x00ff00)
+                                state.peta--
                                 return
                             }
                             else {
@@ -425,6 +426,7 @@ export default class ParkScene extends Scene {
                                     cap.animal= existingBuilding.animal
                                     spr.addAnimal(cap)
                                     this.floatSprite(spr.x, spr.y, existingBuilding.animal, 0x00ff00)
+                                    state.peta--
                                     return
                                 }
                                 //otherwise it dies

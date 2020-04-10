@@ -3,8 +3,6 @@ import AppStyles, { colors } from '../AppStyles';
 import { ButtonStrip, Select, Button } from './Shared'
 import { onInitSession, onShowModal } from './uiManager/Thunks';
 import { Difficulty, Modal } from '../enum';
-const boot = require('../assets/audio/intro.mp3')
-const roar = require('../assets/audio/roar.mp3')
 
 interface Props {
     
@@ -12,15 +10,7 @@ interface Props {
 
 export default class Login extends React.Component<Props> {
 
-    state = { transitionState: 0, roar: new Audio(roar) }
-
-    componentDidMount(){
-        this.state.roar.volume = 0.2
-    }
-
-    componentWillUnmount(){
-        // this.state.audio.pause()
-    }
+    state = { transitionState: 0 }
 
     render(){
         return (
@@ -30,7 +20,7 @@ export default class Login extends React.Component<Props> {
                 <div style={{padding:'10px'}}>
                     <div style={{marginBottom:'10px'}}>
                     {ButtonStrip([
-                        {text: 'Start', handler: ()=>{this.state.roar.play(); onInitSession(Difficulty.EASY)}, active: false},
+                        {text: 'Start', handler: ()=>{onInitSession(Difficulty.EASY)}, active: false},
                     ])}
                     </div>
                 </div>

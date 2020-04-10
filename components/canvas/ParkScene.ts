@@ -3,7 +3,7 @@ import { store } from "../../App";
 import { defaults, SpriteIndexes, Sprites } from '../../assets/Assets'
 import { Modal, UIReducerActions, BuildingType, Animals, STATUS_DURATION, FONT_DEFAULT, AnimalType } from "../../enum";
 import * as v4 from 'uuid'
-import { onShowSell, onReplaceState, onShowModal, onPlacedBuilding, onPlacedAnimal, onHideModal, onWin } from "../uiManager/Thunks";
+import { onShowSell, onReplaceState, onShowModal, onPlacedBuilding, onPlacedAnimal, onHideModal } from "../uiManager/Thunks";
 import { findValue, hasCapacity, getPublicInterest } from "../Util";
 import BuildingSprite from "./BuildingSprite";
 import MeatTruck from "./MeatTruck";
@@ -16,7 +16,7 @@ import { colors } from "../../AppStyles";
 
 const CONTACT_VEHICLE_OFFSET = 50
 const GUEST_VEHICLE_OFFSET = 25
-const DAY_LENGTH = 15
+const DAY_LENGTH = 12
 
 export default class ParkScene extends Scene {
 
@@ -46,6 +46,7 @@ export default class ParkScene extends Scene {
     meatEmitters: Array<GameObjects.Particles.ParticleEmitter>
     entranceBooth: GameObjects.Sprite
     instruction: GameObjects.Text
+    timer: Phaser.Time.TimerEvent
 
     constructor(config){
         super(config)
@@ -141,6 +142,7 @@ export default class ParkScene extends Scene {
             register: this.sound.add('register'),
             mumbler: this.sound.add('mumbler')
         }
+        this.sounds.roar.play()
         this.sound.add('gameplay').play({loop:true, volume: 0.2})
         this.emitter = this.add.particles('meat').setDepth(3)
         this.meatEmitters = []
@@ -186,7 +188,7 @@ export default class ParkScene extends Scene {
         this.animalTruck = new Vehicle(this, -100,300,'animal_truck', this.map.heightInPixels-CONTACT_VEHICLE_OFFSET, this.map.widthInPixels/3)
         this.swatVan = new Vehicle(this, -100,300,'swat_van', this.map.heightInPixels-CONTACT_VEHICLE_OFFSET, (this.map.widthInPixels/2)+50)
         this.lenderCar = new Vehicle(this, -100, 300, 'fast', this.map.heightInPixels-CONTACT_VEHICLE_OFFSET,this.map.widthInPixels-100)
-        this.time.addEvent({
+        this.timer = this.time.addEvent({
             delay: 1000,
             callback: this.tick,
             repeat: -1
@@ -368,7 +370,7 @@ export default class ParkScene extends Scene {
             state.peopleToday++
         }
 
-        state.loan += Math.round(state.loan*0.0005)
+        state.loan += Math.round(state.loan*0.0007)
 
         state.status.lowEmployment = false
         let available = state.employees.length
@@ -557,10 +559,16 @@ export default class ParkScene extends Scene {
             //divorce?
         } 
 
-        if(getTigerCount(state.buildings) >= 50 && state.cash - state.loan >= 100000) onShowModal(Modal.WIN)
-        if(state.violations > 3){
+        if(getTigerCount(state.buildings) >= 50 && state.cash - state.loan >= 100000){
+            onShowModal(Modal.WIN)
+            this.timer.remove()
+            return
+        }
+        if(state.violations >= 3){
             this.swatVan.enter()
             onShowModal(Modal.LOSE)
+            this.timer.remove()
+            return
         } 
 
         onReplaceState(state)

@@ -72,7 +72,7 @@ export const defaults = [
     { key: 'step', resource: require('./audio/step.mp3'), type: 'audio' },
     { key: 'build', resource: require('./audio/build.mp3'), type: 'audio' },
     { key: 'old', resource: require('./audio/jalopy.mp3'), type: 'audio' },
-    { key: 'cops', resource: require('./audio/rock.mp3'), type: 'audio' },
+    { key: 'cops', resource: require('./audio/cops.mp3'), type: 'audio' },
     { key: 'error', resource: require('./audio/error.mp3'), type: 'audio' },
     { key: 'end', resource: require('./audio/end.mp3'), type: 'audio' },
     { key: 'destroyed', resource: require('./audio/destroyed.mp3'), type: 'audio' },

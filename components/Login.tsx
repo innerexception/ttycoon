@@ -24,7 +24,7 @@ export default class Login extends React.Component<Props> {
 
     render(){
         return (
-        <div style={{display:'flex', alignItems:'center'}}>
+        <div style={{display:'flex', alignItems:'center', backgroundPosition:'center', width:'100%', backgroundImage:'url('+require('../assets/bg.jpg')}}>
             <div>
                 <h3 style={{fontFamily:'Title', fontSize:'75px', paddingLeft:'10px', color:colors.orange}}>Tiger Tycoon</h3>
                 <div style={{padding:'10px'}}>

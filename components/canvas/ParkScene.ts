@@ -1,7 +1,7 @@
 import { Scene, GameObjects, Tilemaps, Geom, Physics } from "phaser";
 import { store } from "../../App";
 import { defaults, SpriteIndexes, Sprites } from '../../assets/Assets'
-import { Modal, UIReducerActions, BuildingType, Animals, STATUS_DURATION, FONT_DEFAULT } from "../../enum";
+import { Modal, UIReducerActions, BuildingType, Animals, STATUS_DURATION, FONT_DEFAULT, AnimalType } from "../../enum";
 import * as v4 from 'uuid'
 import { onShowSell, onReplaceState, onShowModal, onPlacedBuilding, onPlacedAnimal, onHideModal, onWin } from "../uiManager/Thunks";
 import { findValue, hasCapacity, getPublicInterest } from "../Util";
@@ -411,7 +411,7 @@ export default class ParkScene extends Scene {
                                 existingBuilding.animalCount++
                                 let spr = this.buildingSprites.find(s=>s.id===existingBuilding.id)
                                 spr.addAnimal(existingBuilding)
-                                this.showText(spr.x, spr.y, 'A new '+existingBuilding.animal+' was born!', 'green')
+                                this.floatSprite(spr.x, spr.y, existingBuilding.animal, 0x00ff00)
                                 return
                             }
                             else {
@@ -422,7 +422,7 @@ export default class ParkScene extends Scene {
                                     let spr = this.buildingSprites.find(s=>s.id===cap.id)
                                     cap.animal= existingBuilding.animal
                                     spr.addAnimal(cap)
-                                    this.showText(spr.x, spr.y, 'A new '+existingBuilding.animal+' was born! But there was no space so we moved it here.', 'green')
+                                    this.floatSprite(spr.x, spr.y, existingBuilding.animal, 0x00ff00)
                                     return
                                 }
                                 //otherwise it dies
@@ -442,7 +442,7 @@ export default class ParkScene extends Scene {
                             case 0: existingBuilding.animalCount--
                                     state.peta++
                                     state.meat++
-                                    this.showText(spr.x, spr.y, 'A '+existingBuilding.animal+' starved.', 'red')
+                                    this.floatSprite(spr.x, spr.y, existingBuilding.animal, 0xff0000)
                                     if(existingBuilding.animalCount <= 0){
                                         existingBuilding.animal = null
                                         existingBuilding.animalCount = 0
@@ -479,6 +479,7 @@ export default class ParkScene extends Scene {
                 }
             })
             //run PETA check, if failed send in the cops
+            if(state.peta > 25) state.peta = 25
             if(state.peta > 3 && Phaser.Math.Between(state.peta, 25)===25){
                 this.swatVan.enter()
                 this.time.addEvent({
@@ -627,6 +628,20 @@ export default class ParkScene extends Scene {
             easeParams:[4],
             duration: duration ? duration*1000 : 3000,
             y: y,
+            onComplete: ()=>{
+                font.destroy()
+            }
+        })
+    }
+
+    floatSprite = (x:number, y:number, texture:string, color:number) => {
+        let font = this.add.image(x,y,texture).setTint(color)
+        font.setDepth(4)
+        this.add.tween({
+            targets: font,
+            duration: 1500,
+            y: y+30,
+            alpha: 0,
             onComplete: ()=>{
                 font.destroy()
             }

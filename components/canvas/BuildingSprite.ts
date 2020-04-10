@@ -58,5 +58,9 @@ export default class BuildingSprite extends GameObjects.Sprite {
     destroy(){
         super.destroy()
         this.badge && this.badge.destroy()
+        this.animalSprite && this.animalSprite.destroy()
+        this.animalSprite = null
+        this.countSprite && this.countSprite.destroy()
+        this.countSprite = null
     }
 }

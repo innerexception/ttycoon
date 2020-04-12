@@ -271,9 +271,13 @@ export default class ParkScene extends Scene {
             this.placingBuilding.destroy()
             this.placingBuilding = null
         }
+        if(this.instruction){
+            this.instruction.destroy()
+            this.instruction = null
+        }
         this.placingBuilding = new BuildingSprite(this, this.map.widthInPixels/2, this.map.heightInPixels/2, building.type, building).setAlpha(0.5)
         this.tempBuilding = building
-        this.instruction = this.add.text(10,10,'(Esc to cancel placing, shift to rotate)', FONT_DEFAULT)
+        this.instruction = this.add.text(this.placingBuilding.getTopLeft().x,this.placingBuilding.getTopLeft().y-30,'(Esc to cancel placing, shift to rotate)', FONT_DEFAULT)
     }
 
     startPlacingAnimal = (type:AnimalType) => {
@@ -281,9 +285,13 @@ export default class ParkScene extends Scene {
             this.placingAnimal.destroy()
             this.placingAnimal = null
         }
+        if(this.instruction){
+            this.instruction.destroy()
+            this.instruction = null
+        }
         this.placingAnimal = this.add.sprite(this.map.widthInPixels/2, this.map.heightInPixels/2, type).setAlpha(0.5).setScale(0.6)
         this.placingAnimalType = type
-        this.instruction = this.add.text(10,10,'(Esc to cancel placing)', FONT_DEFAULT)
+        this.instruction = this.add.text(this.placingAnimal.getTopLeft().x,this.placingAnimal.getTopLeft().y-30,'(Esc to cancel placing)', FONT_DEFAULT)
     }
 
     sellBuilding = (buildingId:string) => {
@@ -399,7 +407,7 @@ export default class ParkScene extends Scene {
         if(this.ticks % DAY_LENGTH === 0){
             state.day++
             if(state.day % 3 === 0){
-                this.showTalkingHead(Sprites.MEAT_MAN, 'Get yer meat here! Just slightly expired.', 'white')
+                if(state.day <= 12) this.showTalkingHead(Sprites.MEAT_MAN, 'Get yer meat here! Just slightly expired.', 'white')
                 this.meatTruck.enter(Modal.MEAT)
             } 
             else{
@@ -445,8 +453,10 @@ export default class ParkScene extends Scene {
                         } 
                     }
                     else {
-                        state.status.noMeat = true
-                        this.showTalkingHead(Sprites.TUTORIAL, "Animals are starving, make sure you have enough meat!", colors.orange)
+                        if(!state.status.noMeat){
+                            state.status.noMeat = true
+                            this.showTalkingHead(Sprites.TUTORIAL, "Animals are starving, watch out for the cops!", colors.orange)
+                        }
                         let event = Phaser.Math.Between(0,3)
                         let spr = this.buildingSprites.find(spr=>spr.id===existingBuilding.id)
                         switch(event){
@@ -458,8 +468,8 @@ export default class ParkScene extends Scene {
                                     if(existingBuilding.animalCount <= 0){
                                         existingBuilding.animal = null
                                         existingBuilding.animalCount = 0
-                                        spr.removeAnimal(existingBuilding)
                                     }
+                                    spr.removeAnimal(existingBuilding)
                                     break
                             //eats employee
                             case 1: let dead = state.employees.splice(Phaser.Math.Between(0,state.employees.length-1), 1)[0]
@@ -549,7 +559,7 @@ export default class ParkScene extends Scene {
             //arrest
             let arrest
             state.employees.forEach(e=>{
-                if(Phaser.Math.Between(0,30-e.riskLevel)===0){
+                if(e.riskLevel > 0 && Phaser.Math.Between(0,40-e.riskLevel)===0){
                     arrest = e
                 }
             })
@@ -690,6 +700,7 @@ export default class ParkScene extends Scene {
     }
 
     update(time:number, delta:number){
-        
+        if(this.placingAnimal && this.instruction) this.instruction.setPosition(this.placingAnimal.getTopLeft().x,this.placingAnimal.getTopLeft().y-30)
+        if(this.placingBuilding && this.instruction) this.instruction.setPosition(this.placingBuilding.getTopLeft().x,this.placingBuilding.getTopLeft().y-30)
     }
 }

@@ -20,3 +20,5 @@ phonecall sound
 
 add meat decay / freezer building?
 
+
+explain better the net worth concept

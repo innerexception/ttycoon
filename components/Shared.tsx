@@ -64,9 +64,11 @@ export const RangeInput = (value:number, onValueChange:Function, leftLabel:JSX.E
 
 export const NumericInput = (value:number, onValueChange:Function, max?:number, min?:number) => 
     <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+        {LightButton(min || min===0 ? value-10 > min:true, ()=>onValueChange(value-10),'<<')}
         {LightButton(min || min===0 ? value > min:true, ()=>onValueChange(value-1),'<')}
         <div style={{display:'flex', alignItems:"center"}}>{Icon('CASH','')}{value}</div>
         {LightButton(max ? value < max:true, ()=>onValueChange(value+1),'>')}
+        {LightButton(max ? value+10 < max:true, ()=>onValueChange(value+10),'>>')}
     </div>
 
 export const Select = (value:any, onValueChange:Function, values: Array<any>) => 

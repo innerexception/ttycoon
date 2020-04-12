@@ -54,7 +54,7 @@ const appReducer = (state = getInitialState(), action:any):RState => {
             return { ...state, modal:null }
         case UIReducerActions.HIRE:
             state.employees.push(action.employee)
-            state.cash -= 500
+            state.cash -= 200
             return { ...state, employees: Array.from(state.employees), engineEvent:null, modal:null }
         case UIReducerActions.RESET:
             return getInitialState()
@@ -76,7 +76,9 @@ const appReducer = (state = getInitialState(), action:any):RState => {
         case UIReducerActions.ADBUY:
             return { ...state, status: {...state.status, [action.ad.type]: { startDay: state.day }}, cash: state.cash - action.ad.price, engineEvent:null, modal:null}
         case UIReducerActions.PAY:
-            return { ...state, loan: state.loan - action.amount, cash: state.cash - action.amount, engineEvent:UIReducerActions.PAY }
+            if(state.loan < 1000) state.loan = 0
+            else state.loan = state.loan - action.amount
+            return { ...state, cash: state.cash - action.amount, engineEvent:UIReducerActions.PAY }
         case UIReducerActions.LOAN:
             return { ...state, loan: state.loan + action.amount, cash: state.cash + action.amount, engineEvent:UIReducerActions.PAY }
         default:

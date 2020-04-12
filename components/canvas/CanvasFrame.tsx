@@ -21,9 +21,16 @@ import Tutorial from '../views/Tutorial';
 interface Props {
     cash:number
     loan:number
+    peta:number
 }
 
 export default class CanvasFrame extends React.Component<Props> {
+
+    state = { shakeIt: false, peta: this.props.peta }
+
+    componentWillReceiveProps(props:Props){
+        this.setState({shakeIt: props.peta !== this.state.peta, peta: props.peta})
+    }
 
     render(){
         let state = store.getState()
@@ -52,8 +59,15 @@ export default class CanvasFrame extends React.Component<Props> {
                     </div>
                     <div style={{position:'absolute', top:'10px', left:'30px'}}>
                         <h4 style={{marginBottom:'5px'}}>Goals, Day {state.day}</h4>
-                        <h6 style={{display:'flex', alignItems:'center'}}><span style={{marginRight:'10px'}}>{Icon('CASH', 'Net worth, cash minus loans')}</span> {state.cash-state.loan} / 100000</h6>
-                        <h6 style={{display:'flex', alignItems:'center'}}><span style={{marginRight:'10px'}}>{Icon('TIGER', 'Tigers')}</span> {getTigerCount(state.buildings)} / 50</h6>
+                        <div>
+                            <h6 style={{display:'flex', alignItems:'center'}}>
+                                <span style={{marginRight:'10px'}}>{Icon('CASH', 'Net worth, cash minus loans')}</span> 
+                                ${state.cash} / Loan: ${state.loan} => Get $100000!
+                            </h6>
+                            <h6 style={{display:'flex', alignItems:'center'}}><span style={{marginRight:'10px'}}>
+                                {Icon('TIGER', 'Tigers')}</span> {getTigerCount(state.buildings)} / 50
+                            </h6>
+                        </div>
                     </div>
                     <div style={{position:'absolute', bottom:0,left:'30px', display:"flex", alignItems:'flex-start', width:'100%'}}>
                         <div style={{marginRight:'25px'}}>
@@ -64,7 +78,7 @@ export default class CanvasFrame extends React.Component<Props> {
                                 <div onClick={onSummonAnimalTruck}>{Icon('animal_dealer', "Bob's Exotics (Animals)", true)}</div>
                                 <div onClick={()=>onShowModal(Modal.PRISON)}>{Icon('warden', "Warden James (Hiring)", true)}</div>
                                 <div onClick={()=>onShowModal(Modal.ADS)}>{Icon('ad_man', "Jimmy Goodman (Advertising)", true)}</div>
-                                <div onClick={onSummonLender}>{Icon('shady_lender', "Howard Steinberg (Loans)", true)}</div>
+                                <div onClick={onSummonLender}>{Icon('shady_lender', "Joe Blo (Loans)", true)}</div>
                             </div>
                             <div>
                                 <h6 style={{display:'flex', alignItems:'center'}}>Admission {NumericInput(state.admission, (val)=>onSetAdmission(val), 1000000, 0)}</h6>
@@ -74,21 +88,20 @@ export default class CanvasFrame extends React.Component<Props> {
                             <div style={{display:'flex', alignItems:"center"}}>
                                 {Icon('audio','', true)}<div style={{height:'10px', width: '50px', marginLeft:'10px'}}>{ProgressBar(Math.max(0, 30-getPublicInterest(state)), 30, colors.lGreen, 'Demand. Determines how many people tour the park. Jimmy Goodman can help with this. Ticket prices and having many different types of animals affect this too. Also stay out of trouble...')}</div>
                             </div>
-                            <div style={{display:'flex', alignItems:"center"}}>
-                                {Icon('cops', '', true)} <div style={{height:'10px', width: '50px', marginLeft:'10px'}}>{ProgressBar(state.peta, 50, colors.red, 'Chance of police activity')}</div>
+                        </div>
+                        <div style={{marginRight:'25px'}}>
+                            <div className={this.state.shakeIt ? 'shake-it' : ''} style={{display:'flex', alignItems:"center"}}>
+                                {Icon('cops', '', true)} <div style={{height:'10px', width: '50px', marginLeft:'10px'}}>{ProgressBar(state.peta, 50, colors.red, 'Chance of police activity. Goes up if animals are being harmed.')}</div>
                             </div>
                         </div>
-                        <div>
+                        <div style={{marginRight:'25px'}}>
                             <div style={{display:'flex', alignItems:"center"}}>
                                 {Icon('MEAT','Meat. All your animals need it. Buy it from the meat truck that comes every 3 days!', true)}<h6>: {state.meat}</h6>
                             </div>
-                            <div style={{display:'flex', alignItems:"center"}}>
-                                {Icon('CASH', 'Cash on hand', true)}<h6>: {state.cash}</h6>
-                            </div>
                         </div>
                         <div>
-                            <div style={{display:'flex', alignItems:"center"}}>
-                                {Button(true, onTakeMeth, Icon('meth', '', true), "When it's meth time, all employees can run 2 buildings!")}<h6>: $1000</h6>
+                            <div style={{display:'flex', alignItems:"center"}} onClick={onTakeMeth}>
+                                {Icon('meth', "When it's meth time, all employees can run 2 buildings!", true)}<h6>: $1000</h6>
                             </div>
                         </div>
                     </div>

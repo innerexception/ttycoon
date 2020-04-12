@@ -15,7 +15,7 @@ export default class Hiring extends React.Component {
             <div style={{...AppStyles.modal, height:'359px', width:'551px'}}>
                 <div style={AppStyles.modalInner}>
                     <h2 style={{textAlign:'center'}}>{Icon('convict', '', true)}{Icon('convict', '', true)}BARNEY COUNTY JAIL{Icon('convict', '', true)}{Icon('convict', '', true)}</h2>
-                    <h3 style={{paddingLeft:'0.5em'}}>Parolled today (Hiring "fee" $500):</h3>
+                    <h3 style={{paddingLeft:'0.5em'}}>Parolled today (Hiring "fee" $200):</h3>
                     <div style={{padding:'0.5em', paddingBottom:0}}>
                         {state.employees.length <= state.maxEmployees ? 
                         this.state.inmates.map(b=>

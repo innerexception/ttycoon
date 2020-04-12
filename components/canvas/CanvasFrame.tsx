@@ -54,7 +54,7 @@ export default class CanvasFrame extends React.Component<Props> {
                                 {state.status[key] && state.status[key].startDay && <div style={{height:'5px'}}>{ProgressBar(getStatusPercent(state.day, state.status[key]), 1, colors.orange)}</div>}
                             </div>)}
                     </div>
-                    <div style={{position:'absolute', bottom:0, right:0, zIndex:5}}>
+                    <div style={{position:'absolute', bottom:0, right:5, zIndex:5}}>
                         <div onClick={onMuteAudio}>{Icon('sound', "Toggle Sound", true)}</div>
                     </div>
                     <div style={{position:'absolute', top:'10px', left:'30px'}}>
@@ -69,7 +69,7 @@ export default class CanvasFrame extends React.Component<Props> {
                             </h6>
                         </div>
                     </div>
-                    <div style={{position:'absolute', bottom:0,left:'30px', display:"flex", alignItems:'flex-start', width:'100%'}}>
+                    <div style={{position:'absolute', bottom:5,left:'30px', display:"flex", alignItems:'center', width:'100%'}}>
                         <div style={{marginRight:'25px'}}>
                             <div style={{display:'flex', alignItems:'center'}}>
                                 <h5>{Icon('phone', 'Contacts', true)}</h5>
@@ -80,9 +80,9 @@ export default class CanvasFrame extends React.Component<Props> {
                                 <div onClick={()=>onShowModal(Modal.ADS)}>{Icon('ad_man', "Jimmy Goodman (Advertising)", true)}</div>
                                 <div onClick={onSummonLender}>{Icon('shady_lender', "Joe Blo (Loans)", true)}</div>
                             </div>
-                            <div>
-                                <h6 style={{display:'flex', alignItems:'center'}}>Admission {NumericInput(state.admission, (val)=>onSetAdmission(val), 1000000, 0)}</h6>
-                            </div>
+                        </div>
+                        <div style={{marginRight:'25px'}}>
+                            <h6 style={{display:'flex', alignItems:'center'}}>Admission {NumericInput(state.admission, (val)=>onSetAdmission(val), 1000000, 0)}</h6>
                         </div>
                         <div style={{marginRight:'25px'}}>
                             <div style={{display:'flex', alignItems:"center"}}>
